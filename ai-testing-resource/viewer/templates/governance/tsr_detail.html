@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+
+{% block title %}TSR {{ tsr.id[:8] }} - Details{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/governance.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="governance-portal">
+  <header class="tsr-header">
+    <div class="tsr-header__main">
+      <h1>Test Summary Report</h1>
+      <span class="tsr-id">{{ tsr.id }}</span>
+    </div>
+    <div class="tsr-decision tsr-decision--{{ tsr.go_no_go_decision.value }}">
+      {% if tsr.go_no_go_decision.value == 'go' %}✅ GO
+      {% elif tsr.go_no_go_decision.value == 'no_go' %}❌ NO-GO
+      {% else %}⏳ PENDING REVIEW{% endif %}
+    </div>
+  </header>
+
+  <!-- Version Manifest -->
+  <section class="tsr-section">
+    <h2>Version Manifest</h2>
+    {% if tsr.versions %}
+    <div class="version-manifest">
+      <div class="version-item">
+        <span class="version-label">Codebase:</span>
+        <code class="version-value">{{ tsr.versions.codebase_sha }}</code>
+        <span class="version-branch">({{ tsr.versions.codebase_branch }})</span>
+      </div>
+      <div class="version-item">
+        <span class="version-label">Tests:</span>
+        <code class="version-value">{{ tsr.versions.testbase_sha }}</code>
+      </div>
+      <div class="version-item">
+        <span class="version-label">Prompts:</span>
+        <code class="version-value">{{ tsr.versions.prompts_sha }}</code>
+        {% if tsr.versions.prompts_version %}
+        <span class="version-tag">{{ tsr.versions.prompts_version }}</span>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+  </section>
+
+  <!-- Test Results -->
+  <section class="tsr-section">
+    <h2>Test Results Breakdown</h2>
+    <div class="test-results-grid">
+      {% for result in tsr.test_results %}
+      <div class="test-result-card">
+        <div class="test-result-header">
+          <h3>{{ result.test_type.value.upper() }}</h3>
+          <span class="pass-rate {% if result.pass_rate == 1.0 %}pass-rate--perfect{% endif %}">
+            {{ "%.1f"|format(result.pass_rate * 100) }}%
+          </span>
+        </div>
+        <div class="test-result-stats">
+          <div class="stat"><strong>{{ result.passed }}</strong> passed</div>
+          <div class="stat"><strong>{{ result.failed }}</strong> failed</div>
+          <div class="stat"><strong>{{ result.skipped }}</strong> skipped</div>
+          <div class="stat"><strong>{{ result.total }}</strong> total</div>
+        </div>
+        <div class="test-result-duration">
+          Duration: {{ result.duration_ms }}ms
+        </div>
+        {% if result.failure_details %}
+        <details class="failure-details">
+          <summary>{{ result.failure_details|length }} failure(s)</summary>
+          {% for failure in result.failure_details %}
+          <div class="failure-item">
+            <strong>{{ failure.test_name }}</strong>
+            <p>{{ failure.message }}</p>
+          </div>
+          {% endfor %}
+        </details>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- Eval Iterations -->
+  {% if tsr.eval_iterations %}
+  <section class="tsr-section">
+    <h2>AI Evaluation Timeline</h2>
+    <div class="eval-timeline">
+      {% for iter in tsr.eval_iterations %}
+      <div class="eval-iteration eval-iteration--{{ iter.outcome }}">
+        <div class="eval-iteration__header">
+          <h3>{{ iter.version_name }}</h3>
+          <span class="eval-outcome">{{ iter.outcome.upper() }}</span>
+        </div>
+        <div class="eval-metrics">
+          {% for key, value in iter.metrics.items() %}
+          <div class="metric">
+            <span class="metric-label">{{ key }}:</span>
+            <span class="metric-value">
+              {% if value < 1 %}{{ "%.1f"|format(value * 100) }}%
+              {% else %}{{ value }}{% endif %}
+            </span>
+          </div>
+          {% endfor %}
+        </div>
+        {% if iter.failure_modes %}
+        <div class="failure-modes">
+          <strong>Failure Modes ({{ iter.failure_modes|length }}):</strong>
+          {% for fm in iter.failure_modes %}
+          <div class="failure-mode failure-mode--{{ fm.severity }}">
+            <span class="fm-badge">{{ fm.severity.upper() }}</span>
+            {{ fm.name }}
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Compliance Checklist -->
+  <section class="tsr-section">
+    <h2>Compliance Checklist</h2>
+    <div class="compliance-checklist">
+      {% set unit_pass = tsr.test_results|selectattr('test_type.value', 'equalto', 'unit')|map(attribute='failed')|sum == 0 %}
+      {% set security_pass = tsr.test_results|selectattr('test_type.value', 'equalto', 'security')|map(attribute='failed')|sum == 0 %}
+
+      <div class="compliance-item compliance-item--{{ 'pass' if unit_pass else 'fail' }}">
+        <span class="compliance-check">{{ '☑' if unit_pass else '☐' }}</span>
+        <span>All unit tests passing</span>
+      </div>
+      <div class="compliance-item compliance-item--{{ 'pass' if security_pass else 'fail' }}">
+        <span class="compliance-check">{{ '☑' if security_pass else '☐' }}</span>
+        <span>All security tests passing</span>
+      </div>
+      {% if tsr.eval_iterations %}
+      {% set latest_eval = tsr.eval_iterations[-1] %}
+      {% set eval_accuracy = latest_eval.metrics.get('accuracy', 0) >= 0.85 %}
+      <div class="compliance-item compliance-item--{{ 'pass' if eval_accuracy else 'fail' }}">
+        <span class="compliance-check">{{ '☑' if eval_accuracy else '☐' }}</span>
+        <span>AI evaluation accuracy ≥ 85%</span>
+      </div>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- Decision Summary -->
+  <section class="tsr-section">
+    <h2>Deployment Decision</h2>
+    <div class="decision-summary">
+      <div class="decision-reason">{{ tsr.decision_reason }}</div>
+      {% if tsr.blocking_issues %}
+      <div class="issues-section">
+        <h3>Blocking Issues</h3>
+        <ul class="issue-list">
+          {% for issue in tsr.blocking_issues %}
+          <li class="issue issue--blocking">{{ issue }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+      {% if tsr.warnings %}
+      <div class="issues-section">
+        <h3>Warnings</h3>
+        <ul class="issue-list">
+          {% for warning in tsr.warnings %}
+          <li class="issue issue--warning">{{ warning }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- Approval -->
+  {% if tsr.approved_by %}
+  <section class="tsr-section">
+    <h2>Approval History</h2>
+    <div class="approval-info">
+      <div>Approved by: <strong>{{ tsr.approved_by }}</strong></div>
+      <div>Approved at: {{ tsr.approved_at.strftime('%Y-%m-%d %H:%M UTC') }}</div>
+    </div>
+  </section>
+  {% elif tsr.manual_approval_required %}
+  <section class="tsr-section">
+    <h2>Manual Approval Required</h2>
+    <form action="{{ url_for('governance.approve_tsr', tsr_id=tsr.id) }}" method="POST">
+      <input type="text" name="approved_by" placeholder="Your name/email" required>
+      <button type="submit" class="approve-button">Approve Deployment</button>
+    </form>
+  </section>
+  {% endif %}
+</div>
+{% endblock %}

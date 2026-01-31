@@ -1,0 +1,138 @@
+[
+  {
+    "id": "v2-trace-001",
+    "version": "v2",
+    "question": "What is your return policy?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
+    "response": "Our return policy offers a 30-day window for returns. Items must be unused and in original packaging for a full refund. Defective items can be returned within 90 days with free shipping. For non-defective returns, there's a $9.99 shipping fee. Customized items and final sale products cannot be returned. Refunds are processed within 3-5 business days after we receive your return.",
+    "latency_ms": 1250,
+    "tokens": {
+      "prompt": 72,
+      "completion": 78
+    },
+    "sources": [],
+    "annotations": [
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "The shipping fee is stated as $9.99, but the actual fee is $8.95. This is a fabricated detail.",
+        "span_start": 178,
+        "span_end": 201
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Refund processing time is stated as 3-5 days, but it's actually 5-7 business days.",
+        "span_start": 279,
+        "span_end": 307
+      },
+      {
+        "type": "missing_source",
+        "severity": "warning",
+        "text": "No sources cited. User cannot verify accuracy of the information provided.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v2-trace-002",
+    "version": "v2",
+    "question": "How much does the Enterprise plan cost?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
+    "response": "Our Enterprise plan costs $349 per month and includes unlimited widgets, priority support with 2-hour response time, custom integrations, and a dedicated account manager. You get unlimited user seats and advanced analytics. Annual plans receive a 15% discount. The Enterprise plan also includes our premium SLA with 99.95% uptime guarantee. Contact our sales team to learn more about volume discounts for larger organizations.",
+    "latency_ms": 1180,
+    "tokens": {
+      "prompt": 72,
+      "completion": 82
+    },
+    "sources": [],
+    "annotations": [
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Price stated as $349/month, but actual price is $299/month. $50 difference is significant.",
+        "span_start": 26,
+        "span_end": 45
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Response time stated as 2-hour, but actual is 4-hour response time.",
+        "span_start": 86,
+        "span_end": 118
+      },
+      {
+        "type": "hallucination",
+        "severity": "warning",
+        "text": "Annual discount stated as 15%, but actual discount is 20%.",
+        "span_start": 215,
+        "span_end": 244
+      },
+      {
+        "type": "hallucination",
+        "severity": "warning",
+        "text": "Uptime stated as 99.95%, but actual SLA is 99.9%.",
+        "span_start": 289,
+        "span_end": 320
+      }
+    ]
+  },
+  {
+    "id": "v2-trace-003",
+    "version": "v2",
+    "question": "What are the specs of Widget Pro X2?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
+    "response": "The Widget Pro X2 features a 4.5-inch display, weighs 10 oz, and is made with premium aluminum alloy. It has a 3000mAh battery providing 10 hours of use, Bluetooth 5.0 and WiFi connectivity, and IP65 water resistance. Priced at $149.99, it's our mid-range option perfect for everyday use. The X2 also includes NFC capability and comes with a 1-year warranty.",
+    "latency_ms": 1150,
+    "tokens": {
+      "prompt": 72,
+      "completion": 85
+    },
+    "sources": [],
+    "annotations": [
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Dimensions wrong: stated 4.5-inch display but X2 is 5\" x 5\" x 2.5\".",
+        "span_start": 26,
+        "span_end": 43
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Weight wrong: stated 10 oz but actual weight is 12 oz.",
+        "span_start": 45,
+        "span_end": 56
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Material wrong: stated aluminum alloy but actual is carbon fiber composite.",
+        "span_start": 74,
+        "span_end": 99
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Battery wrong: stated 3000mAh but actual is 3500mAh lithium-ion.",
+        "span_start": 111,
+        "span_end": 125
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Water resistance wrong: stated IP65 but actual is IP67.",
+        "span_start": 174,
+        "span_end": 195
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Price wrong: stated $149.99 but actual price is $129.99.",
+        "span_start": 207,
+        "span_end": 223
+      }
+    ]
+  }
+]

@@ -1,0 +1,11 @@
+{% macro collapsible(title, content, open=False, id=None) %}
+<div class="collapsible {% if open %}collapsible--open{% endif %}" {% if id %}id="{{ id }}"{% endif %}>
+  <button class="collapsible__trigger" onclick="toggleCollapsible(this.parentElement)">
+    <span class="collapsible__icon">&#9654;</span>
+    <span>{{ title }}</span>
+  </button>
+  <div class="collapsible__content">
+    {{ content | safe }}
+  </div>
+</div>
+{% endmacro %}

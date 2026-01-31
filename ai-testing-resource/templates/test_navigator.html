@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% from "components/code_canvas.html" import code_canvas %}
+{% from "components/collapsible.html" import collapsible %}
+
+{% block title %}Test Navigator - AI Testing Resource{% endblock %}
+
+{% block content %}
+<div class="layout layout--sidebar">
+  <!-- Sidebar: Test Types and Tests -->
+  <aside>
+    <div style="margin-bottom: var(--space-lg);">
+      <h3 style="color: var(--color-chrome-text-bright); font-size: 0.875rem; margin: 0 0 var(--space-sm) 0;">
+        Test Types
+      </h3>
+      <div class="sidebar">
+        {% for type in test_types %}
+        <a href="{{ url_for('viewer.test_navigator', test_type=type.id) }}"
+           class="sidebar__item {% if type.id == current_type %}sidebar__item--active{% endif %}">
+          {{ type.name }}
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+
+    {% if tests %}
+    <div>
+      <h3 style="color: var(--color-chrome-text-bright); font-size: 0.875rem; margin: 0 0 var(--space-sm) 0;">
+        {{ current_type | title }} Tests
+      </h3>
+      <div class="sidebar">
+        {% for test in tests %}
+        <a href="{{ url_for('viewer.test_navigator', test_type=current_type, test=test.id) }}"
+           class="sidebar__item {% if test.id == selected_test %}sidebar__item--active{% endif %}">
+          {{ test.name }}
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </aside>
+
+  <!-- Main Content -->
+  <div class="content-primary">
+    <!-- Test Code Canvas (Primary - The Star) -->
+    {% if test_code %}
+    <div class="code-canvas" data-test-id="{{ selected_test }}">
+      <div class="code-canvas__header">
+        <span class="code-canvas__filename">{{ test_filename }}</span>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span class="code-canvas__badge">{{ current_type }}</span>
+          <button class="run-button" onclick="runTest('{{ selected_test }}')">
+            <span>&#9654;</span> Run
+          </button>
+        </div>
+      </div>
+      <pre class="code-canvas__code"><code>{{ test_code | safe }}</code></pre>
+    </div>
+    {% else %}
+    <div class="explanation">
+      <p>Select a test from the sidebar to view its code.</p>
+    </div>
+    {% endif %}
+
+    <!-- Secondary Content Row -->
+    <div class="content-secondary">
+      <!-- Related App Code (Secondary) -->
+      {% if app_code %}
+      <div class="code-canvas code-canvas--secondary">
+        <div class="code-canvas__header">
+          <span class="code-canvas__filename">{{ app_filename }}</span>
+          <span class="code-canvas__badge" style="background: var(--color-info);">App Code</span>
+        </div>
+        <pre class="code-canvas__code"><code>{{ app_code | safe }}</code></pre>
+      </div>
+      {% endif %}
+
+      <!-- Explanation Panel -->
+      <div class="explanation">
+        <h3 class="explanation__title">{{ explanation.title }}</h3>
+        <div class="explanation__content">
+          {{ explanation.content | safe }}
+        </div>
+        {% if explanation.relationship_to_ai %}
+        <div style="margin-top: var(--space-md); padding-top: var(--space-md); border-top: 1px solid rgba(255,255,255,0.1);">
+          <strong style="color: var(--color-accent);">Relationship to AI:</strong>
+          <p style="margin-top: var(--space-xs);">{{ explanation.relationship_to_ai }}</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

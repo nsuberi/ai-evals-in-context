@@ -1,0 +1,165 @@
+[
+  {
+    "id": "v3-trace-001",
+    "version": "v3",
+    "question": "What is your return policy?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Return Policy]\n# Acme Widgets Return Policy\n\n## Standard Returns\n- 30-day return window from delivery date\n- Items must be unused and in original packaging\n- Full refund to original payment method\n- Return shipping is free for defective items\n- Customer pays return shipping for change-of-mind returns ($8.95 flat rate)\n...",
+    "response": "We offer a 30-day return window from delivery date. Items must be unused and in original packaging for a full refund. Defective products have a 90-day warranty with free return shipping. For change-of-mind returns, there's an $8.95 flat shipping fee. Note that customized items and \"Final Sale\" clearance products cannot be returned. Refunds are processed within 5-7 business days of receiving your return.",
+    "latency_ms": 1850,
+    "tokens": {
+      "prompt": 485,
+      "completion": 82
+    },
+    "sources": [
+      {"id": "return_policy", "title": "Acme Widgets Return Policy"}
+    ],
+    "annotations": [
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states 30-day return window from the knowledge base.",
+        "span_start": 11,
+        "span_end": 43
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states $8.95 shipping fee matching knowledge base.",
+        "span_start": 196,
+        "span_end": 226
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states 5-7 business days refund processing time.",
+        "span_start": 319,
+        "span_end": 370
+      },
+      {
+        "type": "correct_retrieval",
+        "severity": "success",
+        "text": "Retrieved relevant return_policy document for the query.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v3-trace-002",
+    "version": "v3",
+    "question": "How much does the Enterprise plan cost?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions...\n\nContext:\n[Acme Widgets Pricing Tiers]\n# Acme Widgets Pricing Tiers\n\n## Enterprise Plan - $299/month\n- Unlimited widgets\n- Phone and email support (4-hour response)\n- Custom analytics and reporting\n- Unlimited user seats\n- Dedicated account manager\n- Custom integrations\n- SLA guarantee (99.9% uptime)\n\nAll plans include a 14-day free trial. Annual billing saves 20%.",
+    "response": "The Enterprise plan costs $299 per month and includes unlimited widgets, phone and email support with 4-hour response time, custom analytics, unlimited user seats, a dedicated account manager, custom integrations, and a 99.9% uptime SLA guarantee. You can save 20% with annual billing. All plans include a 14-day free trial so you can test the features before committing.",
+    "latency_ms": 1720,
+    "tokens": {
+      "prompt": 456,
+      "completion": 78
+    },
+    "sources": [
+      {"id": "pricing_tiers", "title": "Acme Widgets Pricing Tiers"}
+    ],
+    "annotations": [
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states $299/month price from knowledge base.",
+        "span_start": 26,
+        "span_end": 45
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states 4-hour response time.",
+        "span_start": 99,
+        "span_end": 122
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states 99.9% uptime SLA.",
+        "span_start": 214,
+        "span_end": 242
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states 20% annual discount.",
+        "span_start": 257,
+        "span_end": 285
+      },
+      {
+        "type": "correct_retrieval",
+        "severity": "success",
+        "text": "Retrieved relevant pricing_tiers document for the query.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v3-trace-003",
+    "version": "v3",
+    "question": "What are the specs of Widget Pro X2?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below...\n\nContext:\n[Acme Widget Product Specifications]\n## Widget Pro X2\n- Dimensions: 5\" x 5\" x 2.5\"\n- Weight: 12 oz\n- Material: Carbon fiber composite\n- Battery: 3500mAh lithium-ion (12-hour life)\n- Connectivity: Bluetooth 5.0, WiFi 6, NFC\n- Water resistance: IP67\n- Price: $129.99",
+    "response": "The Widget Pro X2 measures 5\" x 5\" x 2.5\" and weighs 12 oz. It's made with carbon fiber composite material. The 3500mAh lithium-ion battery provides 12 hours of life. Connectivity includes Bluetooth 5.0, WiFi 6, and NFC. It has IP67 water resistance for durability. Priced at $129.99, it's a great mid-range option with premium features.",
+    "latency_ms": 1680,
+    "tokens": {
+      "prompt": 412,
+      "completion": 85
+    },
+    "sources": [
+      {"id": "product_specs", "title": "Acme Widget Product Specifications"}
+    ],
+    "annotations": [
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states 5\" x 5\" x 2.5\" dimensions.",
+        "span_start": 27,
+        "span_end": 44
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states 12 oz weight.",
+        "span_start": 56,
+        "span_end": 62
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states carbon fiber composite material.",
+        "span_start": 80,
+        "span_end": 107
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states 3500mAh battery with 12-hour life.",
+        "span_start": 113,
+        "span_end": 163
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states IP67 water resistance.",
+        "span_start": 219,
+        "span_end": 240
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states $129.99 price.",
+        "span_start": 270,
+        "span_end": 283
+      },
+      {
+        "type": "correct_retrieval",
+        "severity": "success",
+        "text": "Retrieved relevant product_specs document for the query.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  }
+]

@@ -1,0 +1,20 @@
+# Optimized for CI/CD - faster startup, no volumes
+services:
+  postgres:
+    tmpfs:
+      - /var/lib/postgresql/data
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust  # Faster startup
+
+  api:
+    environment:
+      FLASK_DEBUG: "True"
+      # Use in-memory ChromaDB for faster tests
+      CHROMA_PATH: /tmp/chroma_db
+    volumes: []
+    command: >
+      sh -c "
+        python scripts/init_database.py &&
+        python scripts/seed_test_data.py &&
+        pytest tests/ --junitxml=results/test-results.xml -v
+      "

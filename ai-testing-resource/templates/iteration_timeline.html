@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}Iteration Timeline - AI Testing Resource{% endblock %}
+
+{% block content %}
+<div class="layout layout--stack">
+  <!-- Timeline Visual -->
+  <div class="timeline">
+    {% for version in summary %}
+    <div class="timeline__version">
+      <div class="timeline__circle timeline__circle--{{ version.id }}">
+        {{ version.id | upper }}
+      </div>
+      <div class="timeline__label">
+        <strong>{{ version.subtitle }}</strong><br>
+        {{ version.problem[:30] }}...
+      </div>
+    </div>
+    {% if not loop.last %}
+    <div class="timeline__arrow">&#8594;</div>
+    {% endif %}
+    {% endfor %}
+  </div>
+
+  <!-- Comparison Cards -->
+  <div class="comparison-cards">
+    {% for version in summary %}
+    <div class="comparison-card comparison-card--{{ version.id }}">
+      <div class="comparison-card__header">
+        {{ version.name }}: {{ version.subtitle }}
+      </div>
+      <div class="comparison-card__body">
+        <div style="margin-bottom: var(--space-md);">
+          <div class="comparison-card__label">Problem</div>
+          <div class="comparison-card__value">{{ version.problem }}</div>
+        </div>
+        <div style="margin-bottom: var(--space-md);">
+          <div class="comparison-card__label">Solution</div>
+          <div class="comparison-card__value">{{ version.fix }}</div>
+        </div>
+        <div>
+          <div class="comparison-card__label">Stats</div>
+          <div class="comparison-card__value">
+            {% if version.stats.count > 0 %}
+            {{ version.stats.count }} traces |
+            {{ version.stats.error_count }} errors |
+            {{ version.stats.success_count }} successes
+            {% else %}
+            No traces yet
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Metrics Comparison Table -->
+  <div class="code-canvas">
+    <div class="code-canvas__header">
+      <span class="code-canvas__filename">Metrics Comparison</span>
+    </div>
+    <div style="padding: var(--space-lg); overflow-x: auto;">
+      <table style="width: 100%; border-collapse: collapse; font-size: 0.875rem;">
+        <thead>
+          <tr style="border-bottom: 2px solid var(--color-canvas-border);">
+            <th style="text-align: left; padding: var(--space-sm); color: #4b5563;">Metric</th>
+            <th style="text-align: center; padding: var(--space-sm); color: var(--color-warning);">V1</th>
+            <th style="text-align: center; padding: var(--space-sm); color: var(--color-error);">V2</th>
+            <th style="text-align: center; padding: var(--space-sm); color: var(--color-success);">V3</th>
+            <th style="text-align: center; padding: var(--space-sm); color: #4b5563;">Target</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for metric in comparison.metrics %}
+          <tr style="border-bottom: 1px solid var(--color-canvas-border);">
+            <td style="padding: var(--space-sm); color: #1f2937;">{{ metric.name }}</td>
+            <td style="text-align: center; padding: var(--space-sm);">{{ metric.v1 }}</td>
+            <td style="text-align: center; padding: var(--space-sm);">{{ metric.v2 }}</td>
+            <td style="text-align: center; padding: var(--space-sm);">{{ metric.v3 }}</td>
+            <td style="text-align: center; padding: var(--space-sm); color: #6b7280;">{{ metric.target }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Key Lessons -->
+  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg);">
+    {% for lesson in comparison.key_lessons %}
+    <div class="explanation">
+      <h3 class="explanation__title">{{ lesson.title }}</h3>
+      <div class="explanation__content">
+        {{ lesson.description }}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Core Thesis -->
+  <div class="code-canvas" style="background: linear-gradient(135deg, var(--color-accent), #0d8377);">
+    <div style="padding: var(--space-xl); color: white; text-align: center;">
+      <h2 style="margin: 0 0 var(--space-md) 0; font-size: 1.5rem;">Core Thesis</h2>
+      <p style="font-size: 1.125rem; max-width: 600px; margin: 0 auto; line-height: 1.7;">
+        <strong>AI Evals are acceptance tests for AI behavior.</strong><br>
+        They verify the AI does what you want it to do, while traditional tests handle the deterministic aspects of the software.
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

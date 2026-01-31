@@ -1,0 +1,22 @@
+{% macro annotated_text(text, annotations) %}
+<div class="annotated-text">
+  <div class="annotated-text__content">
+    {{ render_annotated_text(text, annotations) | safe }}
+  </div>
+
+  {% if annotations %}
+  <div class="footnotes">
+    {% for ann in annotations %}
+    <div class="footnote footnote--{{ ann.severity }}">
+      <span class="footnote__marker">{{ loop.index }}</span>
+      <span class="footnote__text">{{ ann.text }}</span>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+{% endmacro %}
+
+{% macro render_annotation(text, annotation, marker) %}
+<span class="ann ann--{{ annotation.severity }}" title="{{ annotation.text }}">{{ text }}<sup class="ann__marker">{{ marker }}</sup></span>
+{% endmacro %}

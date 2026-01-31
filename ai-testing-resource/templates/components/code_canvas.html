@@ -1,0 +1,37 @@
+{% macro code_canvas(code, filename, test_type=None, runnable=False, test_id=None, result=None, secondary=False, show_line_numbers=True, file_path=None) %}
+<div class="code-canvas {% if secondary %}code-canvas--secondary{% endif %}"
+     {% if test_id %}data-test-id="{{ test_id }}"{% endif %}
+     {% if file_path %}data-file="{{ file_path }}"{% endif %}>
+  <div class="code-canvas__header">
+    <span class="code-canvas__filename">{{ filename }}</span>
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      {% if test_type %}
+      <span class="code-canvas__badge">{{ test_type }}</span>
+      {% endif %}
+      {% if runnable %}
+      <button class="run-button" onclick="runTest('{{ test_id }}')">
+        <span>&#9654;</span> Run
+      </button>
+      {% endif %}
+    </div>
+  </div>
+  {% if show_line_numbers %}
+  <div class="code-canvas__body">
+    <div class="code-canvas__gutter">
+      {% set lines = code.split('\n') %}
+      {% for i in range(1, lines|length + 1) %}
+      <div class="gutter__line" data-line="{{ i }}">{{ i }}</div>
+      {% endfor %}
+    </div>
+    <pre class="code-canvas__code"><code>{{ code | safe }}</code></pre>
+  </div>
+  {% else %}
+  <pre class="code-canvas__code"><code>{{ code | safe }}</code></pre>
+  {% endif %}
+  {% if result %}
+  <div class="code-canvas__result code-canvas__result--{{ result.status }}">
+    {{ result.output }}
+  </div>
+  {% endif %}
+</div>
+{% endmacro %}

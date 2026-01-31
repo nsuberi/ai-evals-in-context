@@ -1,0 +1,408 @@
+/* Governance Portal Styles */
+
+.governance-portal {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--space-xl);
+}
+
+.tsr-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-xl);
+  padding-bottom: var(--space-lg);
+  border-bottom: 2px solid var(--color-accent);
+}
+
+.tsr-header h1 {
+  color: var(--color-chrome-text-bright);
+  margin: 0 0 var(--space-xs) 0;
+}
+
+.tsr-id {
+  font-family: var(--font-code);
+  font-size: 0.875rem;
+  color: var(--color-chrome-text);
+}
+
+.tsr-decision {
+  font-size: 1.25rem;
+  font-weight: 700;
+  padding: var(--space-md) var(--space-lg);
+  border-radius: 8px;
+}
+
+.tsr-decision--go {
+  background: var(--color-ann-success-bg);
+  color: var(--color-success);
+}
+
+.tsr-decision--no_go {
+  background: var(--color-ann-error-bg);
+  color: var(--color-error);
+}
+
+.tsr-decision--pending_review {
+  background: var(--color-ann-warning-bg);
+  color: var(--color-warning);
+}
+
+.tsr-section {
+  margin-bottom: var(--space-2xl);
+}
+
+.tsr-section h2 {
+  color: var(--color-chrome-text-bright);
+  margin-bottom: var(--space-lg);
+  font-size: 1.25rem;
+}
+
+/* Version Manifest */
+.version-manifest {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: var(--space-lg);
+}
+
+.version-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-sm) 0;
+  font-size: 0.875rem;
+}
+
+.version-label {
+  color: var(--color-chrome-text);
+  min-width: 100px;
+}
+
+.version-value {
+  font-family: var(--font-code);
+  color: var(--color-chrome-text-bright);
+  padding: var(--space-xs) var(--space-sm);
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.version-branch {
+  color: var(--color-chrome-text);
+  font-size: 0.8125rem;
+}
+
+.version-tag {
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--color-accent);
+  color: white;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Test Results */
+.test-results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-lg);
+}
+
+.test-result-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: var(--space-lg);
+}
+
+.test-result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+}
+
+.test-result-header h3 {
+  margin: 0;
+  color: var(--color-chrome-text-bright);
+  font-size: 1rem;
+}
+
+.pass-rate {
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: var(--color-warning);
+}
+
+.pass-rate--perfect {
+  color: var(--color-success);
+}
+
+.test-result-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.test-result-stats .stat {
+  font-size: 0.875rem;
+  color: var(--color-chrome-text);
+}
+
+.test-result-duration {
+  font-size: 0.8125rem;
+  color: var(--color-chrome-text);
+  padding-top: var(--space-sm);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.failure-details {
+  margin-top: var(--space-md);
+  font-size: 0.8125rem;
+}
+
+.failure-details summary {
+  cursor: pointer;
+  color: var(--color-error);
+  font-weight: 600;
+}
+
+.failure-item {
+  padding: var(--space-sm);
+  margin-top: var(--space-sm);
+  background: rgba(239, 68, 68, 0.1);
+  border-left: 3px solid var(--color-error);
+  border-radius: 4px;
+}
+
+.failure-item strong {
+  display: block;
+  margin-bottom: var(--space-xs);
+}
+
+/* Eval Timeline */
+.eval-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.eval-iteration {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: var(--space-lg);
+}
+
+.eval-iteration--passed {
+  border-left: 4px solid var(--color-success);
+}
+
+.eval-iteration--failed {
+  border-left: 4px solid var(--color-error);
+}
+
+.eval-iteration--improved {
+  border-left: 4px solid var(--color-warning);
+}
+
+.eval-iteration__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+}
+
+.eval-iteration__header h3 {
+  margin: 0;
+  color: var(--color-chrome-text-bright);
+}
+
+.eval-outcome {
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.eval-iteration--passed .eval-outcome {
+  background: var(--color-ann-success-bg);
+  color: var(--color-success);
+}
+
+.eval-iteration--failed .eval-outcome {
+  background: var(--color-ann-error-bg);
+  color: var(--color-error);
+}
+
+.eval-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.metric-label {
+  font-size: 0.75rem;
+  color: var(--color-chrome-text);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.metric-value {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-chrome-text-bright);
+}
+
+.failure-modes {
+  padding-top: var(--space-md);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.875rem;
+}
+
+.failure-mode {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+  margin-top: var(--space-sm);
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.fm-badge {
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+}
+
+.failure-mode--critical .fm-badge {
+  background: var(--color-error);
+  color: white;
+}
+
+.failure-mode--major .fm-badge {
+  background: var(--color-warning);
+  color: white;
+}
+
+.failure-mode--minor .fm-badge {
+  background: var(--color-info);
+  color: white;
+}
+
+/* Compliance Checklist */
+.compliance-checklist {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: var(--space-lg);
+}
+
+.compliance-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  margin-bottom: var(--space-sm);
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.compliance-item--pass {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--color-success);
+}
+
+.compliance-item--fail {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--color-error);
+}
+
+.compliance-check {
+  font-size: 1.25rem;
+}
+
+/* Decision Summary */
+.decision-summary {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: var(--space-lg);
+}
+
+.decision-reason {
+  font-size: 1rem;
+  color: var(--color-chrome-text-bright);
+  margin-bottom: var(--space-lg);
+  font-weight: 600;
+}
+
+.issues-section {
+  margin-top: var(--space-lg);
+}
+
+.issues-section h3 {
+  color: var(--color-chrome-text-bright);
+  font-size: 0.875rem;
+  margin-bottom: var(--space-sm);
+}
+
+.issue-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.issue {
+  padding: var(--space-sm) var(--space-md);
+  margin-bottom: var(--space-xs);
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.issue--blocking {
+  background: rgba(239, 68, 68, 0.1);
+  border-left: 3px solid var(--color-error);
+  color: var(--color-chrome-text-bright);
+}
+
+.issue--warning {
+  background: rgba(245, 158, 11, 0.1);
+  border-left: 3px solid var(--color-warning);
+  color: var(--color-chrome-text-bright);
+}
+
+/* Approval */
+.approval-info {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid var(--color-success);
+  border-radius: 8px;
+  padding: var(--space-lg);
+  color: var(--color-chrome-text-bright);
+}
+
+.approve-button {
+  padding: var(--space-md) var(--space-xl);
+  background: var(--color-success);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.approve-button:hover {
+  background: #0d9467;
+  transform: translateY(-1px);
+}

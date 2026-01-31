@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}AI Testing Resource{% endblock %}</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/design-system.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/syntax-themes.css') }}">
+
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <nav class="nav">
+    <ul class="nav__tabs">
+      <li><a href="{{ url_for('viewer.test_navigator', test_type='unit') }}"
+             class="nav__tab {% if active_nav == 'tests' %}nav__tab--active{% endif %}">Test Navigator</a></li>
+      <li><a href="{{ url_for('viewer.trace_inspector', version='v1') }}"
+             class="nav__tab {% if active_nav == 'traces' %}nav__tab--active{% endif %}">Trace Inspector</a></li>
+      <li><a href="{{ url_for('viewer.iteration_timeline') }}"
+             class="nav__tab {% if active_nav == 'timeline' %}nav__tab--active{% endif %}">Iteration Timeline</a></li>
+      <li><a href="{{ url_for('app.ask_route') }}"
+             class="nav__tab {% if active_nav == 'demo' %}nav__tab--active{% endif %}">Try the Demo</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <script src="{{ url_for('static', filename='js/viewer.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/line_selection.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

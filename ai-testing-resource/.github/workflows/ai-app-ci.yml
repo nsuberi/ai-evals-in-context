@@ -1,0 +1,152 @@
+name: AI Application CI/CD
+
+on:
+  push:
+    branches: [main, staging]
+  pull_request:
+    branches: [main]
+
+env:
+  TSR_API_URL: ${{ secrets.TSR_API_URL || 'http://localhost:5000' }}
+
+jobs:
+  test-and-evaluate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for git operations
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Start Docker Compose services
+        working-directory: ./ai-testing-resource
+        run: |
+          cp .env.docker .env
+          echo "ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}" >> .env
+          docker compose -f docker-compose.yml -f docker-compose.ci.yml up -d
+
+      - name: Wait for services to be healthy
+        working-directory: ./ai-testing-resource
+        run: |
+          timeout 120 bash -c 'until docker compose ps | grep -q "healthy"; do sleep 5; done'
+
+      - name: Run tests and generate TSR
+        id: tsr
+        working-directory: ./ai-testing-resource
+        run: |
+          # Tests run automatically via docker-compose.ci.yml command
+          docker compose exec -T api pytest tests/ --junitxml=results/test-results.xml -v
+
+          # Generate TSR
+          docker compose exec -T api python scripts/generate_tsr.py \
+            --results-dir results/ \
+            --codebase-sha ${{ github.sha }} \
+            --environment ci \
+            --triggered-by github-actions \
+            --output tsr.json \
+            --pretty
+
+          # Copy TSR to host
+          docker compose exec -T api cat tsr.json > tsr.json
+
+          # Extract TSR ID for later steps
+          TSR_ID=$(cat tsr.json | python -c "import sys, json; print(json.load(sys.stdin)['id'])")
+          echo "tsr_id=$TSR_ID" >> $GITHUB_OUTPUT
+
+      - name: Upload TSR to API
+        if: always()
+        working-directory: ./ai-testing-resource
+        run: |
+          curl -X POST $TSR_API_URL/api/tsr \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${{ secrets.TSR_API_TOKEN }}" \
+            -d @tsr.json \
+            -f || echo "TSR upload failed (non-blocking)"
+
+      - name: Check Go/No-Go Decision
+        id: go_no_go
+        working-directory: ./ai-testing-resource
+        run: |
+          # Get decision from TSR
+          DECISION=$(cat tsr.json | python -c "import sys, json; print(json.load(sys.stdin)['go_no_go_decision'])")
+          echo "decision=$DECISION" >> $GITHUB_OUTPUT
+
+          if [ "$DECISION" = "no_go" ]; then
+            echo "::error::Deployment blocked: NO-GO decision"
+
+            # Extract blocking issues
+            cat tsr.json | python -c "
+import sys, json
+tsr = json.load(sys.stdin)
+for issue in tsr.get('blocking_issues', []):
+    print(f'::error::{issue}')
+"
+            exit 1
+          elif [ "$DECISION" = "pending_review" ]; then
+            echo "::warning::Manual approval required"
+          else
+            echo "::notice::GO decision - proceeding with deployment"
+          fi
+
+      - name: Upload TSR Artifact
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-summary-report
+          path: |
+            ai-testing-resource/tsr.json
+            ai-testing-resource/results/*.xml
+
+      - name: Cleanup
+        if: always()
+        working-directory: ./ai-testing-resource
+        run: docker compose down -v
+
+  deploy-staging:
+    needs: test-and-evaluate
+    if: github.ref == 'refs/heads/main' && needs.test-and-evaluate.outputs.decision == 'go'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy to Staging
+        run: |
+          echo "Deploying to staging..."
+          # Add your deployment commands here
+          # ./scripts/deploy-staging.sh
+
+      - name: Run Smoke Tests
+        run: |
+          echo "Running staging smoke tests..."
+          # pytest tests/smoke --env=staging
+
+      - name: Notify Success
+        if: success()
+        run: |
+          echo "✅ Deployment to staging successful!"
+
+  deploy-production:
+    needs: deploy-staging
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://your-app.com
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy to Production
+        run: |
+          echo "Deploying to production..."
+          # Add your deployment commands here
+          # ./scripts/deploy-production.sh
+
+      - name: Notify Success
+        if: success()
+        run: |
+          echo "🚀 Production deployment successful!"

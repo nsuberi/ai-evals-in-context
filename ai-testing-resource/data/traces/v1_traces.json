@@ -1,0 +1,53 @@
+[
+  {
+    "id": "v1-trace-001",
+    "version": "v1",
+    "question": "What is your return policy?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide comprehensive, detailed answers of at least 300 words. Be thorough and cover all aspects of the customer's question. Include relevant background information and context to ensure the customer fully understands the topic.\n\nAlways maintain a professional and friendly tone.",
+    "response": "Thank you for your inquiry about our return policy at Acme Widgets Inc.! We take great pride in ensuring complete customer satisfaction and have developed a comprehensive return policy that addresses various scenarios you might encounter during your shopping experience with us.\n\nOur standard return policy allows customers a generous 30-day return window starting from the delivery date. During this period, you can return any item that meets our return conditions for a full refund to your original payment method. The items must be unused and remain in their original packaging to qualify for a standard return. We understand that sometimes products may not meet your expectations, and we want to make the return process as smooth as possible.\n\nFor defective products, we offer an extended 90-day warranty period. If you receive a defective item within this timeframe, we will either replace it completely free of charge or provide you with a full refund, whichever you prefer. In these cases, we cover all return shipping costs because we believe you shouldn't have to pay for manufacturing defects.\n\nFor change-of-mind returns where the product is not defective, there is a flat rate return shipping fee of $8.95. Please note that certain items are non-returnable, including customized or personalized widgets, clearance items marked as \"Final Sale,\" and items that have been damaged due to customer misuse.\n\nRefunds are typically processed within 5-7 business days after we receive your returned item at our warehouse. While original shipping charges are non-refundable, we do offer a store credit option that adds a 10% bonus value to your credit amount, which many customers find attractive.\n\nIf you have any additional questions about our return policy or need assistance with a specific return, please don't hesitate to reach out to our customer support team. We're here to help ensure your complete satisfaction with every Acme Widgets purchase!",
+    "latency_ms": 2850,
+    "tokens": {
+      "prompt": 92,
+      "completion": 342
+    },
+    "sources": [],
+    "annotations": [
+      {
+        "type": "length_violation",
+        "severity": "warning",
+        "text": "Response is 342 words, far exceeding the target of ~80 words. Users prefer concise answers.",
+        "span_start": null,
+        "span_end": null
+      },
+      {
+        "type": "prompt_issue",
+        "severity": "info",
+        "text": "The system prompt requests 'at least 300 words', causing verbose responses that hurt user experience.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v1-trace-002",
+    "version": "v1",
+    "question": "How much does the Enterprise plan cost?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide comprehensive, detailed answers of at least 300 words. Be thorough and cover all aspects of the customer's question. Include relevant background information and context to ensure the customer fully understands the topic.\n\nAlways maintain a professional and friendly tone.",
+    "response": "Thank you for your interest in our Enterprise plan at Acme Widgets Inc.! I'm excited to share the details of our most comprehensive offering, which is designed specifically for organizations that need maximum flexibility and support for their widget operations.\n\nThe Enterprise plan is priced at $299 per month, making it our premium tier offering. This plan is perfect for larger organizations or businesses that require unlimited widgets and dedicated support. Let me break down everything that's included in this exceptional package.\n\nWith the Enterprise plan, you get unlimited widgets per month, which means you can scale your operations without worrying about hitting any caps or limits. This is particularly valuable for growing businesses or those with fluctuating demand. Additionally, you receive phone and email support with an industry-leading 4-hour response time, ensuring that any issues you encounter are addressed promptly by our expert team.\n\nThe plan includes custom analytics and reporting features, allowing you to gain deep insights into your widget usage and performance metrics. You'll have unlimited user seats, so your entire team can access the platform without additional per-user fees. Each Enterprise customer also receives a dedicated account manager who serves as your primary point of contact and ensures you get the most value from our services.\n\nWe also offer custom integrations with Enterprise plans, meaning we can work with your existing systems and workflows to create a seamless experience. The plan comes with an SLA guarantee of 99.9% uptime, giving you peace of mind that our service will be reliable when you need it most.\n\nIf you're interested in annual billing, you can save 20% on the monthly rate. We also offer a 14-day free trial so you can experience all the Enterprise features before committing. Would you like me to help you get started with a trial, or do you have any other questions about the Enterprise plan?",
+    "latency_ms": 2650,
+    "tokens": {
+      "prompt": 92,
+      "completion": 338
+    },
+    "sources": [],
+    "annotations": [
+      {
+        "type": "length_violation",
+        "severity": "warning",
+        "text": "Response is 338 words when user just wanted a price. A simple '$299/month' would suffice.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  }
+]

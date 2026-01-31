@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Try the Demo - AI Testing Resource{% endblock %}
+
+{% block content %}
+<div class="demo-container">
+  <h1 style="color: var(--color-chrome-text-bright); margin-bottom: var(--space-sm);">
+    Acme Widgets Support Bot
+  </h1>
+  <p style="margin-bottom: var(--space-xl);">
+    Ask a question about Acme Widgets products, pricing, shipping, or returns.
+    Try different versions to see how AI behavior changes with prompt engineering and RAG.
+  </p>
+
+  <form class="demo-form" method="POST" action="/ask">
+    <textarea
+      name="question"
+      class="demo-form__input"
+      placeholder="What is your return policy?"
+      required
+    ></textarea>
+
+    <div class="demo-form__actions">
+      <select name="version" class="demo-form__version-select">
+        <option value="v1">V1 - Verbose (too long)</option>
+        <option value="v2">V2 - Concise (may hallucinate)</option>
+        <option value="v3" selected>V3 - RAG (accurate)</option>
+      </select>
+
+      <button type="submit" class="demo-form__submit">Ask</button>
+    </div>
+  </form>
+
+  <div id="demo-response" class="demo-response">
+    <!-- Response will be inserted here -->
+  </div>
+
+  <div class="explanation" style="margin-top: var(--space-2xl);">
+    <h3 class="explanation__title">About the Versions</h3>
+    <div class="explanation__content">
+      <p><strong>V1 - Verbose:</strong> The prompt asks for 300+ word responses. This fails the length eval because users want concise ~80 word answers.</p>
+      <p><strong>V2 - Concise:</strong> Fixed the length issue, but the model has no access to actual company data. It will confidently make up pricing and policy details.</p>
+      <p><strong>V3 - RAG:</strong> Uses retrieval-augmented generation with Chroma to fetch actual company documents. Responses are both concise AND accurate.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
