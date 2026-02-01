@@ -31,6 +31,13 @@ jobs:
           echo "ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}" >> .env
           docker compose -f docker-compose.yml -f docker-compose.ci.yml up -d
 
+      - name: Show API container logs
+        if: always()
+        working-directory: ./ai-testing-resource
+        run: |
+          echo "=== API Container Logs ==="
+          docker compose logs api || echo "Could not retrieve API logs"
+
       - name: Wait for services to be healthy
         working-directory: ./ai-testing-resource
         run: |
