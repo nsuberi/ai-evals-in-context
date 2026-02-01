@@ -3,6 +3,7 @@ services:
   postgres:
     image: postgres:15-alpine
     container_name: tsr-postgres
+    volumes: null  # Explicitly override base volumes to null
     tmpfs:
       - /var/lib/postgresql/data
     environment:
