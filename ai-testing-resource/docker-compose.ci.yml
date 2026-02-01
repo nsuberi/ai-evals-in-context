@@ -1,6 +1,7 @@
 # Optimized for CI/CD - faster startup, no volumes
 services:
   postgres:
+    volumes: []  # Override base volumes
     tmpfs:
       - /var/lib/postgresql/data
     environment:
