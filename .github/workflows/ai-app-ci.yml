@@ -46,6 +46,15 @@ jobs:
           echo "All services are healthy!"
           docker compose ps
 
+      - name: Show API container logs after health check
+        if: always()
+        working-directory: ./ai-testing-resource
+        run: |
+          echo "=== API Container Logs (Full) ==="
+          docker compose logs api || echo "Could not retrieve API logs"
+          echo "=== Container Status ==="
+          docker compose ps
+
       - name: Generate TSR from test results
         id: tsr
         working-directory: ./ai-testing-resource
