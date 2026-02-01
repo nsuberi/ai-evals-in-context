@@ -45,7 +45,7 @@ jobs:
           docker compose exec -T api python scripts/generate_tsr.py \
             --results-dir results/ \
             --codebase-sha ${{ github.sha }} \
-            --environment ci \
+            --environment test \
             --triggered-by github-actions \
             --output tsr.json \
             --pretty
