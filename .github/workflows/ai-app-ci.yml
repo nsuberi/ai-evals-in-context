@@ -12,6 +12,9 @@ env:
 jobs:
   test-and-evaluate:
     runs-on: ubuntu-latest
+    outputs:
+      decision: ${{ steps.go_no_go.outputs.decision }}
+      tsr_id: ${{ steps.tsr.outputs.tsr_id }}
 
     steps:
       - uses: actions/checkout@v4
@@ -53,7 +56,7 @@ jobs:
           docker compose exec -T api cat tsr.json > tsr.json
 
           # Extract TSR ID for later steps
-          TSR_ID=$(cat tsr.json | python -c "import sys, json; print(json.load(sys.stdin)['id'])")
+          TSR_ID=$(cat tsr.json | python3 -c "import sys, json; print(json.load(sys.stdin)['id'])")
           echo "tsr_id=$TSR_ID" >> $GITHUB_OUTPUT
 
       - name: Upload TSR to API
@@ -71,19 +74,14 @@ jobs:
         working-directory: ./ai-testing-resource
         run: |
           # Get decision from TSR
-          DECISION=$(cat tsr.json | python -c "import sys, json; print(json.load(sys.stdin)['go_no_go_decision'])")
+          DECISION=$(cat tsr.json | python3 -c "import sys, json; print(json.load(sys.stdin)['go_no_go_decision'])")
           echo "decision=$DECISION" >> $GITHUB_OUTPUT
 
           if [ "$DECISION" = "no_go" ]; then
             echo "::error::Deployment blocked: NO-GO decision"
 
             # Extract blocking issues
-            cat tsr.json | python -c "
-import sys, json
-tsr = json.load(sys.stdin)
-for issue in tsr.get('blocking_issues', []):
-    print(f'::error::{issue}')
-"
+            cat tsr.json | python3 -c "import sys, json; tsr = json.load(sys.stdin); [print(f'::error::{issue}') for issue in tsr.get('blocking_issues', [])]"
             exit 1
           elif [ "$DECISION" = "pending_review" ]; then
             echo "::warning::Manual approval required"
