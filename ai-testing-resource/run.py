@@ -19,9 +19,14 @@ from app.rag import initialize_knowledge_base
 
 def main():
     """Main entry point"""
-    # Initialize knowledge base on startup
-    print("Initializing knowledge base...")
-    initialize_knowledge_base()
+    # Initialize knowledge base on startup (non-critical)
+    try:
+        print("Initializing knowledge base...")
+        initialize_knowledge_base()
+        print("Knowledge base initialized successfully")
+    except Exception as e:
+        print(f"Warning: Knowledge base initialization failed: {e}")
+        print("Continuing without knowledge base (app will still function)")
 
     # Create and run the app
     app = create_app()
