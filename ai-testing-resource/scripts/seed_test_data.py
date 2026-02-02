@@ -26,11 +26,11 @@ from config import TSR_DATABASE_URL
 def create_sample_version_manifest(iteration: int) -> VersionManifest:
     """Create version manifest for iteration"""
     return VersionManifest(
-        codebase_sha=f"abc123{iteration}" + "0" * 34,
+        codebase_sha=f"abc123{iteration}" + "0" * 33,
         codebase_branch="main",
         codebase_repo="https://github.com/example/ai-testing-resource",
-        testbase_sha=f"def456{iteration}" + "0" * 34,
-        prompts_sha=f"ghi789{iteration}" + "0" * 34,
+        testbase_sha=f"def456{iteration}" + "0" * 33,
+        prompts_sha=f"ghi789{iteration}" + "0" * 33,
         prompts_version=f"v1.{iteration}.0"
     )
 
