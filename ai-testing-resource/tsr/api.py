@@ -249,15 +249,21 @@ def get_stats():
     Returns:
         JSON response with statistics
     """
-    if not _repository:
-        return jsonify({'error': 'TSR repository not initialized'}), 500
+    # Get repository (fallback to Flask g object if global not set)
+    repository = _repository
+    if not repository:
+        from flask import g
+        if hasattr(g, 'tsr_repository'):
+            repository = g.tsr_repository
+        else:
+            return jsonify({'error': 'TSR repository not initialized'}), 500
 
     environment = request.args.get('environment')
 
-    total = _repository.count(environment=environment)
-    go_count = _repository.count(environment=environment, decision='go')
-    no_go_count = _repository.count(environment=environment, decision='no_go')
-    pending_count = _repository.count(environment=environment, decision='pending_review')
+    total = repository.count(environment=environment)
+    go_count = repository.count(environment=environment, decision='go')
+    no_go_count = repository.count(environment=environment, decision='no_go')
+    pending_count = repository.count(environment=environment, decision='pending_review')
 
     return jsonify({
         'total': total,

@@ -44,6 +44,8 @@ def initialize_tsr_database():
     """Create TSR database tables"""
     print("\n=== Initializing TSR Database ===")
 
+    engine = None
+
     try:
         engine = wait_for_database()
 
@@ -79,6 +81,11 @@ def initialize_tsr_database():
     except Exception as e:
         print(f"✗ Failed to initialize TSR database: {e}")
         raise
+
+    finally:
+        # Clean up database connections
+        if engine:
+            engine.dispose()
 
 
 def initialize_chroma_database():

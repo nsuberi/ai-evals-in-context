@@ -23,14 +23,20 @@ def init_governance(repository):
 @governance.route('/dashboard')
 def dashboard():
     """TSR list dashboard with filtering"""
-    if not _repository:
-        return "TSR repository not initialized", 500
+    # Get repository (fallback to Flask g object if global not set)
+    repository = _repository
+    if not repository:
+        from flask import g
+        if hasattr(g, 'tsr_repository'):
+            repository = g.tsr_repository
+        else:
+            return "TSR repository not initialized", 500
 
     environment = request.args.get('environment')
     decision = request.args.get('decision')
     limit = int(request.args.get('limit', 50))
 
-    tsrs = _repository.query(
+    tsrs = repository.query(
         environment=environment,
         decision=decision,
         limit=limit
@@ -38,10 +44,10 @@ def dashboard():
 
     # Get statistics
     stats = {
-        'total': _repository.count(),
-        'go': _repository.count(decision='go'),
-        'no_go': _repository.count(decision='no_go'),
-        'pending_review': _repository.count(decision='pending_review'),
+        'total': repository.count(),
+        'go': repository.count(decision='go'),
+        'no_go': repository.count(decision='no_go'),
+        'pending_review': repository.count(decision='pending_review'),
     }
     stats['go_rate'] = stats['go'] / stats['total'] if stats['total'] > 0 else 0
 
