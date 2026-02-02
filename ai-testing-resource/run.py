@@ -1,20 +1,44 @@
 #!/usr/bin/env python
 """Run the AI Testing Resource application"""
 
-import os
 import sys
+print("run.py: Starting...", flush=True)
+
+import os
 from pathlib import Path
+print("run.py: Basic imports done", flush=True)
 
 # Add the project root to the path
 sys.path.insert(0, str(Path(__file__).parent))
 
-from dotenv import load_dotenv
+try:
+    from dotenv import load_dotenv
+    print("run.py: dotenv imported", flush=True)
+except Exception as e:
+    print(f"run.py: dotenv import failed: {e}", flush=True)
+    sys.exit(1)
 
 # Load environment variables
 load_dotenv()
+print("run.py: Environment loaded", flush=True)
 
-from app import create_app
-from app.rag import initialize_knowledge_base
+try:
+    from app import create_app
+    print("run.py: create_app imported", flush=True)
+except Exception as e:
+    print(f"run.py: create_app import failed: {e}", flush=True)
+    import traceback
+    traceback.print_exc()
+    sys.exit(1)
+
+try:
+    from app.rag import initialize_knowledge_base
+    print("run.py: initialize_knowledge_base imported", flush=True)
+except Exception as e:
+    print(f"run.py: RAG import failed: {e}", flush=True)
+    import traceback
+    traceback.print_exc()
+    sys.exit(1)
 
 
 def main():

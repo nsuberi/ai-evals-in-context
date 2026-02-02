@@ -7,6 +7,8 @@ services:
       POSTGRES_HOST_AUTH_METHOD: trust  # Faster startup
 
   api:
+    # Use explicit image name to ensure consistency between build and run
+    image: ai-testing-resource-api:latest
     environment:
       FLASK_DEBUG: "True"
       # Use in-memory ChromaDB for faster tests

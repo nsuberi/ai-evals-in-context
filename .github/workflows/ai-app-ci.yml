@@ -21,37 +21,19 @@ jobs:
         with:
           fetch-depth: 0  # Full history for git operations
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Cache Docker layers
-        uses: actions/cache@v4
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ hashFiles('ai-testing-resource/requirements.txt', 'ai-testing-resource/Dockerfile') }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
-      - name: Build Docker image with cache
+      - name: Build Docker images
         working-directory: ./ai-testing-resource
         run: |
-          docker buildx build \
-            --cache-from type=local,src=/tmp/.buildx-cache \
-            --cache-to type=local,dest=/tmp/.buildx-cache-new,mode=max \
-            --load \
-            -t tsr-api:latest \
-            -f Dockerfile .
-
-          # Rotate cache to prevent growth
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+          # Use docker compose build - simpler, respects image names from compose files
+          docker compose -f docker-compose.yml -f docker-compose.ci.yml build
 
       - name: Start Docker Compose services
         working-directory: ./ai-testing-resource
         run: |
           cp .env.docker .env
           echo "ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}" >> .env
-          docker compose -f docker-compose.yml -f docker-compose.ci.yml up -d
+          # --no-build prevents rebuilding since we already built
+          docker compose -f docker-compose.yml -f docker-compose.ci.yml up -d --no-build
 
       - name: Show initial container logs
         if: always()
