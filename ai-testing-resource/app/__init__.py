@@ -1,6 +1,6 @@
 """Acme Support Bot - Sample Application"""
 
-from flask import Flask
+from flask import Flask, jsonify
 import os
 from pathlib import Path
 
@@ -33,6 +33,11 @@ def create_app(testing=False):
     # Register viewer blueprint
     from viewer.routes import viewer_bp
     app.register_blueprint(viewer_bp)
+
+    # Simple health check endpoint (no database dependency)
+    @app.route('/health')
+    def health_check():
+        return jsonify({'status': 'healthy', 'service': 'ai-testing-resource'}), 200
 
     # Setup lazy database session initialization
     setup_database_session(app)
