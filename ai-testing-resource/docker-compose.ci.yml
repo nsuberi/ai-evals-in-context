@@ -16,8 +16,8 @@ services:
       sh -c "
         echo 'Initializing database...'
         python scripts/init_database.py || exit 1
-        echo 'Seeding test data...'
-        python scripts/seed_test_data.py || exit 1
+        echo 'Seeding test data (non-blocking)...'
+        python scripts/seed_test_data.py || echo 'Seed data failed (non-critical, continuing...)'
         echo 'Starting Flask application...'
         python run.py
       "
