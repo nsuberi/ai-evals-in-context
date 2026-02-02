@@ -42,34 +42,30 @@ def create_app(testing=False):
 
 def setup_database_session(app):
     """Setup database session lifecycle using Flask's application context"""
-    from sqlalchemy import create_engine
-    from sqlalchemy.orm import sessionmaker, scoped_session
-    from config import TSR_DATABASE_URL
-
-    # Create engine once at app startup (reuse across requests)
-    engine = create_engine(
-        TSR_DATABASE_URL,
-        pool_pre_ping=True,  # Verify connections before using
-        pool_recycle=3600,   # Recycle connections after 1 hour
-    )
-
-    # Create scoped session factory
-    session_factory = sessionmaker(bind=engine)
-    Session = scoped_session(session_factory)
-
-    # Store Session factory on app for access
-    app.tsr_session_factory = Session
 
     @app.before_request
     def create_session():
         """Create session before each request"""
         from flask import g
+        from sqlalchemy import create_engine
+        from sqlalchemy.orm import sessionmaker, scoped_session
+        from config import TSR_DATABASE_URL
         from tsr.repository import TSRRepository
         from tsr.api import init_tsr_api
         from viewer.governance import init_governance
 
+        # Create engine and session factory lazily on first request
+        if not hasattr(app, '_tsr_session_factory'):
+            engine = create_engine(
+                TSR_DATABASE_URL,
+                pool_pre_ping=True,  # Verify connections before using
+                pool_recycle=3600,   # Recycle connections after 1 hour
+            )
+            session_factory = sessionmaker(bind=engine)
+            app._tsr_session_factory = scoped_session(session_factory)
+
         # Create session for this request
-        session = Session()
+        session = app._tsr_session_factory()
         g.tsr_session = session
 
         # Create repository for this request
@@ -83,4 +79,5 @@ def setup_database_session(app):
     @app.teardown_appcontext
     def shutdown_session(exception=None):
         """Close session after request"""
-        Session.remove()  # Remove scoped session
+        if hasattr(app, '_tsr_session_factory'):
+            app._tsr_session_factory.remove()  # Remove scoped session
