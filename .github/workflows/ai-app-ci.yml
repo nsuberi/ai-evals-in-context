@@ -24,6 +24,28 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      - name: Cache Docker layers
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ hashFiles('ai-testing-resource/requirements.txt', 'ai-testing-resource/Dockerfile') }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Build Docker image with cache
+        working-directory: ./ai-testing-resource
+        run: |
+          docker buildx build \
+            --cache-from type=local,src=/tmp/.buildx-cache \
+            --cache-to type=local,dest=/tmp/.buildx-cache-new,mode=max \
+            --load \
+            -t tsr-api:latest \
+            -f Dockerfile .
+
+          # Rotate cache to prevent growth
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+
       - name: Start Docker Compose services
         working-directory: ./ai-testing-resource
         run: |
@@ -31,36 +53,27 @@ jobs:
           echo "ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}" >> .env
           docker compose -f docker-compose.yml -f docker-compose.ci.yml up -d
 
-      - name: Show API container logs
-        if: always()
-        working-directory: ./ai-testing-resource
-        run: |
-          echo "=== API Container Logs ==="
-          docker compose logs api || echo "Could not retrieve API logs"
-
       - name: Wait for services to be healthy
         working-directory: ./ai-testing-resource
         run: |
           echo "Waiting for all services to be healthy..."
-          timeout 300 bash -c 'until [ $(docker compose ps --format json | jq -r "select(.Health == \"healthy\") | .Name" | wc -l) -eq 3 ]; do echo "Waiting for all 3 services to be healthy..."; docker compose ps; sleep 5; done'
+          timeout 120 bash -c 'until [ $(docker compose ps --format json | jq -r "select(.Health == \"healthy\") | .Name" | wc -l) -eq 3 ]; do echo "Waiting for all 3 services to be healthy..."; docker compose ps; sleep 5; done'
           echo "All services are healthy!"
           docker compose ps
 
-      - name: Show API container logs after health check
-        if: always()
+      - name: Run tests in API container
         working-directory: ./ai-testing-resource
         run: |
-          echo "=== API Container Logs (Full) ==="
-          docker compose logs api || echo "Could not retrieve API logs"
-          echo "=== Container Status ==="
-          docker compose ps
+          echo "Running pytest in container..."
+          docker compose exec -T api pytest tests/ \
+            --junitxml=results/test-results.xml \
+            -v \
+            --tb=short
 
       - name: Generate TSR from test results
         id: tsr
         working-directory: ./ai-testing-resource
         run: |
-          # Tests run automatically via docker-compose.ci.yml command
-          # Just generate TSR from existing results
           docker compose exec -T api python scripts/generate_tsr.py \
             --results-dir results/ \
             --codebase-sha ${{ github.sha }} \
@@ -72,7 +85,7 @@ jobs:
           # Copy TSR to host
           docker compose exec -T api cat tsr.json > tsr.json
 
-          # Extract TSR ID for later steps
+          # Extract TSR ID
           TSR_ID=$(cat tsr.json | python3 -c "import sys, json; print(json.load(sys.stdin)['id'])")
           echo "tsr_id=$TSR_ID" >> $GITHUB_OUTPUT
 

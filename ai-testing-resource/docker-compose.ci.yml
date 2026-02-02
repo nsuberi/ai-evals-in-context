@@ -14,16 +14,10 @@ services:
     volumes: []
     command: >
       sh -c "
-        set +e
-        echo 'Starting database initialization...'
-        python scripts/init_database.py 2>&1
-        echo 'Database init exit code:' $?
+        echo 'Initializing database...'
+        python scripts/init_database.py || exit 1
         echo 'Seeding test data...'
-        python scripts/seed_test_data.py 2>&1
-        echo 'Seed data exit code:' $?
-        echo 'Running tests...'
-        pytest tests/ --junitxml=results/test-results.xml -v 2>&1
-        echo 'Tests exit code:' $?
+        python scripts/seed_test_data.py || exit 1
         echo 'Starting Flask application...'
         python run.py
       "

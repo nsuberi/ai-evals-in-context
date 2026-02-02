@@ -11,7 +11,7 @@ from pathlib import Path
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.exc import OperationalError, ProgrammingError
 import time
 
@@ -28,7 +28,7 @@ def wait_for_database(max_retries=30, retry_interval=2):
         try:
             engine = create_engine(TSR_DATABASE_URL)
             with engine.connect() as conn:
-                conn.execute("SELECT 1")
+                conn.execute(text("SELECT 1"))
             print("✓ Database is ready!")
             return engine
         except OperationalError as e:
