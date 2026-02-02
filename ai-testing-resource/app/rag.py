@@ -156,4 +156,5 @@ def generate_embedding(text: str) -> List[float]:
     """Generate embedding for a single text (for testing/debugging)"""
     ef = get_embedding_function()
     result = ef([text])
-    return result[0] if result else []
+    # Convert numpy floats to Python floats for type consistency
+    return [float(x) for x in result[0]] if result else []

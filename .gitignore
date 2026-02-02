@@ -2,3 +2,10 @@
 .pytest_cache/
 chroma_db/
 .env
+.env.docker
+
+# AWS credentials - NEVER commit
+.aws/
+aws-credentials.env
+*.pem
+*.key
