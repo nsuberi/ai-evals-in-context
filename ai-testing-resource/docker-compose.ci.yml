@@ -11,6 +11,8 @@ services:
       FLASK_DEBUG: "True"
       # Use in-memory ChromaDB for faster tests
       CHROMA_PATH: /tmp/chroma_db
+      # Disable ChromaDB telemetry to avoid PostHog version conflicts
+      ANONYMIZED_TELEMETRY: "False"
     volumes: []
     command: >
       sh -c "
