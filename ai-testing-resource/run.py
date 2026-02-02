@@ -29,7 +29,15 @@ def main():
         print("Continuing without knowledge base (app will still function)")
 
     # Create and run the app
-    app = create_app()
+    print("Creating Flask application...")
+    try:
+        app = create_app()
+        print("Flask application created successfully")
+    except Exception as e:
+        print(f"CRITICAL ERROR: Failed to create Flask app: {e}")
+        import traceback
+        traceback.print_exc()
+        sys.exit(1)
 
     host = os.getenv('FLASK_HOST', '127.0.0.1')
     port = int(os.getenv('FLASK_PORT', 5000))
@@ -40,7 +48,14 @@ def main():
     print(f"Demo available at http://{host}:{port}/ask")
     print(f"\nPress Ctrl+C to stop\n")
 
-    app.run(host=host, port=port, debug=debug)
+    try:
+        print(f"Starting Flask on {host}:{port} (debug={debug})...")
+        app.run(host=host, port=port, debug=debug)
+    except Exception as e:
+        print(f"CRITICAL ERROR: Flask failed to start: {e}")
+        import traceback
+        traceback.print_exc()
+        sys.exit(1)
 
 
 if __name__ == '__main__':
