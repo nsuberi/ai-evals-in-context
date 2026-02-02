@@ -12,13 +12,13 @@
       },
       "failure_modes": [
         {
+          "id": "FM-001",
           "name": "Response too verbose",
-          "category": "response_quality",
+          "description": "Responses averaging 300+ words instead of target 80 words",
+          "category": "format",
           "severity": "major",
-          "occurrence_rate": 0.95,
-          "example": "Responses averaging 300+ words instead of target 80 words",
-          "resolution_status": "resolved",
-          "resolution_details": "Fixed in V2 by updating prompt to request 80 words"
+          "discovered_in_iteration": 1,
+          "resolution_status": "fixed"
         }
       ],
       "fixes_applied": []
@@ -35,13 +35,13 @@
       },
       "failure_modes": [
         {
+          "id": "FM-002",
           "name": "Hallucinated product details",
-          "category": "factual_accuracy",
+          "description": "Model invented pricing and product specs not in knowledge base",
+          "category": "accuracy",
           "severity": "critical",
-          "occurrence_rate": 0.40,
-          "example": "Model invented pricing and product specs not in knowledge base",
-          "resolution_status": "resolved",
-          "resolution_details": "Fixed in V3 by implementing RAG with Chroma vector store"
+          "discovered_in_iteration": 2,
+          "resolution_status": "fixed"
         }
       ],
       "fixes_applied": [
