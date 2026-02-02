@@ -1,0 +1,71 @@
+{
+  "iterations": [
+    {
+      "iteration": 1,
+      "version_name": "V1 Verbose",
+      "prompt_version": "v1.0",
+      "outcome": "failed",
+      "metrics": {
+        "accuracy": 0.70,
+        "grounding_score": 0.50,
+        "response_length_compliance": 0.20
+      },
+      "failure_modes": [
+        {
+          "id": "FM-001",
+          "name": "Response too verbose",
+          "description": "Responses averaging 300+ words instead of target 80 words",
+          "category": "format",
+          "severity": "major",
+          "discovered_in_iteration": 1,
+          "resolution_status": "fixed"
+        }
+      ],
+      "fixes_applied": []
+    },
+    {
+      "iteration": 2,
+      "version_name": "V2 Concise",
+      "prompt_version": "v2.0",
+      "outcome": "failed",
+      "metrics": {
+        "accuracy": 0.60,
+        "grounding_score": 0.40,
+        "response_length_compliance": 0.85
+      },
+      "failure_modes": [
+        {
+          "id": "FM-002",
+          "name": "Hallucinated product details",
+          "description": "Model invented pricing and product specs not in knowledge base",
+          "category": "accuracy",
+          "severity": "critical",
+          "discovered_in_iteration": 2,
+          "resolution_status": "fixed"
+        }
+      ],
+      "fixes_applied": [
+        "Updated system prompt to request ~80 word responses"
+      ]
+    },
+    {
+      "iteration": 3,
+      "version_name": "V3 RAG",
+      "prompt_version": "v3.0",
+      "outcome": "passed",
+      "metrics": {
+        "accuracy": 0.92,
+        "grounding_score": 0.95,
+        "response_length_compliance": 0.88,
+        "source_citation_rate": 0.90
+      },
+      "failure_modes": [],
+      "fixes_applied": [
+        "Implemented RAG with Chroma vector store",
+        "Added context injection from retrieved documents",
+        "Added instruction to only use provided context",
+        "Added prompt protection against extraction attacks"
+      ]
+    }
+  ]
+}

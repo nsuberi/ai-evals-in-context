@@ -26,11 +26,11 @@ from config import TSR_DATABASE_URL
 def create_sample_version_manifest(iteration: int) -> VersionManifest:
     """Create version manifest for iteration"""
     return VersionManifest(
-        codebase_sha=f"abc123{iteration}" + "0" * 34,
+        codebase_sha=f"abc123{iteration}" + "0" * 33,
         codebase_branch="main",
         codebase_repo="https://github.com/example/ai-testing-resource",
-        testbase_sha=f"def456{iteration}" + "0" * 34,
-        prompts_sha=f"ghi789{iteration}" + "0" * 34,
+        testbase_sha=f"def456{iteration}" + "0" * 33,
+        prompts_sha=f"ghi789{iteration}" + "0" * 33,
         prompts_version=f"v1.{iteration}.0"
     )
 
@@ -200,6 +200,9 @@ def seed_tsr_data():
     """Seed database with sample TSR data"""
     print("\n=== Seeding TSR Test Data ===")
 
+    engine = None
+    session = None
+
     try:
         engine = create_engine(TSR_DATABASE_URL)
         Session = sessionmaker(bind=engine)
@@ -242,6 +245,9 @@ def seed_tsr_data():
             print(f"    Eval iterations: {len(tsr.eval_iterations)}")
             print(f"    Blocking issues: {len(tsr.blocking_issues)}")
 
+        # Commit changes
+        session.commit()
+
         # Print summary
         total_tsrs = repository.count()
         go_count = repository.count(decision='go')
@@ -255,10 +261,19 @@ def seed_tsr_data():
         print("=" * 60)
 
     except Exception as e:
+        if session:
+            session.rollback()
         print(f"✗ Failed to seed test data: {e}")
         import traceback
         traceback.print_exc()
         raise
+
+    finally:
+        # Clean up database connections
+        if session:
+            session.close()
+        if engine:
+            engine.dispose()
 
 
 if __name__ == '__main__':

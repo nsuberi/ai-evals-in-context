@@ -4,8 +4,8 @@ import os
 from pathlib import Path
 from typing import List, Dict, Optional
 
-import chromadb
-from chromadb.utils import embedding_functions
+# Lazy imports - only import chromadb when needed to avoid startup errors
+# This prevents chromadb telemetry from blocking Flask startup
 
 # Initialize Chroma
 CHROMA_PATH = os.getenv("CHROMA_PATH", "./chroma_db")
@@ -20,7 +20,20 @@ def get_chroma_client():
     """Get or create Chroma client"""
     global _chroma_client
     if _chroma_client is None:
-        _chroma_client = chromadb.PersistentClient(path=CHROMA_PATH)
+        # Import chromadb only when needed (lazy import)
+        import chromadb
+        import chromadb.config
+        import logging
+
+        # Suppress chromadb telemetry warnings (telemetry is disabled anyway)
+        logging.getLogger('chromadb.telemetry.product.posthog').setLevel(logging.CRITICAL)
+
+        # Disable telemetry to avoid PostHog version conflicts
+        settings = chromadb.config.Settings(
+            anonymized_telemetry=False,
+            persist_directory=CHROMA_PATH
+        )
+        _chroma_client = chromadb.PersistentClient(settings=settings)
     return _chroma_client
 
 
@@ -28,6 +41,8 @@ def get_embedding_function():
     """Get the embedding function - uses sentence-transformers (local, free)"""
     global _embedding_function
     if _embedding_function is None:
+        # Import chromadb embedding functions only when needed (lazy import)
+        from chromadb.utils import embedding_functions
         # Use sentence-transformers for embeddings (works locally without API)
         _embedding_function = embedding_functions.SentenceTransformerEmbeddingFunction(
             model_name="all-MiniLM-L6-v2"
@@ -141,4 +156,5 @@ def generate_embedding(text: str) -> List[float]:
     """Generate embedding for a single text (for testing/debugging)"""
     ef = get_embedding_function()
     result = ef([text])
-    return result[0] if result else []
+    # Convert numpy floats to Python floats for type consistency
+    return [float(x) for x in result[0]] if result else []

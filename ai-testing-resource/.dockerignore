@@ -43,4 +43,5 @@ chroma_db/
 .pytest_cache/
 .coverage
 htmlcov/
-results/
+results/*.xml
+!results/eval_results.json

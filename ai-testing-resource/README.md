@@ -442,3 +442,5 @@ Contributions are welcome! Phase 2 focuses on production readiness:
 ## License
 
 MIT License - See LICENSE file for details
+
+<!-- Testing CI/CD pipeline verification -->
