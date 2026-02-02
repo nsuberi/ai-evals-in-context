@@ -4,8 +4,8 @@ import os
 from pathlib import Path
 from typing import List, Dict, Optional
 
-import chromadb
-from chromadb.utils import embedding_functions
+# Lazy imports - only import chromadb when needed to avoid startup errors
+# This prevents chromadb telemetry from blocking Flask startup
 
 # Initialize Chroma
 CHROMA_PATH = os.getenv("CHROMA_PATH", "./chroma_db")
@@ -20,8 +20,10 @@ def get_chroma_client():
     """Get or create Chroma client"""
     global _chroma_client
     if _chroma_client is None:
-        # Disable telemetry to avoid PostHog version conflicts
+        # Import chromadb only when needed (lazy import)
+        import chromadb
         import chromadb.config
+        # Disable telemetry to avoid PostHog version conflicts
         settings = chromadb.config.Settings(
             anonymized_telemetry=False,
             persist_directory=CHROMA_PATH
@@ -34,6 +36,8 @@ def get_embedding_function():
     """Get the embedding function - uses sentence-transformers (local, free)"""
     global _embedding_function
     if _embedding_function is None:
+        # Import chromadb embedding functions only when needed (lazy import)
+        from chromadb.utils import embedding_functions
         # Use sentence-transformers for embeddings (works locally without API)
         _embedding_function = embedding_functions.SentenceTransformerEmbeddingFunction(
             model_name="all-MiniLM-L6-v2"
