@@ -20,7 +20,13 @@ def get_chroma_client():
     """Get or create Chroma client"""
     global _chroma_client
     if _chroma_client is None:
-        _chroma_client = chromadb.PersistentClient(path=CHROMA_PATH)
+        # Disable telemetry to avoid PostHog version conflicts
+        import chromadb.config
+        settings = chromadb.config.Settings(
+            anonymized_telemetry=False,
+            persist_directory=CHROMA_PATH
+        )
+        _chroma_client = chromadb.PersistentClient(settings=settings)
     return _chroma_client
 
 
