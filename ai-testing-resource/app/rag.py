@@ -23,6 +23,11 @@ def get_chroma_client():
         # Import chromadb only when needed (lazy import)
         import chromadb
         import chromadb.config
+        import logging
+
+        # Suppress chromadb telemetry warnings (telemetry is disabled anyway)
+        logging.getLogger('chromadb.telemetry.product.posthog').setLevel(logging.CRITICAL)
+
         # Disable telemetry to avoid PostHog version conflicts
         settings = chromadb.config.Settings(
             anonymized_telemetry=False,
