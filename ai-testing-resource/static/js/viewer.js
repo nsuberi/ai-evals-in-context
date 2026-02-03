@@ -131,6 +131,9 @@ async function submitDemoForm(event) {
         </div>
       ` : ''}
     `;
+
+    // Render trace panel
+    renderTracePanel(data.trace);
   } catch (error) {
     responseContainer.innerHTML = `
       <div class="demo-response__text" style="color: var(--color-error);">
@@ -148,6 +151,108 @@ function escapeHtml(text) {
   const div = document.createElement('div');
   div.textContent = text;
   return div.innerHTML;
+}
+
+// Toggle trace panel visibility
+function toggleTracePanel() {
+  const panel = document.getElementById('trace-panel');
+  panel.classList.toggle('trace-panel--open');
+}
+
+// Render the KB trace panel
+function renderTracePanel(trace) {
+  const panel = document.getElementById('trace-panel');
+  const content = document.getElementById('trace-panel__content');
+
+  if (!panel || !content || !trace) return;
+
+  // Show the panel
+  panel.style.display = 'block';
+
+  // Check if KB is not in use
+  if (trace.not_in_use) {
+    content.innerHTML = `
+      <div class="trace-step">
+        <div class="trace-step__header">
+          <span class="trace-step__icon">&#128683;</span>
+          <span class="trace-step__title">Not in use</span>
+        </div>
+        <div class="trace-step__body">
+          <p class="trace-step__reason">${escapeHtml(trace.reason)}</p>
+          <p class="trace-step__hint">Switch to <strong>V3 - RAG</strong> to see the knowledge base pipeline in action.</p>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  // V3 full pipeline trace
+  content.innerHTML = `
+    <!-- Step 1: Query -->
+    <div class="trace-step">
+      <div class="trace-step__header">
+        <span class="trace-step__number">1</span>
+        <span class="trace-step__title">Query</span>
+      </div>
+      <div class="trace-step__body">
+        <code class="trace-step__code">${escapeHtml(trace.query)}</code>
+      </div>
+    </div>
+
+    <!-- Step 2: Retrieved Documents -->
+    <div class="trace-step">
+      <div class="trace-step__header">
+        <span class="trace-step__number">2</span>
+        <span class="trace-step__title">Retrieved Documents (${trace.retrieved_docs?.length || 0})</span>
+      </div>
+      <div class="trace-step__body">
+        ${trace.retrieved_docs?.map(doc => `
+          <div class="trace-doc">
+            <div class="trace-doc__header">
+              <span class="trace-doc__title">${escapeHtml(doc.title)}</span>
+              <span class="trace-doc__distance">distance: ${doc.distance}</span>
+            </div>
+            <div class="trace-doc__content">${escapeHtml(doc.content)}</div>
+          </div>
+        `).join('') || '<p>No documents retrieved</p>'}
+      </div>
+    </div>
+
+    <!-- Step 3: Formatted Context -->
+    <div class="trace-step">
+      <div class="trace-step__header trace-step__header--collapsible" onclick="this.parentElement.classList.toggle('trace-step--expanded')">
+        <span class="trace-step__number">3</span>
+        <span class="trace-step__title">Formatted Context</span>
+        <span class="trace-step__expand">&#9660;</span>
+      </div>
+      <div class="trace-step__body trace-step__body--collapsible">
+        <pre class="trace-step__pre">${escapeHtml(trace.formatted_context)}</pre>
+      </div>
+    </div>
+
+    <!-- Step 4: System Prompt -->
+    <div class="trace-step">
+      <div class="trace-step__header trace-step__header--collapsible" onclick="this.parentElement.classList.toggle('trace-step--expanded')">
+        <span class="trace-step__number">4</span>
+        <span class="trace-step__title">System Prompt</span>
+        <span class="trace-step__expand">&#9660;</span>
+      </div>
+      <div class="trace-step__body trace-step__body--collapsible">
+        <pre class="trace-step__pre">${escapeHtml(trace.system_prompt)}</pre>
+      </div>
+    </div>
+
+    <!-- Step 5: User Message -->
+    <div class="trace-step">
+      <div class="trace-step__header">
+        <span class="trace-step__number">5</span>
+        <span class="trace-step__title">User Message</span>
+      </div>
+      <div class="trace-step__body">
+        <code class="trace-step__code">${escapeHtml(trace.user_message)}</code>
+      </div>
+    </div>
+  `;
 }
 
 // Initialize on page load

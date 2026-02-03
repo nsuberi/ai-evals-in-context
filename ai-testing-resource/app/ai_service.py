@@ -90,13 +90,21 @@ def ask_v1(question: str) -> dict:
     # Convert markdown to HTML for proper rendering
     html_text = convert_markdown_to_html(response.content[0].text)
 
+    # V1 does not use knowledge base
+    trace = {
+        'version': 'v1',
+        'not_in_use': True,
+        'reason': 'V1 does not use knowledge base retrieval'
+    }
+
     return format_response(
         text=html_text,
         latency_ms=latency_ms,
         tokens={
             'prompt': response.usage.input_tokens,
             'completion': response.usage.output_tokens
-        }
+        },
+        trace=trace
     )
 
 
@@ -147,13 +155,21 @@ def ask_v2(question: str) -> dict:
     # Convert markdown to HTML for proper rendering
     html_text = convert_markdown_to_html(response.content[0].text)
 
+    # V2 does not use knowledge base
+    trace = {
+        'version': 'v2',
+        'not_in_use': True,
+        'reason': 'V2 does not use knowledge base retrieval'
+    }
+
     return format_response(
         text=html_text,
         latency_ms=latency_ms,
         tokens={
             'prompt': response.usage.input_tokens,
             'completion': response.usage.output_tokens
-        }
+        },
+        trace=trace
     )
 
 
@@ -226,6 +242,23 @@ def ask_v3(question: str) -> dict:
     # Convert markdown to HTML for proper rendering
     html_text = convert_markdown_to_html(response.content[0].text)
 
+    # V3 full pipeline trace
+    trace = {
+        'version': 'v3',
+        'query': question,
+        'retrieved_docs': [
+            {
+                'title': doc['title'],
+                'content': doc['content'][:200] + '...' if len(doc['content']) > 200 else doc['content'],
+                'distance': round(doc['distance'], 3)
+            }
+            for doc in docs
+        ],
+        'formatted_context': context,
+        'system_prompt': system_prompt,
+        'user_message': question
+    }
+
     return format_response(
         text=html_text,
         sources=sources,
@@ -233,7 +266,8 @@ def ask_v3(question: str) -> dict:
         tokens={
             'prompt': response.usage.input_tokens,
             'completion': response.usage.output_tokens
-        }
+        },
+        trace=trace
     )
 
 
