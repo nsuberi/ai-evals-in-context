@@ -113,9 +113,9 @@ async function submitDemoForm(event) {
 
     const data = await response.json();
 
-    // Display response
+    // Display response (HTML from server-side markdown conversion)
     responseContainer.innerHTML = `
-      <div class="demo-response__text">${escapeHtml(data.text)}</div>
+      <div class="demo-response__text">${data.text}</div>
       <div class="demo-response__metadata">
         <span class="demo-response__meta-item">
           <strong>Latency:</strong> ${data.metadata.latency_ms}ms

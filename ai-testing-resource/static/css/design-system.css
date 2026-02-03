@@ -704,3 +704,107 @@ body {
   color: var(--color-chrome-text);
   margin-bottom: var(--space-sm);
 }
+
+/* ============================================
+   MARKDOWN CONTENT STYLES
+   ============================================ */
+.demo-response__text h1,
+.demo-response__text h2,
+.demo-response__text h3,
+.demo-response__text h4,
+.demo-response__text h5,
+.demo-response__text h6 {
+  margin-top: var(--space-md);
+  margin-bottom: var(--space-sm);
+  font-weight: 600;
+  line-height: 1.3;
+  color: #1f2937;
+}
+
+.demo-response__text h1 { font-size: 1.5rem; }
+.demo-response__text h2 { font-size: 1.25rem; }
+.demo-response__text h3 { font-size: 1.125rem; }
+
+.demo-response__text p {
+  margin: 0 0 var(--space-sm) 0;
+}
+
+.demo-response__text p:last-child {
+  margin-bottom: 0;
+}
+
+.demo-response__text strong {
+  font-weight: 600;
+}
+
+.demo-response__text em {
+  font-style: italic;
+}
+
+.demo-response__text code {
+  background: #f3f4f6;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: var(--font-code);
+  font-size: 0.875em;
+  color: #374151;
+}
+
+.demo-response__text pre {
+  background: #f3f4f6;
+  padding: var(--space-md);
+  border-radius: 6px;
+  overflow-x: auto;
+  margin: var(--space-sm) 0;
+}
+
+.demo-response__text pre code {
+  background: none;
+  padding: 0;
+  font-size: 0.8125rem;
+}
+
+.demo-response__text ul,
+.demo-response__text ol {
+  margin: var(--space-sm) 0;
+  padding-left: 1.5em;
+}
+
+.demo-response__text li {
+  margin-bottom: var(--space-xs);
+}
+
+.demo-response__text blockquote {
+  border-left: 3px solid #d1d5db;
+  padding-left: var(--space-md);
+  margin: var(--space-sm) 0;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.demo-response__text a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.demo-response__text a:hover {
+  text-decoration: underline;
+}
+
+.demo-response__text table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--space-sm) 0;
+}
+
+.demo-response__text th,
+.demo-response__text td {
+  padding: var(--space-sm);
+  border: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+.demo-response__text th {
+  background: #f9fafb;
+  font-weight: 600;
+}

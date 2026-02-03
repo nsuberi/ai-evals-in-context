@@ -2,6 +2,7 @@
 
 import re
 import tiktoken
+import markdown
 
 
 def sanitize_input(text: str) -> str:
@@ -32,6 +33,29 @@ def sanitize_input(text: str) -> str:
     text = ' '.join(text.split())
 
     return text
+
+
+def convert_markdown_to_html(text: str) -> str:
+    """
+    Convert markdown text to HTML.
+
+    Supports common markdown features:
+    - Headers, bold, italic
+    - Code blocks and inline code
+    - Lists (ordered and unordered)
+    - Blockquotes
+    - Links
+    """
+    if not text:
+        return ""
+
+    # Convert markdown to HTML with common extensions
+    html = markdown.markdown(
+        text,
+        extensions=['fenced_code', 'tables', 'nl2br']
+    )
+
+    return html
 
 
 def count_tokens(text: str, model: str = "gpt-3.5-turbo") -> int:

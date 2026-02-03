@@ -6,7 +6,7 @@ import time
 from typing import Optional
 import anthropic
 
-from .utils import count_tokens, format_response
+from .utils import count_tokens, format_response, convert_markdown_to_html
 from .rag import get_relevant_docs
 
 logger = logging.getLogger(__name__)
@@ -87,8 +87,11 @@ def ask_v1(question: str) -> dict:
 
     latency_ms = int((time.time() - start_time) * 1000)
 
+    # Convert markdown to HTML for proper rendering
+    html_text = convert_markdown_to_html(response.content[0].text)
+
     return format_response(
-        text=response.content[0].text,
+        text=html_text,
         latency_ms=latency_ms,
         tokens={
             'prompt': response.usage.input_tokens,
@@ -141,8 +144,11 @@ def ask_v2(question: str) -> dict:
 
     latency_ms = int((time.time() - start_time) * 1000)
 
+    # Convert markdown to HTML for proper rendering
+    html_text = convert_markdown_to_html(response.content[0].text)
+
     return format_response(
-        text=response.content[0].text,
+        text=html_text,
         latency_ms=latency_ms,
         tokens={
             'prompt': response.usage.input_tokens,
@@ -217,8 +223,11 @@ def ask_v3(question: str) -> dict:
 
     latency_ms = int((time.time() - start_time) * 1000)
 
+    # Convert markdown to HTML for proper rendering
+    html_text = convert_markdown_to_html(response.content[0].text)
+
     return format_response(
-        text=response.content[0].text,
+        text=html_text,
         sources=sources,
         latency_ms=latency_ms,
         tokens={
