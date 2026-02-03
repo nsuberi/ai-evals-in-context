@@ -1,5 +1,7 @@
 .venv/
 .pytest_cache/
+__pycache__/
+*.pyc
 chroma_db/
 .env
 .env.docker
@@ -9,3 +11,14 @@ chroma_db/
 aws-credentials.env
 *.pem
 *.key
+
+# Terraform
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/*.plan
+terraform/*.tfvars
+!terraform/*.tfvars.example
+terraform/.terraform.lock.hcl
+terraform/crash.log
+

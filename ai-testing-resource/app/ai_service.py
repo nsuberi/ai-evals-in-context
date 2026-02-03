@@ -1,5 +1,6 @@
 """AI Service with three versions demonstrating iteration"""
 
+import logging
 import os
 import time
 from typing import Optional
@@ -8,8 +9,18 @@ import anthropic
 from .utils import count_tokens, format_response
 from .rag import get_relevant_docs
 
+logger = logging.getLogger(__name__)
+
 # Initialize Anthropic client
 client = None
+
+
+class AIServiceError(Exception):
+    """User-friendly AI service errors."""
+    def __init__(self, message: str, original_error=None):
+        self.message = message
+        self.original_error = original_error
+        super().__init__(message)
 
 # Default model
 DEFAULT_MODEL = os.getenv("ANTHROPIC_MODEL", "claude-sonnet-4-20250514")
@@ -21,8 +32,13 @@ def get_client():
     if client is None:
         api_key = os.getenv("ANTHROPIC_API_KEY")
         if not api_key:
-            raise ValueError("ANTHROPIC_API_KEY environment variable is required")
-        client = anthropic.Anthropic(api_key=api_key)
+            logger.error("ANTHROPIC_API_KEY not configured")
+            raise AIServiceError("AI service is not configured. Please try again later.")
+        try:
+            client = anthropic.Anthropic(api_key=api_key)
+        except Exception as e:
+            logger.error(f"Failed to initialize Anthropic client: {e}")
+            raise AIServiceError("AI service initialization failed.")
     return client
 
 
@@ -45,14 +61,29 @@ def ask_v1(question: str) -> dict:
     """
     start_time = time.time()
 
-    response = get_client().messages.create(
-        model=DEFAULT_MODEL,
-        max_tokens=1024,
-        system=V1_SYSTEM_PROMPT,
-        messages=[
-            {"role": "user", "content": question}
-        ]
-    )
+    try:
+        response = get_client().messages.create(
+            model=DEFAULT_MODEL,
+            max_tokens=1024,
+            system=V1_SYSTEM_PROMPT,
+            messages=[
+                {"role": "user", "content": question}
+            ]
+        )
+    except AIServiceError:
+        raise
+    except anthropic.APIConnectionError as e:
+        logger.error(f"API connection error: {e}")
+        raise AIServiceError("Unable to connect to AI service. Please try again.")
+    except anthropic.RateLimitError as e:
+        logger.error(f"Rate limit: {e}")
+        raise AIServiceError("AI service is busy. Please try again in a moment.")
+    except anthropic.APIStatusError as e:
+        logger.error(f"API error: {e}")
+        raise AIServiceError("AI service encountered an error.")
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
+        raise AIServiceError("An unexpected error occurred.")
 
     latency_ms = int((time.time() - start_time) * 1000)
 
@@ -84,14 +115,29 @@ def ask_v2(question: str) -> dict:
     """
     start_time = time.time()
 
-    response = get_client().messages.create(
-        model=DEFAULT_MODEL,
-        max_tokens=512,
-        system=V2_SYSTEM_PROMPT,
-        messages=[
-            {"role": "user", "content": question}
-        ]
-    )
+    try:
+        response = get_client().messages.create(
+            model=DEFAULT_MODEL,
+            max_tokens=512,
+            system=V2_SYSTEM_PROMPT,
+            messages=[
+                {"role": "user", "content": question}
+            ]
+        )
+    except AIServiceError:
+        raise
+    except anthropic.APIConnectionError as e:
+        logger.error(f"API connection error: {e}")
+        raise AIServiceError("Unable to connect to AI service. Please try again.")
+    except anthropic.RateLimitError as e:
+        logger.error(f"Rate limit: {e}")
+        raise AIServiceError("AI service is busy. Please try again in a moment.")
+    except anthropic.APIStatusError as e:
+        logger.error(f"API error: {e}")
+        raise AIServiceError("AI service encountered an error.")
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
+        raise AIServiceError("An unexpected error occurred.")
 
     latency_ms = int((time.time() - start_time) * 1000)
 
@@ -145,14 +191,29 @@ def ask_v3(question: str) -> dict:
 
     system_prompt = V3_SYSTEM_PROMPT.format(context=context)
 
-    response = get_client().messages.create(
-        model=DEFAULT_MODEL,
-        max_tokens=512,
-        system=system_prompt,
-        messages=[
-            {"role": "user", "content": question}
-        ]
-    )
+    try:
+        response = get_client().messages.create(
+            model=DEFAULT_MODEL,
+            max_tokens=512,
+            system=system_prompt,
+            messages=[
+                {"role": "user", "content": question}
+            ]
+        )
+    except AIServiceError:
+        raise
+    except anthropic.APIConnectionError as e:
+        logger.error(f"API connection error: {e}")
+        raise AIServiceError("Unable to connect to AI service. Please try again.")
+    except anthropic.RateLimitError as e:
+        logger.error(f"Rate limit: {e}")
+        raise AIServiceError("AI service is busy. Please try again in a moment.")
+    except anthropic.APIStatusError as e:
+        logger.error(f"API error: {e}")
+        raise AIServiceError("AI service encountered an error.")
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
+        raise AIServiceError("An unexpected error occurred.")
 
     latency_ms = int((time.time() - start_time) * 1000)
 

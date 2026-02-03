@@ -9,7 +9,7 @@ from .trace_inspector import get_traces_by_version, get_trace_detail, render_ann
 from .iteration_timeline import get_iteration_summary, get_comparison_data
 from .highlighting import syntax_highlight
 
-viewer_bp = Blueprint('viewer', __name__, url_prefix='/viewer')
+viewer_bp = Blueprint('viewer', __name__)
 
 
 @viewer_bp.route('/tests')

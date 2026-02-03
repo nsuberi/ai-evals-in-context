@@ -1,8 +1,11 @@
 """Routes for Acme Support Bot demo"""
 
+import logging
 from flask import Blueprint, render_template, request, jsonify
-from .ai_service import ask
+from .ai_service import ask, AIServiceError
 from .utils import sanitize_input
+
+logger = logging.getLogger(__name__)
 
 app_bp = Blueprint('app', __name__)
 
@@ -34,5 +37,8 @@ def ask_route():
     try:
         response = ask(question, version=version)
         return jsonify(response)
+    except AIServiceError as e:
+        return jsonify({'error': e.message}), 503  # Service Unavailable
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        logger.error(f"Unexpected error: {e}", exc_info=True)
+        return jsonify({'error': 'An unexpected error occurred'}), 500

@@ -44,7 +44,26 @@ LATENCY_THRESHOLD_MAX = 10000
 
 # Phase 2: TSR Database (PostgreSQL)
 # For development, you can use SQLite: sqlite:///tsr.db
-TSR_DATABASE_URL = os.getenv('TSR_DATABASE_URL', 'sqlite:///tsr.db')
+# For production, construct URL from individual components or use TSR_DATABASE_URL directly
+def get_database_url():
+    """Get database URL from environment variables"""
+    direct_url = os.getenv('TSR_DATABASE_URL')
+    if direct_url:
+        return direct_url
+
+    # Construct from individual components (for ECS deployment)
+    db_host = os.getenv('TSR_DB_HOST')
+    if db_host:
+        db_port = os.getenv('TSR_DB_PORT', '5432')
+        db_name = os.getenv('TSR_DB_NAME', 'tsr_db')
+        db_user = os.getenv('TSR_DB_USER', 'tsr_user')
+        db_password = os.getenv('TSR_DB_PASSWORD', '')
+        return f"postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
+
+    # Default to SQLite for local development
+    return 'sqlite:///tsr.db'
+
+TSR_DATABASE_URL = get_database_url()
 
 # Phase 2: WebSocket settings
 SOCKETIO_MESSAGE_QUEUE = os.getenv('SOCKETIO_MESSAGE_QUEUE', None)  # Redis URL for production

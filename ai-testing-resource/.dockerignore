@@ -45,3 +45,8 @@ chroma_db/
 htmlcov/
 results/*.xml
 !results/eval_results.json
+
+# Environment files (use ECS environment variables instead)
+.env
+.env.*
+!.env.example

@@ -1,0 +1,8 @@
+ Plan a verification that the existing testing works both locally and in CICD. Test by making      
+  commits to a PR in GitHub, and leveraging the Claude PR integration to get feedback on what       
+  is working well. Keep iterating on running the tests in the GitHub Action until we get a          
+  successful pipeline. This is paving the way for a deployment to AWS with terraform, which we      
+  will not implement yet. We are just checking the GitHub Actions integration with Claude and       
+  your ability to iterate locally using this integration at this point. Make sure the full          
+  tests are passing locally and generating the TSR before going to test the GitHub Actions          
+  integration.  

@@ -2,6 +2,14 @@
  * AI Testing Resource - Viewer JavaScript
  */
 
+// Get the application root prefix (set by template)
+const APP_ROOT = window.APP_ROOT || '';
+
+// Helper to build prefixed URLs
+function appUrl(path) {
+  return APP_ROOT + path;
+}
+
 // Toggle collapsible sections
 function toggleCollapsible(element) {
   element.classList.toggle('collapsible--open');
@@ -23,7 +31,7 @@ async function runTest(testId) {
   }
 
   try {
-    const response = await fetch(`/viewer/tests/run/${encodeURIComponent(testId)}`, {
+    const response = await fetch(appUrl(`/viewer/tests/run/${encodeURIComponent(testId)}`), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -57,13 +65,13 @@ async function runTest(testId) {
 function switchVersion(version) {
   // Update URL
   const url = new URL(window.location);
-  url.pathname = `/viewer/traces/${version}`;
+  url.pathname = appUrl(`/viewer/traces/${version}`);
   window.location.href = url.toString();
 }
 
 // Test type switching
 function switchTestType(testType) {
-  window.location.href = `/viewer/tests/${testType}`;
+  window.location.href = appUrl(`/viewer/tests/${testType}`);
 }
 
 // Test selection
@@ -95,7 +103,7 @@ async function submitDemoForm(event) {
   submitBtn.disabled = true;
 
   try {
-    const response = await fetch('/ask', {
+    const response = await fetch(appUrl('/ask'), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

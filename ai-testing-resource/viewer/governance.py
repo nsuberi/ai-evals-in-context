@@ -3,7 +3,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from datetime import datetime
 
-governance = Blueprint('governance', __name__, url_prefix='/governance')
+governance = Blueprint('governance', __name__)
 
 # Global repository instance (will be set by app initialization)
 _repository = None

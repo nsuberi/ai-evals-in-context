@@ -9,7 +9,7 @@ from .repository import TSRRepository
 from .rules import GoNoGoEvaluator
 
 # Blueprint for TSR API
-tsr_api = Blueprint('tsr_api', __name__, url_prefix='/api/tsr')
+tsr_api = Blueprint('tsr_api', __name__)
 
 # Global repository instance (will be set by app initialization)
 _repository: Optional[TSRRepository] = None
