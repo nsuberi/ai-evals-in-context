@@ -51,7 +51,8 @@ def format_response(
     text: str,
     sources: list = None,
     latency_ms: int = 0,
-    tokens: dict = None
+    tokens: dict = None,
+    trace: dict = None
 ) -> dict:
     """
     Structure AI output for display.
@@ -65,6 +66,16 @@ def format_response(
                 'prompt_tokens': int,
                 'completion_tokens': int,
                 'total_tokens': int
+            },
+            'trace': {
+                'version': str,
+                'query': str,
+                'not_in_use': bool (for v1/v2),
+                'reason': str (for v1/v2),
+                'retrieved_docs': [...] (for v3),
+                'formatted_context': str (for v3),
+                'system_prompt': str (for v3),
+                'user_message': str (for v3)
             }
         }
     """
@@ -78,5 +89,6 @@ def format_response(
             'prompt_tokens': tokens.get('prompt', 0),
             'completion_tokens': tokens.get('completion', 0),
             'total_tokens': tokens.get('prompt', 0) + tokens.get('completion', 0)
-        }
+        },
+        'trace': trace or {}
     }

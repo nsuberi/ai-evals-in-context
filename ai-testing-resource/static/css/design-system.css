@@ -704,3 +704,203 @@ body {
   color: var(--color-chrome-text);
   margin-bottom: var(--space-sm);
 }
+
+/* ============================================
+   TRACE PANEL (KB Pipeline Visibility)
+   ============================================ */
+.trace-panel {
+  margin-top: var(--space-xl);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.trace-panel__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.trace-panel__header:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.trace-panel__toggle {
+  font-size: 0.75rem;
+  transition: transform 0.2s ease;
+}
+
+.trace-panel--open .trace-panel__toggle {
+  transform: rotate(180deg);
+}
+
+.trace-panel__title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-chrome-text-bright);
+}
+
+.trace-panel__content {
+  display: none;
+  padding: var(--space-lg);
+}
+
+.trace-panel--open .trace-panel__content {
+  display: block;
+}
+
+/* Trace Steps */
+.trace-step {
+  margin-bottom: var(--space-md);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.trace-step:last-child {
+  margin-bottom: 0;
+}
+
+.trace-step__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.trace-step__header--collapsible {
+  cursor: pointer;
+}
+
+.trace-step__header--collapsible:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.trace-step__number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: var(--color-accent);
+  color: white;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.trace-step__icon {
+  font-size: 1.25rem;
+}
+
+.trace-step__title {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-chrome-text-bright);
+}
+
+.trace-step__expand {
+  margin-left: auto;
+  font-size: 0.625rem;
+  color: var(--color-chrome-text);
+  transition: transform 0.2s ease;
+}
+
+.trace-step--expanded .trace-step__expand {
+  transform: rotate(180deg);
+}
+
+.trace-step__body {
+  padding: var(--space-md);
+}
+
+.trace-step__body--collapsible {
+  display: none;
+}
+
+.trace-step--expanded .trace-step__body--collapsible {
+  display: block;
+}
+
+.trace-step__code {
+  display: block;
+  padding: var(--space-sm) var(--space-md);
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  font-family: var(--font-code);
+  font-size: 0.8125rem;
+  color: var(--color-chrome-text-bright);
+  word-break: break-word;
+}
+
+.trace-step__pre {
+  margin: 0;
+  padding: var(--space-md);
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  font-family: var(--font-code);
+  font-size: 0.75rem;
+  color: var(--color-chrome-text);
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.trace-step__reason {
+  margin: 0 0 var(--space-sm) 0;
+  color: var(--color-chrome-text);
+}
+
+.trace-step__hint {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--color-chrome-text);
+}
+
+/* Retrieved Documents */
+.trace-doc {
+  margin-bottom: var(--space-sm);
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.trace-doc:last-child {
+  margin-bottom: 0;
+}
+
+.trace-doc__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-xs) var(--space-sm);
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.trace-doc__title {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-accent);
+}
+
+.trace-doc__distance {
+  font-size: 0.6875rem;
+  font-family: var(--font-code);
+  color: var(--color-chrome-text);
+}
+
+.trace-doc__content {
+  padding: var(--space-sm);
+  font-size: 0.75rem;
+  color: var(--color-chrome-text);
+  line-height: 1.5;
+}

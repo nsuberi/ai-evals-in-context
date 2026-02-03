@@ -87,13 +87,21 @@ def ask_v1(question: str) -> dict:
 
     latency_ms = int((time.time() - start_time) * 1000)
 
+    # V1 does not use knowledge base
+    trace = {
+        'version': 'v1',
+        'not_in_use': True,
+        'reason': 'V1 does not use knowledge base retrieval'
+    }
+
     return format_response(
         text=response.content[0].text,
         latency_ms=latency_ms,
         tokens={
             'prompt': response.usage.input_tokens,
             'completion': response.usage.output_tokens
-        }
+        },
+        trace=trace
     )
 
 
@@ -141,13 +149,21 @@ def ask_v2(question: str) -> dict:
 
     latency_ms = int((time.time() - start_time) * 1000)
 
+    # V2 does not use knowledge base
+    trace = {
+        'version': 'v2',
+        'not_in_use': True,
+        'reason': 'V2 does not use knowledge base retrieval'
+    }
+
     return format_response(
         text=response.content[0].text,
         latency_ms=latency_ms,
         tokens={
             'prompt': response.usage.input_tokens,
             'completion': response.usage.output_tokens
-        }
+        },
+        trace=trace
     )
 
 
@@ -217,6 +233,23 @@ def ask_v3(question: str) -> dict:
 
     latency_ms = int((time.time() - start_time) * 1000)
 
+    # V3 full pipeline trace
+    trace = {
+        'version': 'v3',
+        'query': question,
+        'retrieved_docs': [
+            {
+                'title': doc['title'],
+                'content': doc['content'][:200] + '...' if len(doc['content']) > 200 else doc['content'],
+                'distance': round(doc['distance'], 3)
+            }
+            for doc in docs
+        ],
+        'formatted_context': context,
+        'system_prompt': system_prompt,
+        'user_message': question
+    }
+
     return format_response(
         text=response.content[0].text,
         sources=sources,
@@ -224,7 +257,8 @@ def ask_v3(question: str) -> dict:
         tokens={
             'prompt': response.usage.input_tokens,
             'completion': response.usage.output_tokens
-        }
+        },
+        trace=trace
     )
 
 
