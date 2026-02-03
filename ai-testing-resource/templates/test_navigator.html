@@ -5,17 +5,76 @@
 {% block title %}Test Navigator - AI Testing Resource{% endblock %}
 
 {% block content %}
+<!-- AI Evaluation Educational Banner -->
+<div class="ai-eval-banner">
+  <h2 class="ai-eval-banner__title">
+    <span class="ai-eval-banner__title-badge">AI</span>
+    Understanding AI Evaluation vs Traditional Testing
+  </h2>
+  <div class="ai-eval-banner__grid">
+    <div class="ai-eval-banner__concept">
+      <div class="ai-eval-banner__concept-header">
+        <span class="ai-eval-banner__concept-icon">🎲</span>
+        <span class="ai-eval-banner__concept-title">Unique to AI</span>
+      </div>
+      <p class="ai-eval-banner__concept-desc">AI tests are flaky by default; the same input can produce different outputs. This requires new approaches beyond traditional pass/fail testing.</p>
+    </div>
+    <div class="ai-eval-banner__concept">
+      <div class="ai-eval-banner__concept-header">
+        <span class="ai-eval-banner__concept-icon">👤</span>
+        <span class="ai-eval-banner__concept-title">Human in the Loop</span>
+      </div>
+      <p class="ai-eval-banner__concept-desc">SMEs validate what "good" means; automated tests catch regressions. Human judgment defines quality criteria.</p>
+    </div>
+    <div class="ai-eval-banner__concept">
+      <div class="ai-eval-banner__concept-header">
+        <span class="ai-eval-banner__concept-icon">⚖️</span>
+        <span class="ai-eval-banner__concept-title">Business Owns Risk</span>
+      </div>
+      <p class="ai-eval-banner__concept-desc">Business defines acceptable thresholds and owns risk decisions. 95% accuracy may be fine for suggestions, not for medical advice.</p>
+    </div>
+    <div class="ai-eval-banner__concept">
+      <div class="ai-eval-banner__concept-header">
+        <span class="ai-eval-banner__concept-icon">🔄</span>
+        <span class="ai-eval-banner__concept-title">Continuous Improvement</span>
+      </div>
+      <p class="ai-eval-banner__concept-desc">Deploy, observe, annotate, improve, repeat. AI systems require ongoing evaluation and refinement cycles.</p>
+    </div>
+  </div>
+</div>
+
 <div class="layout layout--sidebar">
-  <!-- Sidebar: Test Types and Tests -->
+  <!-- Sidebar: AI Acceptance Tests, Test Types, and Tests -->
   <aside>
+    <!-- AI Acceptance Testing Section -->
+    {% if ai_acceptance_tests %}
     <div style="margin-bottom: var(--space-lg);">
-      <h3 style="color: var(--color-chrome-text-bright); font-size: 0.875rem; margin: 0 0 var(--space-sm) 0;">
+      <h3 class="sidebar-section-header sidebar-section-header--ai">
+        Acceptance Testing AI Features
+        <span class="sidebar-section-badge">AI</span>
+      </h3>
+      <div class="sidebar">
+        {% for test in ai_acceptance_tests %}
+        <a href="{{ url_for('viewer.test_navigator', test_type='ai_acceptance', test=test.id) }}"
+           class="sidebar__item sidebar__item--ai {% if test.id == selected_test %}sidebar__item--active{% endif %}">
+          {{ test.name }}
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="sidebar-section-divider"></div>
+    {% endif %}
+
+    <!-- Traditional Test Types -->
+    <div style="margin-bottom: var(--space-lg);">
+      <h3 class="sidebar-section-header">
         Test Types
+        <span class="sidebar-tag">SDLC</span>
       </h3>
       <div class="sidebar">
         {% for type in test_types %}
         <a href="{{ url_for('viewer.test_navigator', test_type=type.id) }}"
-           class="sidebar__item {% if type.id == current_type %}sidebar__item--active{% endif %}">
+           class="sidebar__item {% if type.id == current_type and current_type != 'ai_acceptance' %}sidebar__item--active{% endif %}">
           {{ type.name }}
         </a>
         {% endfor %}

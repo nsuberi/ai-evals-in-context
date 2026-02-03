@@ -158,3 +158,24 @@ def extract_ai_relationship_html(html_content: str) -> str:
         if match:
             return match.group(1).strip()
     return ''
+
+
+def get_ai_acceptance_tests() -> List[Dict]:
+    """Get list of AI-specific acceptance tests from tests/ai_acceptance/"""
+    ai_acceptance_dir = TESTS_DIR / 'ai_acceptance'
+    if not ai_acceptance_dir.exists():
+        return []
+
+    tests = []
+    for test_file in sorted(ai_acceptance_dir.glob('*.py')):
+        if test_file.name.startswith('__'):
+            continue
+
+        tests.append({
+            'id': f"ai_acceptance/{test_file.stem}",
+            'name': format_test_name(test_file.stem),
+            'filename': test_file.name,
+            'path': str(test_file)
+        })
+
+    return tests

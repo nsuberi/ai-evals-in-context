@@ -4,7 +4,7 @@ from flask import Blueprint, render_template, request, jsonify
 import subprocess
 from pathlib import Path
 
-from .test_navigator import get_tests_by_type, get_test_code, get_explanation, get_test_path, TEST_TYPES
+from .test_navigator import get_tests_by_type, get_test_code, get_explanation, get_test_path, TEST_TYPES, get_ai_acceptance_tests
 from .trace_inspector import get_traces_by_version, get_trace_detail, render_annotated_response
 from .iteration_timeline import get_iteration_summary, get_comparison_data
 from .highlighting import syntax_highlight
@@ -16,8 +16,16 @@ viewer_bp = Blueprint('viewer', __name__)
 @viewer_bp.route('/tests/<test_type>')
 def test_navigator(test_type='unit'):
     """Test Navigator page"""
-    tests = get_tests_by_type(test_type)
-    explanation = get_explanation(test_type)
+    # Get AI acceptance tests for the sidebar
+    ai_acceptance_tests = get_ai_acceptance_tests()
+
+    # Handle ai_acceptance as a special test type
+    if test_type == 'ai_acceptance':
+        tests = ai_acceptance_tests
+        explanation = get_explanation('ai_acceptance')
+    else:
+        tests = get_tests_by_type(test_type)
+        explanation = get_explanation(test_type)
 
     # Get first test's code by default
     selected_test = request.args.get('test', tests[0]['id'] if tests else None)
@@ -50,7 +58,8 @@ def test_navigator(test_type='unit'):
                            test_filename=test_filename,
                            app_code=app_code,
                            app_filename=app_filename,
-                           explanation=explanation)
+                           explanation=explanation,
+                           ai_acceptance_tests=ai_acceptance_tests)
 
 
 @viewer_bp.route('/tests/run/<path:test_id>', methods=['POST'])
