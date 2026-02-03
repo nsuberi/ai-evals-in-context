@@ -31,7 +31,7 @@ async function runTest(testId) {
   }
 
   try {
-    const response = await fetch(appUrl(`/viewer/tests/run/${encodeURIComponent(testId)}`), {
+    const response = await fetch(appUrl(`/viewer/tests/run/${testId}`), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
