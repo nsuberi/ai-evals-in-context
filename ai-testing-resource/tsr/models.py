@@ -23,6 +23,7 @@ class TestType(Enum):
     EVALS = "evals"
     SECURITY = "security"
     PERFORMANCE = "performance"
+    STEEL_THREAD = "steelthread"
 
 
 @dataclass
