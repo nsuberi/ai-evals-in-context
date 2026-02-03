@@ -53,7 +53,7 @@
           </button>
         </div>
       </div>
-      <pre class="code-canvas__code"><code>{{ test_code | safe }}</code></pre>
+      <pre class="code-canvas__code highlight"><code>{{ test_code | safe }}</code></pre>
     </div>
     {% else %}
     <div class="explanation">
@@ -70,7 +70,7 @@
           <span class="code-canvas__filename">{{ app_filename }}</span>
           <span class="code-canvas__badge" style="background: var(--color-info);">App Code</span>
         </div>
-        <pre class="code-canvas__code"><code>{{ app_code | safe }}</code></pre>
+        <pre class="code-canvas__code highlight"><code>{{ app_code | safe }}</code></pre>
       </div>
       {% endif %}
 
