@@ -14,6 +14,7 @@ TEST_TYPES = [
     {'id': 'evals', 'name': 'AI Evals', 'description': 'Evaluate AI behavior'},
     {'id': 'security', 'name': 'Security', 'description': 'Test security measures'},
     {'id': 'performance', 'name': 'Performance', 'description': 'Test speed and efficiency'},
+    {'id': 'steelthread', 'name': 'Steel Thread', 'description': 'End-to-end user journey tests'},
 ]
 
 # Get the base directory
