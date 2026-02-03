@@ -12,7 +12,7 @@
     Try different versions to see how AI behavior changes with prompt engineering and RAG.
   </p>
 
-  <form class="demo-form" method="POST" action="/ask">
+  <form class="demo-form" method="POST" action="{{ url_for('app.ask_route') }}">
     <textarea
       name="question"
       class="demo-form__input"

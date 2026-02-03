@@ -34,6 +34,9 @@
     {% block content %}{% endblock %}
   </main>
 
+  <script>
+    window.APP_ROOT = "{{ config.get('APPLICATION_ROOT', '') }}";
+  </script>
   <script src="{{ url_for('static', filename='js/viewer.js') }}"></script>
   <script src="{{ url_for('static', filename='js/line_selection.js') }}"></script>
   {% block scripts %}{% endblock %}
