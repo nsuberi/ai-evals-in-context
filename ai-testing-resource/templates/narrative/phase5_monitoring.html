@@ -1,0 +1,114 @@
+{% extends "narrative/base_narrative.html" %}
+
+{% block title %}Phase 5: Production Monitoring - AI Testing Resource{% endblock %}
+
+{% block phase_intro %}
+{% if intro_content %}
+<section class="phase-intro">
+  <div class="phase-intro__content">
+    {{ intro_content | safe }}
+  </div>
+</section>
+{% else %}
+<section class="phase-intro">
+  <div class="phase-intro__content">
+    <p>With v3 approved, we deploy to production. Now you can try the live chatbot yourself. Each interaction generates a trace that shows exactly how the AI processes your question - from knowledge base retrieval to response generation.</p>
+  </div>
+</section>
+{% endif %}
+{% endblock %}
+
+{% block phase_content %}
+<div class="narrative-content narrative-content--narrow">
+  <!-- Live Demo Section -->
+  <div class="demo-container" style="padding: 0; max-width: none;">
+    <h2 style="color: var(--color-chrome-text-bright); margin-bottom: var(--space-sm);">
+      Live Demo: Acme Widgets Support Bot
+    </h2>
+    <p style="margin-bottom: var(--space-xl);">
+      Ask a question about Acme Widgets products, pricing, shipping, or returns.
+      Watch the knowledge base pipeline trace to see how RAG works in real-time.
+    </p>
+
+    <form class="demo-form" method="POST" action="{{ url_for('app.ask_route') }}">
+      <textarea
+        name="question"
+        class="demo-form__input"
+        placeholder="What is your return policy?"
+        required
+      ></textarea>
+
+      <div class="demo-form__actions">
+        <select name="version" class="demo-form__version-select">
+          <option value="v1">V1 - Verbose (too long)</option>
+          <option value="v2">V2 - Concise (may hallucinate)</option>
+          <option value="v3" selected>V3 - RAG (accurate)</option>
+        </select>
+
+        <button type="submit" class="demo-form__submit">Ask</button>
+      </div>
+    </form>
+
+    <div id="demo-response" class="demo-response">
+      <!-- Response will be inserted here -->
+    </div>
+
+    <!-- Knowledge Base Pipeline Trace Panel -->
+    <div id="trace-panel" class="trace-panel" style="display: none;">
+      <div class="trace-panel__header" onclick="toggleTracePanel()">
+        <span class="trace-panel__toggle">&#9660;</span>
+        <span class="trace-panel__title">Knowledge Base Pipeline</span>
+      </div>
+      <div id="trace-panel__content" class="trace-panel__content">
+        <!-- Trace content will be inserted here by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Production Metrics Section -->
+  <section class="content-section content-section--open" style="margin-top: var(--space-2xl);">
+    <div class="content-section__header">
+      <span class="content-section__icon">M</span>
+      <h3 class="content-section__title">Production Metrics</h3>
+    </div>
+    <div class="content-section__body">
+      <p>In a real production system, you would monitor:</p>
+
+      <h4>Traditional Metrics</h4>
+      <ul>
+        <li><strong>Response Time:</strong> P50, P95, P99 latency</li>
+        <li><strong>Error Rate:</strong> API failures, timeouts</li>
+        <li><strong>Throughput:</strong> Requests per second</li>
+      </ul>
+
+      <h4>AI-Specific Metrics</h4>
+      <ul>
+        <li><strong>Knowledge Base Hit Rate:</strong> How often relevant docs are found</li>
+        <li><strong>Response Length:</strong> Are responses staying within acceptable bounds?</li>
+        <li><strong>Source Citation Rate:</strong> Are responses properly attributed?</li>
+        <li><strong>User Feedback:</strong> Thumbs up/down, escalation rate</li>
+      </ul>
+
+      <h4>Evaluation Metrics</h4>
+      <ul>
+        <li><strong>Accuracy Sampling:</strong> Periodic human review of responses</li>
+        <li><strong>Hallucination Detection:</strong> Flag responses that don't match KB</li>
+        <li><strong>Drift Detection:</strong> Are response patterns changing over time?</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- About the Versions -->
+  <section class="content-section content-section--open" style="margin-top: var(--space-xl);">
+    <div class="content-section__header">
+      <span class="content-section__icon">V</span>
+      <h3 class="content-section__title">About the Versions</h3>
+    </div>
+    <div class="content-section__body">
+      <p><strong>V1 - Verbose:</strong> The prompt asks for 300+ word responses. This fails the length eval because users want concise ~80 word answers.</p>
+      <p><strong>V2 - Concise:</strong> Fixed the length issue, but the model has no access to actual company data. It will confidently make up pricing and policy details.</p>
+      <p><strong>V3 - RAG:</strong> Uses retrieval-augmented generation with Chroma to fetch actual company documents. Responses are both concise AND accurate.</p>
+    </div>
+  </section>
+</div>
+{% endblock %}

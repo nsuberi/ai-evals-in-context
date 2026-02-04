@@ -1,0 +1,172 @@
+{% extends "narrative/base_narrative.html" %}
+
+{% block title %}Governance - AI Testing Resource{% endblock %}
+
+{% block phase_intro %}
+{% if intro_content %}
+<section class="phase-intro">
+  <div class="phase-intro__content">
+    {{ intro_content | safe }}
+  </div>
+</section>
+{% else %}
+<section class="phase-intro">
+  <div class="phase-intro__content">
+    <p>Governance ties together everything we've built. It provides the audit trail showing what was required, what was built, how issues were identified and resolved, and how the system is performing in production.</p>
+  </div>
+</section>
+{% endif %}
+{% endblock %}
+
+{% block phase_content %}
+<div class="narrative-content">
+  <!-- Cross-Phase Summary -->
+  <section class="content-section content-section--open">
+    <div class="content-section__header">
+      <span class="content-section__icon">S</span>
+      <h3 class="content-section__title">Cross-Phase Summary</h3>
+    </div>
+    <div class="content-section__body">
+      <h4>Phase 1: Requirements</h4>
+      <ul>
+        <li>Instant response (&lt;5s) - <span style="color: var(--color-success);">Met in v3</span></li>
+        <li>Grounded in knowledge base - <span style="color: var(--color-success);">Met in v3</span></li>
+        <li>95% accuracy on product questions - <span style="color: var(--color-success);">Met in v3</span></li>
+        <li>Source attribution - <span style="color: var(--color-success);">Met in v3</span></li>
+      </ul>
+
+      <h4>Phase 4: Iteration History</h4>
+      <table>
+        <tr>
+          <th>Version</th>
+          <th>Issue</th>
+          <th>Resolution</th>
+          <th>Status</th>
+        </tr>
+        <tr>
+          <td>v1</td>
+          <td>Responses too verbose (300+ words)</td>
+          <td>Adjusted prompt for conciseness</td>
+          <td style="color: var(--color-warning);">Superseded</td>
+        </tr>
+        <tr>
+          <td>v2</td>
+          <td>Hallucinated pricing/policy info</td>
+          <td>Added RAG with knowledge base</td>
+          <td style="color: var(--color-error);">Rejected</td>
+        </tr>
+        <tr>
+          <td>v3</td>
+          <td>None identified</td>
+          <td>N/A</td>
+          <td style="color: var(--color-success);">Approved</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- Governance Dashboard Link -->
+  <section class="content-section content-section--open">
+    <div class="content-section__header">
+      <span class="content-section__icon">D</span>
+      <h3 class="content-section__title">Test Summary Reports (TSR)</h3>
+    </div>
+    <div class="content-section__body">
+      <p>The TSR system provides formal go/no-go decisions for deployments based on test results.</p>
+
+      <div style="margin-top: var(--space-lg);">
+        <a href="{{ url_for('governance.dashboard') }}" class="landing-cta" style="display: inline-flex;">
+          Open TSR Dashboard
+          <span>&rarr;</span>
+        </a>
+      </div>
+
+      <h4 style="margin-top: var(--space-xl);">What TSRs Track</h4>
+      <ul>
+        <li><strong>Test Results:</strong> Pass/fail counts by test type</li>
+        <li><strong>Coverage:</strong> Which requirements were tested</li>
+        <li><strong>Risk Assessment:</strong> What could go wrong and its impact</li>
+        <li><strong>Approval History:</strong> Who approved what and when</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Compliance Considerations -->
+  <section class="content-section content-section--open">
+    <div class="content-section__header">
+      <span class="content-section__icon">C</span>
+      <h3 class="content-section__title">Compliance Considerations</h3>
+    </div>
+    <div class="content-section__body">
+      <p>For AI systems, governance must address additional concerns:</p>
+
+      <h4>Transparency</h4>
+      <ul>
+        <li>Users know they're interacting with AI</li>
+        <li>Source attribution shows where information comes from</li>
+        <li>Trace logs provide auditability</li>
+      </ul>
+
+      <h4>Accuracy & Safety</h4>
+      <ul>
+        <li>Knowledge base is the source of truth</li>
+        <li>Hallucination detection prevents misinformation</li>
+        <li>Human escalation path for complex issues</li>
+      </ul>
+
+      <h4>Continuous Monitoring</h4>
+      <ul>
+        <li>Production traces are logged and reviewable</li>
+        <li>Drift detection alerts on behavior changes</li>
+        <li>Regular human review of sample responses</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Journey Complete -->
+  <section class="content-section content-section--open" style="border-color: var(--color-success); border-width: 2px;">
+    <div class="content-section__header">
+      <span class="content-section__icon" style="color: var(--color-success);">!</span>
+      <h3 class="content-section__title" style="color: var(--color-success);">Journey Complete</h3>
+    </div>
+    <div class="content-section__body">
+      <p>You've followed Acme Widget Co through the complete AI development lifecycle:</p>
+
+      <ol>
+        <li><strong>Problem Definition:</strong> Identified business needs and success criteria</li>
+        <li><strong>Requirements:</strong> Extracted functional requirements from stakeholders</li>
+        <li><strong>Design:</strong> Architected a RAG-based solution with testing strategy</li>
+        <li><strong>Implementation:</strong> Built code with traditional tests + AI evals</li>
+        <li><strong>Evaluation:</strong> Iterated through v1→v2→v3 based on eval results</li>
+        <li><strong>Production:</strong> Deployed with monitoring and governance</li>
+      </ol>
+
+      <p style="margin-top: var(--space-lg);"><strong>Key Takeaway:</strong> AI evals are acceptance tests for AI behavior. They sit alongside traditional tests in the test pyramid, validating that AI systems meet requirements for accuracy, grounding, and appropriate behavior.</p>
+
+      <div style="margin-top: var(--space-xl); text-align: center;">
+        <a href="{{ url_for('narrative.landing') }}" class="phase-nav-btn phase-nav-btn--prev" style="display: inline-flex;">
+          <span class="phase-nav-btn__arrow">&larr;</span>
+          <span class="phase-nav-btn__text">
+            <span class="phase-nav-btn__label">Return to</span>
+            <span class="phase-nav-btn__title">Start</span>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}
+
+{% block phase_navigation %}
+<!-- Custom navigation for governance (last page) -->
+<nav class="phase-nav-bottom">
+  <a href="{{ url_for('narrative.phase_5') }}" class="phase-nav-btn phase-nav-btn--prev">
+    <span class="phase-nav-btn__arrow">&larr;</span>
+    <span class="phase-nav-btn__text">
+      <span class="phase-nav-btn__label">Previous</span>
+      <span class="phase-nav-btn__title">Phase 5</span>
+    </span>
+  </a>
+  <div></div>
+</nav>
+{% endblock %}

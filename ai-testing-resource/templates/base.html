@@ -19,6 +19,8 @@
 <body>
   <nav class="nav">
     <ul class="nav__tabs">
+      <li><a href="{{ url_for('narrative.landing') }}"
+             class="nav__tab {% if active_nav == 'narrative' %}nav__tab--active{% endif %}">Learning Journey</a></li>
       <li><a href="{{ url_for('viewer.test_navigator', test_type='unit') }}"
              class="nav__tab {% if active_nav == 'tests' %}nav__tab--active{% endif %}">Test Navigator</a></li>
       <li><a href="{{ url_for('viewer.trace_inspector', version='v1') }}"

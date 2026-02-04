@@ -1,0 +1,169 @@
+{% extends "narrative/base_narrative.html" %}
+
+{% block phase_content %}
+<div class="narrative-content">
+  {% if architecture_content %}
+  <section class="content-section content-section--open">
+    <div class="content-section__header">
+      <span class="content-section__icon">A</span>
+      <h3 class="content-section__title">Architecture Overview</h3>
+    </div>
+    <div class="content-section__body">
+      {{ architecture_content | safe }}
+    </div>
+  </section>
+  {% else %}
+  <section class="content-section content-section--open">
+    <div class="content-section__header">
+      <span class="content-section__icon">A</span>
+      <h3 class="content-section__title">Architecture Overview</h3>
+    </div>
+    <div class="content-section__body">
+      <h3>System Architecture</h3>
+      <pre><code>
++-------------------------------------------------------------+
+|                     WEB INTERFACE                           |
+|  Customer types question -> Displays response + sources     |
++-----------------------------+-------------------------------+
+                              |
+                              v
++-------------------------------------------------------------+
+|                    CHATBOT SERVICE                          |
+|  1. Receives question                                       |
+|  2. Retrieves relevant documents from KB                    |
+|  3. Constructs prompt with context                          |
+|  4. Calls AI model                                          |
+|  5. Returns response with sources                           |
++-----------------------------+-------------------------------+
+                              |
+              +---------------+---------------+
+              v                               v
++--------------------------+    +--------------------------+
+|    KNOWLEDGE BASE        |    |       AI MODEL           |
+|    (Chroma Vector DB)    |    |    (Claude Sonnet)       |
+|                          |    |                          |
+|  - pricing_tiers.md      |    |  - Concise responses     |
+|  - product_specs.md      |    |  - Grounded in context   |
+|  - return_policy.md      |    |  - Source attribution    |
+|  - shipping_info.md      |    |                          |
++--------------------------+    +--------------------------+
+      </code></pre>
+
+      <p>The architecture follows a standard RAG (Retrieval-Augmented Generation) pattern where user questions are first matched against the knowledge base, then relevant context is included in the prompt to the AI model.</p>
+    </div>
+  </section>
+  {% endif %}
+
+  {% if technology_content %}
+  <section class="content-section content-section--open">
+    <div class="content-section__header">
+      <span class="content-section__icon">T</span>
+      <h3 class="content-section__title">Technology Choices</h3>
+    </div>
+    <div class="content-section__body">
+      {{ technology_content | safe }}
+    </div>
+  </section>
+  {% else %}
+  <section class="content-section content-section--open">
+    <div class="content-section__header">
+      <span class="content-section__icon">T</span>
+      <h3 class="content-section__title">Technology Choices</h3>
+    </div>
+    <div class="content-section__body">
+      <table>
+        <tr>
+          <th>Component</th>
+          <th>Technology</th>
+          <th>Rationale</th>
+        </tr>
+        <tr>
+          <td>Vector Store</td>
+          <td>Chroma</td>
+          <td>Lightweight, local, no external dependencies</td>
+        </tr>
+        <tr>
+          <td>Embeddings</td>
+          <td>sentence-transformers</td>
+          <td>Fast, accurate, no API calls needed</td>
+        </tr>
+        <tr>
+          <td>AI Model</td>
+          <td>Claude Sonnet</td>
+          <td>Balance of quality and latency</td>
+        </tr>
+        <tr>
+          <td>Web Framework</td>
+          <td>Flask</td>
+          <td>Simple, Python native, easy testing</td>
+        </tr>
+        <tr>
+          <td>Knowledge Base</td>
+          <td>Markdown files</td>
+          <td>Version controlled, easy to update</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+  {% endif %}
+
+  {% if testing_content %}
+  <section class="content-section content-section--open">
+    <div class="content-section__header">
+      <span class="content-section__icon">P</span>
+      <h3 class="content-section__title">Testing Strategy - Where AI Evals Fit</h3>
+    </div>
+    <div class="content-section__body">
+      {{ testing_content | safe }}
+    </div>
+  </section>
+  {% else %}
+  <section class="content-section content-section--open">
+    <div class="content-section__header">
+      <span class="content-section__icon">P</span>
+      <h3 class="content-section__title">Testing Strategy - Where AI Evals Fit</h3>
+    </div>
+    <div class="content-section__body">
+      <h3>The Test Pyramid with AI Evals</h3>
+
+      <pre><code>
+                +-------------------------+
+                |    AI ACCEPTANCE        |  <- AI Evals live here
+                |    - Grounding          |
+                |    - Accuracy           |
+                |    - No hallucination   |
+                +-------------------------+
+          +-------------------------------------+
+          |         END-TO-END                  |
+          |    - Full user journey              |
+          |    - UI -> API -> Response          |
+          +-------------------------------------+
+    +---------------------------------------------------+
+    |              INTEGRATION                          |
+    |    - RAG pipeline                                 |
+    |    - Vector store queries                         |
+    |    - Prompt construction                          |
+    +---------------------------------------------------+
++-----------------------------------------------------------+
+|                     UNIT                                  |
+|    - Input sanitization                                   |
+|    - Token counting                                       |
+|    - Response formatting                                  |
++-----------------------------------------------------------+
+      </code></pre>
+
+      <h3>Key Insight</h3>
+      <p><strong>AI Evals are acceptance tests for AI behavior.</strong> They sit at the top of the pyramid and validate that the AI system meets requirements like accuracy, grounding, and appropriate response format.</p>
+
+      <p>Traditional tests verify that code works correctly. AI evals verify that the AI <em>behaves</em> correctly - that it:</p>
+      <ul>
+        <li>Uses the knowledge base appropriately</li>
+        <li>Doesn't hallucinate information</li>
+        <li>Provides accurate, helpful responses</li>
+        <li>Follows the expected format and tone</li>
+      </ul>
+    </div>
+  </section>
+  {% endif %}
+</div>
+{% endblock %}

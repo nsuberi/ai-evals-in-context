@@ -1,0 +1,113 @@
+{% extends "narrative/base_narrative.html" %}
+
+{% block title %}AI Testing Resource - Learn AI Evals{% endblock %}
+
+{% block phase_header %}
+<!-- Custom hero instead of standard phase header -->
+<section class="landing-hero">
+  <h1 class="landing-hero__title">Follow Acme Widget Co's Journey</h1>
+  <p class="landing-hero__subtitle">
+    See how a real product team integrates AI evaluations alongside
+    traditional testing through five development phases.
+  </p>
+  <a href="{{ url_for('narrative.problem') }}" class="landing-cta">
+    Start the Journey
+    <span>&rarr;</span>
+  </a>
+</section>
+{% endblock %}
+
+{% block phase_intro %}{% endblock %}
+
+{% block phase_content %}
+<!-- 3-Part Cycle Section -->
+<section class="cycle-section">
+  <h2 class="cycle-section__title">The Three-Part Development Cycle</h2>
+  <div class="cycle-cards">
+    <div class="cycle-card">
+      <span class="cycle-card__number">1</span>
+      <h3 class="cycle-card__title">Idea</h3>
+      <p class="cycle-card__description">
+        Understanding the problem, defining requirements, and designing the solution.
+      </p>
+    </div>
+    <div class="cycle-card">
+      <span class="cycle-card__number">2</span>
+      <h3 class="cycle-card__title">Production</h3>
+      <p class="cycle-card__description">
+        Building the code, writing tests, and iterating on AI behavior through evaluation.
+      </p>
+    </div>
+    <div class="cycle-card">
+      <span class="cycle-card__number">3</span>
+      <h3 class="cycle-card__title">Monitoring</h3>
+      <p class="cycle-card__description">
+        Deploying to production, observing real usage, and maintaining governance.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- 5 Phases Overview Section -->
+<section class="phases-section">
+  <h2 class="phases-section__title">Five Phases of AI Development</h2>
+  <div class="phase-cards">
+    <a href="{{ url_for('narrative.phase_1') }}" class="phase-card">
+      <span class="phase-card__number">1</span>
+      <h3 class="phase-card__title">Interview & Requirements</h3>
+      <p class="phase-card__description">
+        Understand stakeholder needs, extract requirements, define acceptance criteria.
+      </p>
+    </a>
+    <a href="{{ url_for('narrative.phase_2') }}" class="phase-card">
+      <span class="phase-card__number">2</span>
+      <h3 class="phase-card__title">Solution Design</h3>
+      <p class="phase-card__description">
+        Design architecture, choose technology, plan testing strategy.
+      </p>
+    </a>
+    <a href="{{ url_for('narrative.phase_3') }}" class="phase-card">
+      <span class="phase-card__number">3</span>
+      <h3 class="phase-card__title">Implementation</h3>
+      <p class="phase-card__description">
+        Write code, build test suite, set up CI/CD.
+      </p>
+    </a>
+    <a href="{{ url_for('narrative.phase_4') }}" class="phase-card">
+      <span class="phase-card__number">4</span>
+      <h3 class="phase-card__title">Pre-Production Eval</h3>
+      <p class="phase-card__description">
+        Iterate on AI behavior, identify and fix failure modes.
+      </p>
+    </a>
+    <a href="{{ url_for('narrative.phase_5') }}" class="phase-card">
+      <span class="phase-card__number">5</span>
+      <h3 class="phase-card__title">Production Monitoring</h3>
+      <p class="phase-card__description">
+        Deploy, observe real usage, collect production traces.
+      </p>
+    </a>
+  </div>
+</section>
+
+{% if content %}
+<section class="phase-intro">
+  <div class="phase-intro__content">
+    {{ content | safe }}
+  </div>
+</section>
+{% endif %}
+{% endblock %}
+
+{% block phase_navigation %}
+<nav class="phase-nav-bottom">
+  <div></div>
+  <a href="{{ url_for('narrative.problem') }}" class="phase-nav-btn phase-nav-btn--next">
+    <span class="phase-nav-btn__text">
+      <span class="phase-nav-btn__label">Start with</span>
+      <span class="phase-nav-btn__title">The Problem</span>
+    </span>
+    <span class="phase-nav-btn__arrow">&rarr;</span>
+  </a>
+</nav>
+{% endblock %}

@@ -1,0 +1,126 @@
+{% extends "narrative/base_narrative.html" %}
+
+{% block phase_content %}
+<div class="narrative-content">
+  {% if interview_content %}
+  <section class="content-section content-section--open">
+    <div class="content-section__header">
+      <span class="content-section__icon">Q</span>
+      <h3 class="content-section__title">Stakeholder Interview</h3>
+    </div>
+    <div class="content-section__body">
+      {{ interview_content | safe }}
+    </div>
+  </section>
+  {% else %}
+  <section class="content-section content-section--open">
+    <div class="content-section__header">
+      <span class="content-section__icon">Q</span>
+      <h3 class="content-section__title">Stakeholder Interview</h3>
+    </div>
+    <div class="content-section__body">
+      <blockquote>
+        <strong>INTERVIEWER:</strong> What's the biggest pain point for your support team?
+      </blockquote>
+
+      <blockquote>
+        <strong>SARAH (Support Manager):</strong> We're drowning in repetitive questions. "What's your return policy?" "How much does Enterprise cost?" These are all in our docs, but customers don't want to search.
+      </blockquote>
+
+      <blockquote>
+        <strong>INTERVIEWER:</strong> How many of these repetitive questions do you see?
+      </blockquote>
+
+      <blockquote>
+        <strong>SARAH:</strong> About 60% of our tickets. My team spends hours answering the same questions over and over. We could be solving real problems instead.
+      </blockquote>
+
+      <blockquote>
+        <strong>INTERVIEWER:</strong> What would success look like?
+      </blockquote>
+
+      <blockquote>
+        <strong>SARAH:</strong> If 80% of these simple questions could be answered instantly and accurately, my team could focus on the complex issues that actually need human judgment. Speed matters too - our customers expect instant answers now.
+      </blockquote>
+
+      <blockquote>
+        <strong>INTERVIEWER:</strong> What concerns do you have about an AI solution?
+      </blockquote>
+
+      <blockquote>
+        <strong>SARAH:</strong> Accuracy is everything. If it gives wrong information about pricing or return policies, that's worse than slow human support. We need to be able to trust what it says.
+      </blockquote>
+
+      <blockquote>
+        <strong>INTERVIEWER:</strong> How would you want to verify that trust?
+      </blockquote>
+
+      <blockquote>
+        <strong>SARAH:</strong> I'd want to see exactly where the AI is getting its information. If it's pulling from our official docs, that's trustworthy. If it's just making things up, that's a liability.
+      </blockquote>
+    </div>
+  </section>
+  {% endif %}
+
+  {% if requirements_content %}
+  <section class="content-section content-section--open">
+    <div class="content-section__header">
+      <span class="content-section__icon">R</span>
+      <h3 class="content-section__title">Requirements Extraction</h3>
+    </div>
+    <div class="content-section__body">
+      {{ requirements_content | safe }}
+    </div>
+  </section>
+  {% else %}
+  <section class="content-section content-section--open">
+    <div class="content-section__header">
+      <span class="content-section__icon">R</span>
+      <h3 class="content-section__title">Requirements Extraction</h3>
+    </div>
+    <div class="content-section__body">
+      <h3>Functional Requirements</h3>
+      <ol>
+        <li><strong>Instant Response</strong>: System must respond within 5 seconds</li>
+        <li><strong>Grounded Answers</strong>: Responses must cite official knowledge base</li>
+        <li><strong>Accuracy</strong>: Must accurately reflect pricing, policies, and product info</li>
+        <li><strong>Escalation Path</strong>: Complex questions routed to human support</li>
+        <li><strong>Transparency</strong>: Users should know they're talking to AI</li>
+      </ol>
+    </div>
+  </section>
+  {% endif %}
+
+  {% if acceptance_content %}
+  <section class="content-section content-section--open">
+    <div class="content-section__header">
+      <span class="content-section__icon">A</span>
+      <h3 class="content-section__title">Acceptance Criteria</h3>
+    </div>
+    <div class="content-section__body">
+      {{ acceptance_content | safe }}
+    </div>
+  </section>
+  {% else %}
+  <section class="content-section content-section--open">
+    <div class="content-section__header">
+      <span class="content-section__icon">A</span>
+      <h3 class="content-section__title">Acceptance Criteria</h3>
+    </div>
+    <div class="content-section__body">
+      <ul>
+        <li>Given a pricing question, the system responds with correct tier pricing from knowledge base</li>
+        <li>Given a return policy question, the system cites the official 30-day policy</li>
+        <li>Given a shipping question, the system provides accurate delivery timeframes</li>
+        <li>Given an ambiguous question, the system asks for clarification or escalates</li>
+        <li>Response time P95 &lt; 5 seconds</li>
+        <li>Source citation included in every response</li>
+      </ul>
+
+      <h4>Key Artifact: Requirements Document</h4>
+      <p>This requirements document flows into Phase 2, where we'll design the system architecture to meet these needs.</p>
+    </div>
+  </section>
+  {% endif %}
+</div>
+{% endblock %}
