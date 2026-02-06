@@ -3,6 +3,78 @@
 from typing import Dict, List
 from .trace_inspector import get_trace_summary
 
+FAILURE_MODES = {
+    'v1': [
+        {
+            'id': 'fm-v1-01',
+            'name': 'Response too verbose',
+            'severity': 'warning',
+            'description': 'System prompt asks for 300+ word responses. Users want concise ~80 word answers for quick support.',
+            'resolution': 'Updated prompt constraints in v2 to request approximately 80 words.',
+        },
+        {
+            'id': 'fm-v1-02',
+            'name': 'No source attribution',
+            'severity': 'warning',
+            'description': 'Responses never cite knowledge base documents. Users cannot verify the accuracy of information provided.',
+            'resolution': 'Added RAG pipeline in v3 with source citation.',
+        },
+    ],
+    'v2': [
+        {
+            'id': 'fm-v2-01',
+            'name': 'Price hallucination',
+            'severity': 'error',
+            'description': 'Model fabricates pricing details (e.g., $349 instead of $299 for Enterprise, $59 instead of $49 for Starter).',
+            'resolution': 'RAG grounding in v3 ensures prices come from knowledge base documents.',
+        },
+        {
+            'id': 'fm-v2-02',
+            'name': 'Specification hallucination',
+            'severity': 'error',
+            'description': 'Fabricates product specifications like weight, battery capacity, materials, and water resistance ratings.',
+            'resolution': 'Knowledge base retrieval in v3 provides accurate product data.',
+        },
+        {
+            'id': 'fm-v2-03',
+            'name': 'Policy hallucination',
+            'severity': 'error',
+            'description': 'Invents wrong return shipping fees ($9.99 vs $8.95), refund timelines (3-5 vs 5-7 days), and shipping thresholds.',
+            'resolution': 'RAG grounding in v3 retrieves actual company policies.',
+        },
+    ],
+    'v3': [],
+}
+
+ARCHITECTURE_CONTEXT = {
+    'v1': {
+        'prompt_strategy': 'Direct Claude API call with a verbose system prompt requesting 300+ word responses.',
+        'architecture': 'Simple request-response: user question goes directly to Claude with no retrieval or grounding.',
+        'known_limitations': 'No access to company data. Model relies entirely on training data, leading to generic responses.',
+    },
+    'v2': {
+        'prompt_strategy': 'Updated prompt to request concise ~80 word responses. Still no retrieval or grounding.',
+        'architecture': 'Same direct request-response pattern. Prompt engineering alone cannot prevent hallucinations.',
+        'known_limitations': 'Model confidently fabricates specific facts (prices, specs, policies) that sound plausible but are wrong.',
+    },
+    'v3': {
+        'prompt_strategy': 'RAG prompt with context injection. System prompt instructs model to use ONLY provided context.',
+        'architecture': 'RAG pipeline: question → ChromaDB similarity search → retrieve relevant docs → inject into prompt → Claude API call.',
+        'known_limitations': 'Dependent on knowledge base completeness. Questions outside KB scope get "I don\'t have information" response.',
+    },
+}
+
+
+def get_failure_modes(version: str) -> list:
+    """Get failure modes for a specific version."""
+    return FAILURE_MODES.get(version, [])
+
+
+def get_architecture_context(version: str) -> dict:
+    """Get architecture context for a specific version."""
+    return ARCHITECTURE_CONTEXT.get(version, {})
+
+
 VERSIONS = [
     {
         'id': 'v1',

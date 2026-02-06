@@ -2,7 +2,7 @@
 {% from "components/code_canvas.html" import code_canvas %}
 {% from "components/collapsible.html" import collapsible %}
 
-{% block title %}Phase 3: Implementation - AI Testing Resource{% endblock %}
+{% block title %}Phase 3: Building with AI - AI Testing Resource{% endblock %}
 
 {% block phase_intro %}
 {% if intro_content %}
@@ -14,7 +14,7 @@
 {% else %}
 <section class="phase-intro">
   <div class="phase-intro__content">
-    <p>In this phase, we build the chatbot and its test suite. The Test Navigator below lets you explore the different types of tests - from unit tests that verify individual functions to AI acceptance tests that verify the chatbot behaves correctly.</p>
+    <p>In this phase, we build the chatbot and its test suite. Each test type plays a distinct role in validating quality. Explore what each type tests, why it matters for AI features, and dive into the code when you're ready.</p>
   </div>
 </section>
 {% endif %}
@@ -61,110 +61,185 @@
   </div>
 </div>
 
-<div class="layout layout--sidebar">
-  <!-- Sidebar: AI Acceptance Tests, Test Types, and Tests -->
-  <aside>
-    <!-- AI Acceptance Testing Section -->
-    {% if ai_acceptance_tests %}
-    <div style="margin-bottom: var(--space-lg);">
-      <h3 class="sidebar-section-header sidebar-section-header--ai">
-        Acceptance Testing AI Features
-        <span class="sidebar-section-badge">AI</span>
-      </h3>
-      <div class="sidebar">
-        {% for test in ai_acceptance_tests %}
-        <a href="{{ url_for('narrative.phase_3', test_type='ai_acceptance', test=test.id) }}"
-           class="sidebar__item sidebar__item--ai {% if test.id == selected_test %}sidebar__item--active{% endif %}">
-          {{ test.name }}
-        </a>
-        {% endfor %}
-      </div>
-    </div>
-    <div class="sidebar-section-divider"></div>
-    {% endif %}
+<!-- Core Statement -->
+<p class="test-type-card__statement">
+  AI evaluation is acceptance testing linked to business value.
+</p>
 
-    <!-- Traditional Test Types -->
-    <div style="margin-bottom: var(--space-lg);">
-      <h3 class="sidebar-section-header">
-        Test Types
-        <span class="sidebar-tag">SDLC</span>
-      </h3>
-      <div class="sidebar">
-        {% for type in test_types %}
-        <a href="{{ url_for('narrative.phase_3', test_type=type.id) }}"
-           class="sidebar__item {% if type.id == current_type and current_type != 'ai_acceptance' %}sidebar__item--active{% endif %}">
-          {{ type.name }}
-        </a>
-        {% endfor %}
-      </div>
+<!-- Test Type Cards Grid -->
+<div class="test-type-cards">
+  <!-- AI Acceptance Tests (first, prominent) -->
+  {% if all_type_explanations.get('ai_acceptance') %}
+  <div class="test-type-card test-type-card--ai">
+    <div class="test-type-card__header">
+      <h3 class="test-type-card__title">AI Acceptance Testing</h3>
+      <span class="test-type-card__badge">AI</span>
     </div>
-
-    {% if tests %}
-    <div>
-      <h3 style="color: var(--color-chrome-text-bright); font-size: 0.875rem; margin: 0 0 var(--space-sm) 0;">
-        {{ current_type | title }} Tests
-      </h3>
-      <div class="sidebar">
-        {% for test in tests %}
-        <a href="{{ url_for('narrative.phase_3', test_type=current_type, test=test.id) }}"
-           class="sidebar__item {% if test.id == selected_test %}sidebar__item--active{% endif %}">
-          {{ test.name }}
-        </a>
-        {% endfor %}
-      </div>
+    <div class="test-type-card__content">
+      {{ all_type_explanations['ai_acceptance'].content | safe }}
+    </div>
+    {% if all_type_explanations['ai_acceptance'].relationship_to_ai %}
+    <div class="test-type-card__ai-relationship">
+      <div class="test-type-card__ai-label">Relationship to AI</div>
+      <div class="test-type-card__ai-text">{{ all_type_explanations['ai_acceptance'].relationship_to_ai | safe }}</div>
     </div>
     {% endif %}
-  </aside>
+    <a href="{{ url_for('narrative.phase_3', test_type='ai_acceptance', show_code='1') }}" class="test-type-card__view-code">
+      &#9654; View Code
+    </a>
+  </div>
+  {% endif %}
 
-  <!-- Main Content -->
-  <div class="content-primary">
-    <!-- Test Code Canvas (Primary - The Star) -->
-    {% if test_code %}
-    <div class="code-canvas" data-test-id="{{ selected_test }}">
-      <div class="code-canvas__header">
-        <span class="code-canvas__filename">{{ test_filename }}</span>
-        <div style="display: flex; align-items: center; gap: 0.5rem;">
-          <span class="code-canvas__badge">{{ current_type }}</span>
-          <button class="run-button" onclick="runTest('{{ selected_test }}')">
-            <span>&#9654;</span> Run
-          </button>
-        </div>
-      </div>
-      <pre class="code-canvas__code highlight"><code>{{ test_code | safe }}</code></pre>
+  <!-- AI Evals -->
+  {% if all_type_explanations.get('evals') %}
+  <div class="test-type-card test-type-card--ai">
+    <div class="test-type-card__header">
+      <h3 class="test-type-card__title">AI Evals</h3>
+      <span class="test-type-card__badge">AI</span>
     </div>
-    {% else %}
-    <div class="explanation">
-      <p>Select a test from the sidebar to view its code.</p>
+    <div class="test-type-card__content">
+      {{ all_type_explanations['evals'].content | safe }}
+    </div>
+    {% if all_type_explanations['evals'].relationship_to_ai %}
+    <div class="test-type-card__ai-relationship">
+      <div class="test-type-card__ai-label">Relationship to AI</div>
+      <div class="test-type-card__ai-text">{{ all_type_explanations['evals'].relationship_to_ai | safe }}</div>
     </div>
     {% endif %}
+    <a href="{{ url_for('narrative.phase_3', test_type='evals', show_code='1') }}" class="test-type-card__view-code">
+      &#9654; View Code
+    </a>
+  </div>
+  {% endif %}
 
-    <!-- Secondary Content Row -->
-    <div class="content-secondary">
-      <!-- Related App Code (Secondary) -->
-      {% if app_code %}
-      <div class="code-canvas code-canvas--secondary">
-        <div class="code-canvas__header">
-          <span class="code-canvas__filename">{{ app_filename }}</span>
-          <span class="code-canvas__badge" style="background: var(--color-info);">App Code</span>
-        </div>
-        <pre class="code-canvas__code highlight"><code>{{ app_code | safe }}</code></pre>
-      </div>
-      {% endif %}
+  <!-- Traditional Test Types -->
+  {% for type in test_types %}
+  {% if type.id not in ['evals'] %}
+  {% set expl = all_type_explanations.get(type.id) %}
+  {% if expl %}
+  <div class="test-type-card">
+    <div class="test-type-card__header">
+      <h3 class="test-type-card__title">{{ expl.title }}</h3>
+    </div>
+    <div class="test-type-card__content">
+      {{ expl.content | safe }}
+    </div>
+    {% if expl.relationship_to_ai %}
+    <div class="test-type-card__ai-relationship">
+      <div class="test-type-card__ai-label">Relationship to AI</div>
+      <div class="test-type-card__ai-text">{{ expl.relationship_to_ai | safe }}</div>
+    </div>
+    {% endif %}
+    <a href="{{ url_for('narrative.phase_3', test_type=type.id, show_code='1') }}" class="test-type-card__view-code">
+      &#9654; View Code
+    </a>
+  </div>
+  {% endif %}
+  {% endif %}
+  {% endfor %}
+</div>
 
-      <!-- Explanation Panel -->
-      <div class="explanation">
-        <h3 class="explanation__title">{{ explanation.title }}</h3>
-        <div class="explanation__content">
-          {{ explanation.content | safe }}
+<!-- Code Collapsible Section (shown when show_code=1) -->
+{% if show_code %}
+<div class="narrative-content" id="code-section">
+  <div class="collapsible collapsible--open">
+    <button class="collapsible__trigger" onclick="toggleCollapsible(this.parentElement)">
+      <span class="collapsible__icon">&#9654;</span>
+      <span>Code: {{ explanation.title }}</span>
+    </button>
+    <div class="collapsible__content">
+      <div class="layout layout--sidebar" style="padding: 0;">
+        <!-- Test file list within this type -->
+        <aside>
+          {% if current_type == 'ai_acceptance' and ai_acceptance_tests %}
+          <div>
+            <h3 style="color: var(--color-chrome-text-bright); font-size: 0.875rem; margin: 0 0 var(--space-sm) 0;">
+              AI Acceptance Tests
+            </h3>
+            <div class="sidebar">
+              {% for test in ai_acceptance_tests %}
+              <a href="{{ url_for('narrative.phase_3', test_type='ai_acceptance', test=test.id, show_code='1') }}#code-section"
+                 class="sidebar__item sidebar__item--ai {% if test.id == selected_test %}sidebar__item--active{% endif %}">
+                {{ test.name }}
+              </a>
+              {% endfor %}
+            </div>
+          </div>
+          {% elif tests %}
+          <div>
+            <h3 style="color: var(--color-chrome-text-bright); font-size: 0.875rem; margin: 0 0 var(--space-sm) 0;">
+              {{ current_type | title }} Tests
+            </h3>
+            <div class="sidebar">
+              {% for test in tests %}
+              <a href="{{ url_for('narrative.phase_3', test_type=current_type, test=test.id, show_code='1') }}#code-section"
+                 class="sidebar__item {% if test.id == selected_test %}sidebar__item--active{% endif %}">
+                {{ test.name }}
+              </a>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+
+          <!-- Switch to other test types -->
+          <div style="margin-top: var(--space-lg);">
+            <h3 style="color: var(--color-chrome-text-bright); font-size: 0.875rem; margin: 0 0 var(--space-sm) 0;">
+              Other Types
+            </h3>
+            <div class="sidebar">
+              {% if current_type != 'ai_acceptance' %}
+              <a href="{{ url_for('narrative.phase_3', test_type='ai_acceptance', show_code='1') }}#code-section"
+                 class="sidebar__item sidebar__item--ai">
+                AI Acceptance
+              </a>
+              {% endif %}
+              {% for type in test_types %}
+              {% if type.id != current_type %}
+              <a href="{{ url_for('narrative.phase_3', test_type=type.id, show_code='1') }}#code-section"
+                 class="sidebar__item">
+                {{ type.name }}
+              </a>
+              {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </aside>
+
+        <!-- Code Canvas + Run Button -->
+        <div class="content-primary">
+          {% if test_code %}
+          <div class="code-canvas" data-test-id="{{ selected_test }}">
+            <div class="code-canvas__header">
+              <span class="code-canvas__filename">{{ test_filename }}</span>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span class="code-canvas__badge">{{ current_type }}</span>
+                <button class="run-button" onclick="runTest('{{ selected_test }}')">
+                  <span>&#9654;</span> Run
+                </button>
+              </div>
+            </div>
+            <pre class="code-canvas__code highlight"><code>{{ test_code | safe }}</code></pre>
+          </div>
+          {% else %}
+          <div class="explanation">
+            <p>Select a test from the sidebar to view its code.</p>
+          </div>
+          {% endif %}
+
+          <!-- Related App Code -->
+          {% if app_code %}
+          <div class="code-canvas code-canvas--secondary">
+            <div class="code-canvas__header">
+              <span class="code-canvas__filename">{{ app_filename }}</span>
+              <span class="code-canvas__badge" style="background: var(--color-info);">App Code</span>
+            </div>
+            <pre class="code-canvas__code highlight"><code>{{ app_code | safe }}</code></pre>
+          </div>
+          {% endif %}
         </div>
-        {% if explanation.relationship_to_ai %}
-        <div style="margin-top: var(--space-md); padding-top: var(--space-md); border-top: 1px solid rgba(255,255,255,0.1);">
-          <strong style="color: var(--color-accent);">Relationship to AI:</strong>
-          <p style="margin-top: var(--space-xs);">{{ explanation.relationship_to_ai | safe }}</p>
-        </div>
-        {% endif %}
       </div>
     </div>
   </div>
 </div>
+{% endif %}
 {% endblock %}

@@ -4,18 +4,26 @@ Tests all major routes of the AI Testing Resource application.
 Requires Docker Compose to be running: docker compose up -d
 """
 
+import re
+
 import pytest
 from playwright.sync_api import Page, expect
 
 
 def test_home_page_loads(page: Page, base_url: str):
-    """Test that the home page loads and shows the ask form."""
+    """Test that the landing page loads with governance framework and journey CTA."""
     page.goto(f"{base_url}/")
 
-    # Home page renders the ask form directly
-    expect(page.locator("textarea")).to_be_visible()
-    expect(page.locator("select")).to_be_visible()
-    expect(page.locator("button[type='submit']")).to_be_visible()
+    # Landing page has governance-first content
+    expect(page.locator("text=Governance")).to_be_visible()
+
+    # Has "Start the Journey" CTA link
+    cta = page.locator("a.landing-cta")
+    expect(cta).to_be_visible()
+    expect(cta).to_have_text(re.compile(r"Start the Journey"))
+
+    # Has phase cards for the 5 phases
+    expect(page.locator(".phase-card").first).to_be_visible()
 
 
 def test_ask_page_loads(page: Page, base_url: str):

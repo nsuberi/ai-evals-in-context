@@ -10,10 +10,11 @@ logger = logging.getLogger(__name__)
 app_bp = Blueprint('app', __name__)
 
 
-@app_bp.route('/')
-def index():
-    """Redirect to the viewer"""
-    return render_template('ask.html', active_nav='demo')
+# Root route is now handled by narrative blueprint
+# @app_bp.route('/')
+# def index():
+#     """Redirect to the viewer"""
+#     return render_template('ask.html', active_nav='demo')
 
 
 @app_bp.route('/ask', methods=['GET', 'POST'])

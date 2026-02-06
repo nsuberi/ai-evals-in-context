@@ -11,7 +11,7 @@ import markdown
 
 from .test_navigator import get_tests_by_type, get_test_code, get_explanation, TEST_TYPES, get_ai_acceptance_tests
 from .trace_inspector import get_traces_by_version, get_trace_detail, render_annotated_response
-from .iteration_timeline import get_iteration_summary, get_comparison_data
+from .iteration_timeline import get_iteration_summary, get_comparison_data, get_failure_modes, get_architecture_context
 from .highlighting import syntax_highlight
 
 narrative_bp = Blueprint('narrative', __name__)
@@ -21,8 +21,8 @@ PHASES = {
     'landing': {
         'id': 'landing',
         'number': 0,
-        'title': 'Welcome',
-        'subtitle': "Follow Acme Widget Co's Journey",
+        'title': 'AI in Production',
+        'subtitle': 'A Governance-First Approach',
         'short_title': 'Start',
         'url': '/',
         'next': 'problem',
@@ -41,9 +41,9 @@ PHASES = {
     'phase_1': {
         'id': 'phase_1',
         'number': 1,
-        'title': 'Interview & Requirements',
-        'subtitle': 'Understanding Stakeholder Needs',
-        'short_title': 'Phase 1',
+        'title': 'Interviewing to Discover Requirements',
+        'subtitle': 'Understanding Stakeholder Needs Through Discovery',
+        'short_title': 'Discovery',
         'url': '/phase/1',
         'next': 'phase_2',
         'prev': 'problem',
@@ -51,9 +51,9 @@ PHASES = {
     'phase_2': {
         'id': 'phase_2',
         'number': 2,
-        'title': 'Solution Design',
-        'subtitle': 'Architecture & Testing Strategy',
-        'short_title': 'Phase 2',
+        'title': 'Planning a Solution Design',
+        'subtitle': 'Architecture, Technology & Testing Strategy',
+        'short_title': 'Design',
         'url': '/phase/2',
         'next': 'phase_3',
         'prev': 'phase_1',
@@ -61,9 +61,9 @@ PHASES = {
     'phase_3': {
         'id': 'phase_3',
         'number': 3,
-        'title': 'Implementation',
-        'subtitle': 'Building & Testing',
-        'short_title': 'Phase 3',
+        'title': 'Building with AI',
+        'subtitle': 'Test Types as the Path to Quality',
+        'short_title': 'Build',
         'url': '/phase/3',
         'next': 'phase_4',
         'prev': 'phase_2',
@@ -71,9 +71,9 @@ PHASES = {
     'phase_4': {
         'id': 'phase_4',
         'number': 4,
-        'title': 'Pre-Production Evaluation',
-        'subtitle': 'Iterating on AI Behavior',
-        'short_title': 'Phase 4',
+        'title': 'Building AI Features',
+        'subtitle': 'Iterating Through Failure Modes',
+        'short_title': 'Iterate',
         'url': '/phase/4',
         'next': 'phase_5',
         'prev': 'phase_3',
@@ -81,9 +81,9 @@ PHASES = {
     'phase_5': {
         'id': 'phase_5',
         'number': 5,
-        'title': 'Production Monitoring',
-        'subtitle': 'Live Demo & Traces',
-        'short_title': 'Phase 5',
+        'title': 'Continuous Monitoring',
+        'subtitle': 'Production Feedback & Observation',
+        'short_title': 'Monitor',
         'url': '/phase/5',
         'next': 'governance',
         'prev': 'phase_4',
@@ -199,12 +199,19 @@ def phase_2():
 
 @narrative_bp.route('/phase/3')
 def phase_3():
-    """Phase 3: Implementation - integrates Test Navigator"""
+    """Phase 3: Building with AI - test types as center stage"""
     context = get_phase_context('phase_3')
     intro_content = load_narrative_content('phase3_intro.md')
 
-    # Get test navigator data (reuse existing functionality)
+    # Load explanations for ALL test types (for card grid display)
+    all_type_explanations = {}
+    for t in TEST_TYPES:
+        all_type_explanations[t['id']] = get_explanation(t['id'])
+    all_type_explanations['ai_acceptance'] = get_explanation('ai_acceptance')
+
+    # Get test navigator data for code viewing (when show_code=1)
     test_type = request.args.get('test_type', 'unit')
+    show_code = request.args.get('show_code', '0') == '1'
     ai_acceptance_tests = get_ai_acceptance_tests()
 
     if test_type == 'ai_acceptance':
@@ -237,6 +244,7 @@ def phase_3():
                            intro_content=intro_content,
                            test_types=TEST_TYPES,
                            current_type=test_type,
+                           show_code=show_code,
                            tests=tests,
                            selected_test=selected_test,
                            test_code=test_code,
@@ -244,13 +252,14 @@ def phase_3():
                            app_code=app_code,
                            app_filename=app_filename,
                            explanation=explanation,
+                           all_type_explanations=all_type_explanations,
                            ai_acceptance_tests=ai_acceptance_tests,
                            **context)
 
 
 @narrative_bp.route('/phase/4')
 def phase_4():
-    """Phase 4: Pre-Production Evaluation - integrates Trace Inspector + Timeline"""
+    """Phase 4: Building AI Features - integrates Trace Inspector + Timeline"""
     context = get_phase_context('phase_4')
     intro_content = load_narrative_content('phase4_intro.md')
 
@@ -274,6 +283,10 @@ def phase_4():
     summary = get_iteration_summary()
     comparison = get_comparison_data()
 
+    # Get failure modes and architecture context for current version
+    failure_modes = get_failure_modes(version)
+    arch_context = get_architecture_context(version)
+
     return render_template('narrative/phase4_evaluation.html',
                            intro_content=intro_content,
                            current_version=version,
@@ -283,6 +296,8 @@ def phase_4():
                            annotated_response=annotated_response,
                            summary=summary,
                            comparison=comparison,
+                           failure_modes=failure_modes,
+                           arch_context=arch_context,
                            **context)
 
 

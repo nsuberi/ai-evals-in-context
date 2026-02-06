@@ -1,7 +1,7 @@
 {% extends "narrative/base_narrative.html" %}
 {% from "components/collapsible.html" import collapsible %}
 
-{% block title %}Phase 4: Pre-Production Evaluation - AI Testing Resource{% endblock %}
+{% block title %}Phase 4: Building AI Features - AI Testing Resource{% endblock %}
 
 {% block phase_intro %}
 {% if intro_content %}
@@ -27,12 +27,12 @@
       <div class="timeline__circle timeline__circle--v1">v1</div>
       <span class="timeline__label">Too Verbose</span>
     </div>
-    <span class="timeline__arrow">→</span>
+    <span class="timeline__arrow">&rarr;</span>
     <div class="timeline__version">
       <div class="timeline__circle timeline__circle--v2">v2</div>
       <span class="timeline__label">Hallucinating</span>
     </div>
-    <span class="timeline__arrow">→</span>
+    <span class="timeline__arrow">&rarr;</span>
     <div class="timeline__version">
       <div class="timeline__circle timeline__circle--v3">v3</div>
       <span class="timeline__label">Accurate</span>
@@ -56,6 +56,44 @@
   </div>
   {% endif %}
 </div>
+
+<!-- Failure Mode Panel -->
+{% if failure_modes %}
+<div class="narrative-content">
+  <div class="failure-mode-panel failure-mode-panel--{{ current_version }}">
+    <h3>Discovered Failure Modes ({{ current_version | upper }})</h3>
+    {% for fm in failure_modes %}
+    <div class="failure-mode-item failure-mode-item--{{ fm.severity }}">
+      <strong>{{ fm.name }}</strong>
+      <p>{{ fm.description }}</p>
+      <span class="failure-mode-item__resolution">Resolution: {{ fm.resolution }}</span>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<!-- Architecture Context (Collapsible) -->
+{% if arch_context %}
+<div class="narrative-content">
+  <div class="collapsible">
+    <button class="collapsible__trigger" onclick="toggleCollapsible(this.parentElement)">
+      <span class="collapsible__icon">&#9654;</span>
+      <span>Architecture Context ({{ current_version | upper }})</span>
+    </button>
+    <div class="collapsible__content">
+      <div class="architecture-context">
+        <h4>Prompt Strategy</h4>
+        <p>{{ arch_context.prompt_strategy }}</p>
+        <h4>Architecture</h4>
+        <p>{{ arch_context.architecture }}</p>
+        <h4>Known Limitations</h4>
+        <p>{{ arch_context.known_limitations }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
 
 <!-- Trace Inspector Section -->
 <div class="layout layout--sidebar">
@@ -84,9 +122,9 @@
     {% if traces %}
     <div>
       <h3 style="color: var(--color-chrome-text-bright); font-size: 0.875rem; margin: 0 0 var(--space-sm) 0;">
-        Sample Traces
+        Sample Traces ({{ traces | length }})
       </h3>
-      <div class="sidebar">
+      <div class="sidebar trace-sidebar-scroll">
         {% for trace in traces %}
         <a href="{{ url_for('narrative.phase_4', version=current_version, trace=trace.id) }}"
            class="sidebar__item {% if trace.id == selected_trace %}sidebar__item--active{% endif %}">

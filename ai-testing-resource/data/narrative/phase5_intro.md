@@ -1,13 +1,11 @@
-## Live in Production
+## Continuous Monitoring
 
-With v3 approved by evaluations, we deploy to production. The live demo below lets you interact with the actual chatbot.
+With v3 approved by evaluations, we deploy to production and begin continuous monitoring. The live demo below lets you interact with the actual chatbot and see the full RAG pipeline in action.
 
 **Try It Yourself:**
-1. Ask a question about Acme Widgets (pricing, returns, shipping)
+1. Ask a question about Acme Widgets (pricing, returns, shipping, products)
 2. Expand the "Knowledge Base Pipeline" to see the RAG trace
-3. Compare versions to see how prompt engineering affects responses
+3. Compare versions to see how prompt engineering and architecture affect responses
 
-**What to Watch:**
-- How v3 finds and uses relevant knowledge base documents
-- How the response stays concise while being accurate
-- How sources are cited in the response
+**The Feedback Loop:**
+Production monitoring isn't the end - it's the beginning of the next cycle. Real usage data surfaces new requirements, edge cases, and opportunities for improvement that feed back into Phase 1: Discovery.

@@ -1,14 +1,15 @@
 {% extends "narrative/base_narrative.html" %}
+{% from "components/rainbow_arc.html" import rainbow_arc %}
 
-{% block title %}AI Testing Resource - Learn AI Evals{% endblock %}
+{% block title %}AI Testing Resource - Governance-First AI Development{% endblock %}
 
 {% block phase_header %}
 <!-- Custom hero instead of standard phase header -->
 <section class="landing-hero">
-  <h1 class="landing-hero__title">Follow Acme Widget Co's Journey</h1>
+  <h1 class="landing-hero__title">AI in Production: A Governance-First Approach</h1>
   <p class="landing-hero__subtitle">
-    See how a real product team integrates AI evaluations alongside
-    traditional testing through five development phases.
+    See how governance accelerates AI delivery by providing standardized paths
+    to production, clear quality gates, and measurable business value.
   </p>
   <a href="{{ url_for('narrative.problem') }}" class="landing-cta">
     Start the Journey
@@ -20,32 +21,49 @@
 {% block phase_intro %}{% endblock %}
 
 {% block phase_content %}
-<!-- 3-Part Cycle Section -->
+<!-- 3-Part Framework Section -->
 <section class="cycle-section">
-  <h2 class="cycle-section__title">The Three-Part Development Cycle</h2>
+  <h2 class="cycle-section__title">The Three-Part Framework</h2>
   <div class="cycle-cards">
     <div class="cycle-card">
       <span class="cycle-card__number">1</span>
-      <h3 class="cycle-card__title">Idea</h3>
+      <h3 class="cycle-card__title">Governance</h3>
       <p class="cycle-card__description">
-        Understanding the problem, defining requirements, and designing the solution.
+        Getting things into production in a standardized way.
+        Governance provides the repeatable process that turns experimentation into reliable delivery.
       </p>
     </div>
     <div class="cycle-card">
       <span class="cycle-card__number">2</span>
-      <h3 class="cycle-card__title">Production</h3>
+      <h3 class="cycle-card__title">Approvals</h3>
       <p class="cycle-card__description">
-        Building the code, writing tests, and iterating on AI behavior through evaluation.
+        Quality standards evaluation at every stage.
+        Each phase produces artifacts that demonstrate readiness and build confidence for stakeholders.
       </p>
     </div>
     <div class="cycle-card">
       <span class="cycle-card__number">3</span>
-      <h3 class="cycle-card__title">Monitoring</h3>
+      <h3 class="cycle-card__title">Business Value</h3>
       <p class="cycle-card__description">
-        Deploying to production, observing real usage, and maintaining governance.
+        Is the juice worth the squeeze?
+        Continuous assessment ensures AI features deliver measurable outcomes, not just technical novelty.
       </p>
     </div>
   </div>
+</section>
+
+<!-- Guiding Principle -->
+<section class="guiding-principle">
+  <blockquote class="guiding-principle__quote">
+    "Experimentation is the path to production, governance is the gate
+    to production, and business value is the lens through which you
+    determine success."
+  </blockquote>
+</section>
+
+<!-- Rainbow Arc Phase Visual -->
+<section class="narrative-content" style="padding-bottom: 0;">
+  {{ rainbow_arc(phases, url_for) }}
 </section>
 
 <!-- 5 Phases Overview Section -->
@@ -54,37 +72,37 @@
   <div class="phase-cards">
     <a href="{{ url_for('narrative.phase_1') }}" class="phase-card">
       <span class="phase-card__number">1</span>
-      <h3 class="phase-card__title">Interview & Requirements</h3>
+      <h3 class="phase-card__title">Discovery</h3>
       <p class="phase-card__description">
-        Understand stakeholder needs, extract requirements, define acceptance criteria.
+        Interview stakeholders, discover requirements, define acceptance criteria through conversation.
       </p>
     </a>
     <a href="{{ url_for('narrative.phase_2') }}" class="phase-card">
       <span class="phase-card__number">2</span>
-      <h3 class="phase-card__title">Solution Design</h3>
+      <h3 class="phase-card__title">Design</h3>
       <p class="phase-card__description">
-        Design architecture, choose technology, plan testing strategy.
+        Plan architecture, choose technology, establish a testing strategy.
       </p>
     </a>
     <a href="{{ url_for('narrative.phase_3') }}" class="phase-card">
       <span class="phase-card__number">3</span>
-      <h3 class="phase-card__title">Implementation</h3>
+      <h3 class="phase-card__title">Build</h3>
       <p class="phase-card__description">
-        Write code, build test suite, set up CI/CD.
+        Build with AI, explore test types, and understand how each validates quality.
       </p>
     </a>
     <a href="{{ url_for('narrative.phase_4') }}" class="phase-card">
       <span class="phase-card__number">4</span>
-      <h3 class="phase-card__title">Pre-Production Eval</h3>
+      <h3 class="phase-card__title">Iterate</h3>
       <p class="phase-card__description">
-        Iterate on AI behavior, identify and fix failure modes.
+        Iterate on AI behavior, discover failure modes, and build confidence through traces.
       </p>
     </a>
     <a href="{{ url_for('narrative.phase_5') }}" class="phase-card">
       <span class="phase-card__number">5</span>
-      <h3 class="phase-card__title">Production Monitoring</h3>
+      <h3 class="phase-card__title">Monitor</h3>
       <p class="phase-card__description">
-        Deploy, observe real usage, collect production traces.
+        Deploy to production, observe real usage, and feed learnings back into discovery.
       </p>
     </a>
   </div>

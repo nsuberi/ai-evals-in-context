@@ -3,15 +3,18 @@
     "id": "v3-trace-001",
     "version": "v3",
     "question": "What is your return policy?",
-    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Return Policy]\n# Acme Widgets Return Policy\n\n## Standard Returns\n- 30-day return window from delivery date\n- Items must be unused and in original packaging\n- Full refund to original payment method\n- Return shipping is free for defective items\n- Customer pays return shipping for change-of-mind returns ($8.95 flat rate)\n...",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Return Policy]\n# Acme Widgets Return Policy\n\n## Standard Returns\n- 30-day return window from delivery date\n- Items must be unused and in original packaging\n- Full refund to original payment method\n- Return shipping is free for defective items\n- Customer pays return shipping for change-of-mind returns ($8.95 flat rate)\n\n## Defective Products\n- 90-day warranty on all widgets\n- Free replacement or full refund\n- No return shipping charges\n- Contact support for RMA number before returning\n\n## Non-Returnable Items\n- Customized or personalized widgets\n- Clearance items marked \"Final Sale\"\n- Items damaged due to misuse\n\n## Refund Processing\n- Refunds processed within 5-7 business days of receiving return\n- Original shipping charges are non-refundable\n- Store credit option available (adds 10% bonus value)\n",
     "response": "We offer a 30-day return window from delivery date. Items must be unused and in original packaging for a full refund. Defective products have a 90-day warranty with free return shipping. For change-of-mind returns, there's an $8.95 flat shipping fee. Note that customized items and \"Final Sale\" clearance products cannot be returned. Refunds are processed within 5-7 business days of receiving your return.",
-    "latency_ms": 1850,
+    "latency_ms": 1625,
     "tokens": {
-      "prompt": 485,
-      "completion": 82
+      "prompt": 567,
+      "completion": 62
     },
     "sources": [
-      {"id": "return_policy", "title": "Acme Widgets Return Policy"}
+      {
+        "id": "return_policy",
+        "title": "Acme Widgets Return Policy"
+      }
     ],
     "annotations": [
       {
@@ -19,21 +22,21 @@
         "severity": "success",
         "text": "Correctly states 30-day return window from the knowledge base.",
         "span_start": 11,
-        "span_end": 43
+        "span_end": 50
       },
       {
         "type": "accurate_answer",
         "severity": "success",
         "text": "Correctly states $8.95 shipping fee matching knowledge base.",
-        "span_start": 196,
-        "span_end": 226
+        "span_start": 226,
+        "span_end": 249
       },
       {
         "type": "accurate_answer",
         "severity": "success",
         "text": "Correctly states 5-7 business days refund processing time.",
-        "span_start": 319,
-        "span_end": 370
+        "span_start": 363,
+        "span_end": 380
       },
       {
         "type": "correct_retrieval",
@@ -47,45 +50,212 @@
   {
     "id": "v3-trace-002",
     "version": "v3",
-    "question": "How much does the Enterprise plan cost?",
-    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions...\n\nContext:\n[Acme Widgets Pricing Tiers]\n# Acme Widgets Pricing Tiers\n\n## Enterprise Plan - $299/month\n- Unlimited widgets\n- Phone and email support (4-hour response)\n- Custom analytics and reporting\n- Unlimited user seats\n- Dedicated account manager\n- Custom integrations\n- SLA guarantee (99.9% uptime)\n\nAll plans include a 14-day free trial. Annual billing saves 20%.",
-    "response": "The Enterprise plan costs $299 per month and includes unlimited widgets, phone and email support with 4-hour response time, custom analytics, unlimited user seats, a dedicated account manager, custom integrations, and a 99.9% uptime SLA guarantee. You can save 20% with annual billing. All plans include a 14-day free trial so you can test the features before committing.",
-    "latency_ms": 1720,
+    "question": "Can I return a defective widget?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Return Policy]\n# Acme Widgets Return Policy\n\n## Standard Returns\n- 30-day return window from delivery date\n- Items must be unused and in original packaging\n- Full refund to original payment method\n- Return shipping is free for defective items\n- Customer pays return shipping for change-of-mind returns ($8.95 flat rate)\n\n## Defective Products\n- 90-day warranty on all widgets\n- Free replacement or full refund\n- No return shipping charges\n- Contact support for RMA number before returning\n\n## Non-Returnable Items\n- Customized or personalized widgets\n- Clearance items marked \"Final Sale\"\n- Items damaged due to misuse\n\n## Refund Processing\n- Refunds processed within 5-7 business days of receiving return\n- Original shipping charges are non-refundable\n- Store credit option available (adds 10% bonus value)\n",
+    "response": "Yes! Defective widgets are covered under our 90-day warranty. You can choose between a free replacement or a full refund. We cover all return shipping costs for defective items. Before sending it back, contact our support team to get an RMA number. Refunds are processed within 5-7 business days of receiving the return.",
+    "latency_ms": 1544,
     "tokens": {
-      "prompt": 456,
-      "completion": 78
+      "prompt": 614,
+      "completion": 56
     },
     "sources": [
-      {"id": "pricing_tiers", "title": "Acme Widgets Pricing Tiers"}
+      {
+        "id": "return_policy",
+        "title": "Acme Widgets Return Policy"
+      }
     ],
     "annotations": [
       {
         "type": "accurate_answer",
         "severity": "success",
-        "text": "Correctly states $299/month price from knowledge base.",
-        "span_start": 26,
-        "span_end": 45
+        "text": "Correctly states 90-day warranty period.",
+        "span_start": 45,
+        "span_end": 60
       },
       {
         "type": "accurate_answer",
         "severity": "success",
-        "text": "Correctly states 4-hour response time.",
-        "span_start": 99,
-        "span_end": 122
+        "text": "Correctly states free replacement or full refund options.",
+        "span_start": 87,
+        "span_end": 120
       },
       {
         "type": "accurate_answer",
         "severity": "success",
-        "text": "Correctly states 99.9% uptime SLA.",
-        "span_start": 214,
-        "span_end": 242
+        "text": "Correctly states RMA number requirement.",
+        "span_start": 237,
+        "span_end": 247
+      },
+      {
+        "type": "correct_retrieval",
+        "severity": "success",
+        "text": "Retrieved relevant return_policy document for the query.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v3-trace-003",
+    "version": "v3",
+    "question": "What items cannot be returned?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Return Policy]\n# Acme Widgets Return Policy\n\n## Standard Returns\n- 30-day return window from delivery date\n- Items must be unused and in original packaging\n- Full refund to original payment method\n- Return shipping is free for defective items\n- Customer pays return shipping for change-of-mind returns ($8.95 flat rate)\n\n## Defective Products\n- 90-day warranty on all widgets\n- Free replacement or full refund\n- No return shipping charges\n- Contact support for RMA number before returning\n\n## Non-Returnable Items\n- Customized or personalized widgets\n- Clearance items marked \"Final Sale\"\n- Items damaged due to misuse\n\n## Refund Processing\n- Refunds processed within 5-7 business days of receiving return\n- Original shipping charges are non-refundable\n- Store credit option available (adds 10% bonus value)\n",
+    "response": "Three categories of items cannot be returned: customized or personalized widgets, clearance items marked \"Final Sale,\" and items damaged due to customer misuse. Everything else follows our standard 30-day return window. Items must be unused and in original packaging to qualify. If you're unsure about your situation, contact our support team.",
+    "latency_ms": 1619,
+    "tokens": {
+      "prompt": 603,
+      "completion": 48
+    },
+    "sources": [
+      {
+        "id": "return_policy",
+        "title": "Acme Widgets Return Policy"
+      }
+    ],
+    "annotations": [
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly lists all three non-returnable categories.",
+        "span_start": 46,
+        "span_end": 159
       },
       {
         "type": "accurate_answer",
         "severity": "success",
-        "text": "Correctly states 20% annual discount.",
+        "text": "Correctly states 30-day return window.",
+        "span_start": 198,
+        "span_end": 218
+      },
+      {
+        "type": "correct_retrieval",
+        "severity": "success",
+        "text": "Retrieved relevant return_policy document for the query.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v3-trace-004",
+    "version": "v3",
+    "question": "How long does it take to get a refund?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Return Policy]\n# Acme Widgets Return Policy\n\n## Standard Returns\n- 30-day return window from delivery date\n- Items must be unused and in original packaging\n- Full refund to original payment method\n- Return shipping is free for defective items\n- Customer pays return shipping for change-of-mind returns ($8.95 flat rate)\n\n## Defective Products\n- 90-day warranty on all widgets\n- Free replacement or full refund\n- No return shipping charges\n- Contact support for RMA number before returning\n\n## Non-Returnable Items\n- Customized or personalized widgets\n- Clearance items marked \"Final Sale\"\n- Items damaged due to misuse\n\n## Refund Processing\n- Refunds processed within 5-7 business days of receiving return\n- Original shipping charges are non-refundable\n- Store credit option available (adds 10% bonus value)\n",
+    "response": "Refunds are processed within 5-7 business days after we receive your return at our warehouse. The refund goes to your original payment method. Note that original shipping charges are non-refundable. Alternatively, you can opt for store credit, which adds a 10% bonus value to your refund amount.",
+    "latency_ms": 1714,
+    "tokens": {
+      "prompt": 567,
+      "completion": 51
+    },
+    "sources": [
+      {
+        "id": "return_policy",
+        "title": "Acme Widgets Return Policy"
+      }
+    ],
+    "annotations": [
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states 5-7 business days processing time.",
+        "span_start": 29,
+        "span_end": 46
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states 10% store credit bonus.",
         "span_start": 257,
-        "span_end": 285
+        "span_end": 272
+      },
+      {
+        "type": "correct_retrieval",
+        "severity": "success",
+        "text": "Retrieved relevant return_policy document for the query.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v3-trace-005",
+    "version": "v3",
+    "question": "Do you offer store credit for returns?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Return Policy]\n# Acme Widgets Return Policy\n\n## Standard Returns\n- 30-day return window from delivery date\n- Items must be unused and in original packaging\n- Full refund to original payment method\n- Return shipping is free for defective items\n- Customer pays return shipping for change-of-mind returns ($8.95 flat rate)\n\n## Defective Products\n- 90-day warranty on all widgets\n- Free replacement or full refund\n- No return shipping charges\n- Contact support for RMA number before returning\n\n## Non-Returnable Items\n- Customized or personalized widgets\n- Clearance items marked \"Final Sale\"\n- Items damaged due to misuse\n\n## Refund Processing\n- Refunds processed within 5-7 business days of receiving return\n- Original shipping charges are non-refundable\n- Store credit option available (adds 10% bonus value)\n",
+    "response": "Yes! We offer a store credit option as an alternative to refunding your original payment method. When you choose store credit, we add a 10% bonus value to your refund amount. Refunds are processed within 5-7 business days. Original shipping charges remain non-refundable regardless of which option you choose.",
+    "latency_ms": 1857,
+    "tokens": {
+      "prompt": 593,
+      "completion": 51
+    },
+    "sources": [
+      {
+        "id": "return_policy",
+        "title": "Acme Widgets Return Policy"
+      }
+    ],
+    "annotations": [
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states 10% bonus value for store credit.",
+        "span_start": 136,
+        "span_end": 151
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states 5-7 business days processing.",
+        "span_start": 204,
+        "span_end": 221
+      },
+      {
+        "type": "correct_retrieval",
+        "severity": "success",
+        "text": "Retrieved relevant return_policy document for the query.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v3-trace-006",
+    "version": "v3",
+    "question": "How much does the Starter plan cost?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Pricing Tiers]\n# Acme Widgets Pricing Tiers\n\n## Starter Plan - $49/month\n- Up to 100 widgets per month\n- Email support (48-hour response)\n- Basic analytics dashboard\n- 1 user seat\n\n## Professional Plan - $149/month\n- Up to 500 widgets per month\n- Priority email support (24-hour response)\n- Advanced analytics with exports\n- 5 user seats\n- API access\n\n## Enterprise Plan - $299/month\n- Unlimited widgets\n- Phone and email support (4-hour response)\n- Custom analytics and reporting\n- Unlimited user seats\n- Dedicated account manager\n- Custom integrations\n- SLA guarantee (99.9% uptime)\n\nAll plans include a 14-day free trial. Annual billing saves 20%.\n",
+    "response": "The Starter plan costs $49 per month and includes up to 100 widgets per month, email support with 48-hour response time, a basic analytics dashboard, and 1 user seat. Like all plans, it includes a 14-day free trial. You can save 20% by choosing annual billing.",
+    "latency_ms": 1552,
+    "tokens": {
+      "prompt": 531,
+      "completion": 49
+    },
+    "sources": [
+      {
+        "id": "pricing_tiers",
+        "title": "Acme Widgets Pricing Tiers"
+      }
+    ],
+    "annotations": [
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states $49/month price.",
+        "span_start": 23,
+        "span_end": 36
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states 48-hour response time.",
+        "span_start": 98,
+        "span_end": 119
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states 20% annual savings.",
+        "span_start": 229,
+        "span_end": 232
       },
       {
         "type": "correct_retrieval",
@@ -97,66 +267,679 @@
     ]
   },
   {
-    "id": "v3-trace-003",
+    "id": "v3-trace-007",
     "version": "v3",
-    "question": "What are the specs of Widget Pro X2?",
-    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below...\n\nContext:\n[Acme Widget Product Specifications]\n## Widget Pro X2\n- Dimensions: 5\" x 5\" x 2.5\"\n- Weight: 12 oz\n- Material: Carbon fiber composite\n- Battery: 3500mAh lithium-ion (12-hour life)\n- Connectivity: Bluetooth 5.0, WiFi 6, NFC\n- Water resistance: IP67\n- Price: $129.99",
-    "response": "The Widget Pro X2 measures 5\" x 5\" x 2.5\" and weighs 12 oz. It's made with carbon fiber composite material. The 3500mAh lithium-ion battery provides 12 hours of life. Connectivity includes Bluetooth 5.0, WiFi 6, and NFC. It has IP67 water resistance for durability. Priced at $129.99, it's a great mid-range option with premium features.",
-    "latency_ms": 1680,
+    "question": "How much does the Enterprise plan cost?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Pricing Tiers]\n# Acme Widgets Pricing Tiers\n\n## Starter Plan - $49/month\n- Up to 100 widgets per month\n- Email support (48-hour response)\n- Basic analytics dashboard\n- 1 user seat\n\n## Professional Plan - $149/month\n- Up to 500 widgets per month\n- Priority email support (24-hour response)\n- Advanced analytics with exports\n- 5 user seats\n- API access\n\n## Enterprise Plan - $299/month\n- Unlimited widgets\n- Phone and email support (4-hour response)\n- Custom analytics and reporting\n- Unlimited user seats\n- Dedicated account manager\n- Custom integrations\n- SLA guarantee (99.9% uptime)\n\nAll plans include a 14-day free trial. Annual billing saves 20%.\n",
+    "response": "The Enterprise plan costs $299 per month and includes unlimited widgets, phone and email support with 4-hour response time, custom analytics, unlimited user seats, a dedicated account manager, custom integrations, and a 99.9% uptime SLA guarantee. You can save 20% with annual billing. All plans include a 14-day free trial.",
+    "latency_ms": 1913,
     "tokens": {
-      "prompt": 412,
-      "completion": 85
+      "prompt": 525,
+      "completion": 54
     },
     "sources": [
-      {"id": "product_specs", "title": "Acme Widget Product Specifications"}
+      {
+        "id": "pricing_tiers",
+        "title": "Acme Widgets Pricing Tiers"
+      }
     ],
     "annotations": [
       {
         "type": "accurate_answer",
         "severity": "success",
-        "text": "Correctly states 5\" x 5\" x 2.5\" dimensions.",
-        "span_start": 27,
-        "span_end": 44
+        "text": "Correctly states $299/month price from knowledge base.",
+        "span_start": 26,
+        "span_end": 40
       },
       {
         "type": "accurate_answer",
         "severity": "success",
-        "text": "Correctly states 12 oz weight.",
-        "span_start": 56,
-        "span_end": 62
+        "text": "Correctly states 4-hour response time.",
+        "span_start": 102,
+        "span_end": 122
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states 99.9% uptime SLA.",
+        "span_start": 220,
+        "span_end": 246
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states 20% annual discount.",
+        "span_start": 261,
+        "span_end": 284
+      },
+      {
+        "type": "correct_retrieval",
+        "severity": "success",
+        "text": "Retrieved relevant pricing_tiers document for the query.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v3-trace-008",
+    "version": "v3",
+    "question": "What does the Professional plan include?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Pricing Tiers]\n# Acme Widgets Pricing Tiers\n\n## Starter Plan - $49/month\n- Up to 100 widgets per month\n- Email support (48-hour response)\n- Basic analytics dashboard\n- 1 user seat\n\n## Professional Plan - $149/month\n- Up to 500 widgets per month\n- Priority email support (24-hour response)\n- Advanced analytics with exports\n- 5 user seats\n- API access\n\n## Enterprise Plan - $299/month\n- Unlimited widgets\n- Phone and email support (4-hour response)\n- Custom analytics and reporting\n- Unlimited user seats\n- Dedicated account manager\n- Custom integrations\n- SLA guarantee (99.9% uptime)\n\nAll plans include a 14-day free trial. Annual billing saves 20%.\n",
+    "response": "The Professional plan costs $149/month and includes up to 500 widgets per month, priority email support with 24-hour response time, advanced analytics with exports, 5 user seats, and API access. Like all our plans, it includes a 14-day free trial, and you save 20% with annual billing.",
+    "latency_ms": 1782,
+    "tokens": {
+      "prompt": 557,
+      "completion": 49
+    },
+    "sources": [
+      {
+        "id": "pricing_tiers",
+        "title": "Acme Widgets Pricing Tiers"
+      }
+    ],
+    "annotations": [
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states $149/month price.",
+        "span_start": 28,
+        "span_end": 38
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states 24-hour response time.",
+        "span_start": 109,
+        "span_end": 130
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states 5 user seats.",
+        "span_start": 165,
+        "span_end": 177
+      },
+      {
+        "type": "correct_retrieval",
+        "severity": "success",
+        "text": "Retrieved relevant pricing_tiers document for the query.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v3-trace-009",
+    "version": "v3",
+    "question": "Can you compare all your pricing plans?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Pricing Tiers]\n# Acme Widgets Pricing Tiers\n\n## Starter Plan - $49/month\n- Up to 100 widgets per month\n- Email support (48-hour response)\n- Basic analytics dashboard\n- 1 user seat\n\n## Professional Plan - $149/month\n- Up to 500 widgets per month\n- Priority email support (24-hour response)\n- Advanced analytics with exports\n- 5 user seats\n- API access\n\n## Enterprise Plan - $299/month\n- Unlimited widgets\n- Phone and email support (4-hour response)\n- Custom analytics and reporting\n- Unlimited user seats\n- Dedicated account manager\n- Custom integrations\n- SLA guarantee (99.9% uptime)\n\nAll plans include a 14-day free trial. Annual billing saves 20%.\n",
+    "response": "We offer three tiers: Starter ($49/month) with 100 widgets, email support (48hr), basic analytics, 1 seat. Professional ($149/month) with 500 widgets, priority email (24hr), advanced analytics, 5 seats, API access. Enterprise ($299/month) with unlimited widgets, phone+email (4hr), custom analytics, unlimited seats, dedicated account manager, 99.9% SLA. All include a 14-day trial; annual billing saves 20%.",
+    "latency_ms": 1523,
+    "tokens": {
+      "prompt": 604,
+      "completion": 55
+    },
+    "sources": [
+      {
+        "id": "pricing_tiers",
+        "title": "Acme Widgets Pricing Tiers"
+      }
+    ],
+    "annotations": [
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states all three plan prices.",
+        "span_start": 22,
+        "span_end": 41
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states Enterprise at $299/month.",
+        "span_start": 215,
+        "span_end": 238
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states 14-day trial and 20% annual savings.",
+        "span_start": 369,
+        "span_end": 407
+      },
+      {
+        "type": "correct_retrieval",
+        "severity": "success",
+        "text": "Retrieved relevant pricing_tiers document for the query.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v3-trace-010",
+    "version": "v3",
+    "question": "Do you offer a free trial?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Pricing Tiers]\n# Acme Widgets Pricing Tiers\n\n## Starter Plan - $49/month\n- Up to 100 widgets per month\n- Email support (48-hour response)\n- Basic analytics dashboard\n- 1 user seat\n\n## Professional Plan - $149/month\n- Up to 500 widgets per month\n- Priority email support (24-hour response)\n- Advanced analytics with exports\n- 5 user seats\n- API access\n\n## Enterprise Plan - $299/month\n- Unlimited widgets\n- Phone and email support (4-hour response)\n- Custom analytics and reporting\n- Unlimited user seats\n- Dedicated account manager\n- Custom integrations\n- SLA guarantee (99.9% uptime)\n\nAll plans include a 14-day free trial. Annual billing saves 20%.\n",
+    "response": "Yes! All plans include a 14-day free trial with full access to the features of your chosen tier. After the trial, you can continue with monthly billing or save 20% with annual billing. Our three plans are Starter ($49/month), Professional ($149/month), and Enterprise ($299/month).",
+    "latency_ms": 1943,
+    "tokens": {
+      "prompt": 532,
+      "completion": 47
+    },
+    "sources": [
+      {
+        "id": "pricing_tiers",
+        "title": "Acme Widgets Pricing Tiers"
+      }
+    ],
+    "annotations": [
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states 14-day free trial.",
+        "span_start": 25,
+        "span_end": 42
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states 20% annual savings.",
+        "span_start": 160,
+        "span_end": 183
+      },
+      {
+        "type": "correct_retrieval",
+        "severity": "success",
+        "text": "Retrieved relevant pricing_tiers document for the query.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v3-trace-011",
+    "version": "v3",
+    "question": "What are the specs of Widget Pro X2?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widget Product Specifications]\n# Acme Widget Product Specifications\n\n## Widget Pro X1\n- Dimensions: 4\" x 4\" x 2\"\n- Weight: 8 oz\n- Material: Aircraft-grade aluminum\n- Battery: 2000mAh lithium-ion (8-hour life)\n- Connectivity: Bluetooth 5.0, WiFi 6\n- Price: $79.99\n\n## Widget Pro X2\n- Dimensions: 5\" x 5\" x 2.5\"\n- Weight: 12 oz\n- Material: Carbon fiber composite\n- Battery: 3500mAh lithium-ion (12-hour life)\n- Connectivity: Bluetooth 5.0, WiFi 6, NFC\n- Water resistance: IP67\n- Price: $129.99\n\n## Widget Enterprise E1\n- Dimensions: 6\" x 6\" x 3\"\n- Weight: 18 oz\n- Material: Industrial steel housing\n- Power: Wired (no battery)\n- Connectivity: Ethernet, WiFi 6, Bluetooth 5.0\n- Operating temp: -20C to 60C\n- Price: $249.99 (bulk discounts available)\n",
+    "response": "The Widget Pro X2 measures 5\" x 5\" x 2.5\" and weighs 12 oz. It's made with carbon fiber composite material. The 3500mAh lithium-ion battery provides 12 hours of life. Connectivity includes Bluetooth 5.0, WiFi 6, and NFC. It has IP67 water resistance for durability. Priced at $129.99.",
+    "latency_ms": 1583,
+    "tokens": {
+      "prompt": 583,
+      "completion": 50
+    },
+    "sources": [
+      {
+        "id": "product_specs",
+        "title": "Acme Widget Product Specifications"
+      }
+    ],
+    "annotations": [
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states dimensions.",
+        "span_start": 27,
+        "span_end": 41
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states weight.",
+        "span_start": 53,
+        "span_end": 58
       },
       {
         "type": "accurate_answer",
         "severity": "success",
         "text": "Correctly states carbon fiber composite material.",
-        "span_start": 80,
-        "span_end": 107
+        "span_start": 75,
+        "span_end": 97
       },
       {
         "type": "accurate_answer",
         "severity": "success",
-        "text": "Correctly states 3500mAh battery with 12-hour life.",
-        "span_start": 113,
-        "span_end": 163
+        "text": "Correctly states battery specs.",
+        "span_start": 112,
+        "span_end": 157
       },
       {
         "type": "accurate_answer",
         "severity": "success",
-        "text": "Correctly states IP67 water resistance.",
-        "span_start": 219,
-        "span_end": 240
+        "text": "Correctly states IP67 rating.",
+        "span_start": 228,
+        "span_end": 232
       },
       {
         "type": "accurate_answer",
         "severity": "success",
         "text": "Correctly states $129.99 price.",
-        "span_start": 270,
+        "span_start": 276,
         "span_end": 283
       },
       {
         "type": "correct_retrieval",
         "severity": "success",
         "text": "Retrieved relevant product_specs document for the query.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v3-trace-012",
+    "version": "v3",
+    "question": "Tell me about the Widget Pro X1.",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widget Product Specifications]\n# Acme Widget Product Specifications\n\n## Widget Pro X1\n- Dimensions: 4\" x 4\" x 2\"\n- Weight: 8 oz\n- Material: Aircraft-grade aluminum\n- Battery: 2000mAh lithium-ion (8-hour life)\n- Connectivity: Bluetooth 5.0, WiFi 6\n- Price: $79.99\n\n## Widget Pro X2\n- Dimensions: 5\" x 5\" x 2.5\"\n- Weight: 12 oz\n- Material: Carbon fiber composite\n- Battery: 3500mAh lithium-ion (12-hour life)\n- Connectivity: Bluetooth 5.0, WiFi 6, NFC\n- Water resistance: IP67\n- Price: $129.99\n\n## Widget Enterprise E1\n- Dimensions: 6\" x 6\" x 3\"\n- Weight: 18 oz\n- Material: Industrial steel housing\n- Power: Wired (no battery)\n- Connectivity: Ethernet, WiFi 6, Bluetooth 5.0\n- Operating temp: -20C to 60C\n- Price: $249.99 (bulk discounts available)\n",
+    "response": "The Widget Pro X1 is our entry-level model at $79.99. It measures 4\" x 4\" x 2\" and weighs 8 oz. Made with aircraft-grade aluminum, it features a 2000mAh lithium-ion battery with 8-hour life. Connectivity includes Bluetooth 5.0 and WiFi 6. It's compact and lightweight, perfect for everyday use.",
+    "latency_ms": 1811,
+    "tokens": {
+      "prompt": 617,
+      "completion": 48
+    },
+    "sources": [
+      {
+        "id": "product_specs",
+        "title": "Acme Widget Product Specifications"
+      }
+    ],
+    "annotations": [
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states $79.99 price.",
+        "span_start": 46,
+        "span_end": 52
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states 2000mAh battery with 8-hour life.",
+        "span_start": 145,
+        "span_end": 189
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states aircraft-grade aluminum.",
+        "span_start": 106,
+        "span_end": 129
+      },
+      {
+        "type": "correct_retrieval",
+        "severity": "success",
+        "text": "Retrieved relevant product_specs document for the query.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v3-trace-013",
+    "version": "v3",
+    "question": "What is the Widget Enterprise E1?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widget Product Specifications]\n# Acme Widget Product Specifications\n\n## Widget Pro X1\n- Dimensions: 4\" x 4\" x 2\"\n- Weight: 8 oz\n- Material: Aircraft-grade aluminum\n- Battery: 2000mAh lithium-ion (8-hour life)\n- Connectivity: Bluetooth 5.0, WiFi 6\n- Price: $79.99\n\n## Widget Pro X2\n- Dimensions: 5\" x 5\" x 2.5\"\n- Weight: 12 oz\n- Material: Carbon fiber composite\n- Battery: 3500mAh lithium-ion (12-hour life)\n- Connectivity: Bluetooth 5.0, WiFi 6, NFC\n- Water resistance: IP67\n- Price: $129.99\n\n## Widget Enterprise E1\n- Dimensions: 6\" x 6\" x 3\"\n- Weight: 18 oz\n- Material: Industrial steel housing\n- Power: Wired (no battery)\n- Connectivity: Ethernet, WiFi 6, Bluetooth 5.0\n- Operating temp: -20C to 60C\n- Price: $249.99 (bulk discounts available)\n",
+    "response": "The Widget Enterprise E1 is our industrial-grade model at $249.99 (bulk discounts available). It measures 6\" x 6\" x 3\", weighs 18 oz, and has an industrial steel housing. It's wired (no battery), with Ethernet, WiFi 6, and Bluetooth 5.0. Operating temperature range is -20C to 60C, making it ideal for demanding environments.",
+    "latency_ms": 1694,
+    "tokens": {
+      "prompt": 570,
+      "completion": 58
+    },
+    "sources": [
+      {
+        "id": "product_specs",
+        "title": "Acme Widget Product Specifications"
+      }
+    ],
+    "annotations": [
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states $249.99 with bulk discounts.",
+        "span_start": 58,
+        "span_end": 92
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states 18 oz weight.",
+        "span_start": 127,
+        "span_end": 132
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states -20C to 60C operating range.",
+        "span_start": 269,
+        "span_end": 280
+      },
+      {
+        "type": "correct_retrieval",
+        "severity": "success",
+        "text": "Retrieved relevant product_specs document for the query.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v3-trace-014",
+    "version": "v3",
+    "question": "How do the Widget Pro X1 and X2 compare?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widget Product Specifications]\n# Acme Widget Product Specifications\n\n## Widget Pro X1\n- Dimensions: 4\" x 4\" x 2\"\n- Weight: 8 oz\n- Material: Aircraft-grade aluminum\n- Battery: 2000mAh lithium-ion (8-hour life)\n- Connectivity: Bluetooth 5.0, WiFi 6\n- Price: $79.99\n\n## Widget Pro X2\n- Dimensions: 5\" x 5\" x 2.5\"\n- Weight: 12 oz\n- Material: Carbon fiber composite\n- Battery: 3500mAh lithium-ion (12-hour life)\n- Connectivity: Bluetooth 5.0, WiFi 6, NFC\n- Water resistance: IP67\n- Price: $129.99\n\n## Widget Enterprise E1\n- Dimensions: 6\" x 6\" x 3\"\n- Weight: 18 oz\n- Material: Industrial steel housing\n- Power: Wired (no battery)\n- Connectivity: Ethernet, WiFi 6, Bluetooth 5.0\n- Operating temp: -20C to 60C\n- Price: $249.99 (bulk discounts available)\n",
+    "response": "The X1 ($79.99) offers 4\"x4\"x2\", 8 oz, aircraft-grade aluminum, 2000mAh/8hr battery, Bluetooth 5.0 + WiFi 6. The X2 ($129.99) upgrades to 5\"x5\"x2.5\", 12 oz, carbon fiber composite, 3500mAh/12hr battery, adds NFC and IP67 water resistance. The X2 adds significantly more battery life, water resistance, and NFC connectivity.",
+    "latency_ms": 1617,
+    "tokens": {
+      "prompt": 540,
+      "completion": 49
+    },
+    "sources": [
+      {
+        "id": "product_specs",
+        "title": "Acme Widget Product Specifications"
+      }
+    ],
+    "annotations": [
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states both prices.",
+        "span_start": 4,
+        "span_end": 15
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly compares battery specs.",
+        "span_start": 181,
+        "span_end": 201
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly identifies X2 additions.",
+        "span_start": 208,
+        "span_end": 237
+      },
+      {
+        "type": "correct_retrieval",
+        "severity": "success",
+        "text": "Retrieved relevant product_specs document for the query.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v3-trace-015",
+    "version": "v3",
+    "question": "Is the Widget Pro X2 waterproof?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widget Product Specifications]\n# Acme Widget Product Specifications\n\n## Widget Pro X1\n- Dimensions: 4\" x 4\" x 2\"\n- Weight: 8 oz\n- Material: Aircraft-grade aluminum\n- Battery: 2000mAh lithium-ion (8-hour life)\n- Connectivity: Bluetooth 5.0, WiFi 6\n- Price: $79.99\n\n## Widget Pro X2\n- Dimensions: 5\" x 5\" x 2.5\"\n- Weight: 12 oz\n- Material: Carbon fiber composite\n- Battery: 3500mAh lithium-ion (12-hour life)\n- Connectivity: Bluetooth 5.0, WiFi 6, NFC\n- Water resistance: IP67\n- Price: $129.99\n\n## Widget Enterprise E1\n- Dimensions: 6\" x 6\" x 3\"\n- Weight: 18 oz\n- Material: Industrial steel housing\n- Power: Wired (no battery)\n- Connectivity: Ethernet, WiFi 6, Bluetooth 5.0\n- Operating temp: -20C to 60C\n- Price: $249.99 (bulk discounts available)\n",
+    "response": "The Widget Pro X2 has an IP67 water resistance rating, meaning it's fully dust-proof and can withstand temporary submersion in up to 1 meter of water for 30 minutes. It handles rain, splashes, and accidental drops in water. Note that neither the X1 nor the Enterprise E1 has a water resistance rating. Priced at $129.99.",
+    "latency_ms": 1967,
+    "tokens": {
+      "prompt": 608,
+      "completion": 57
+    },
+    "sources": [
+      {
+        "id": "product_specs",
+        "title": "Acme Widget Product Specifications"
+      }
+    ],
+    "annotations": [
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states IP67 rating.",
+        "span_start": 25,
+        "span_end": 53
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states $129.99 price.",
+        "span_start": 312,
+        "span_end": 319
+      },
+      {
+        "type": "correct_retrieval",
+        "severity": "success",
+        "text": "Retrieved relevant product_specs document for the query.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v3-trace-016",
+    "version": "v3",
+    "question": "What shipping options do you offer?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Shipping Information]\n# Acme Widgets Shipping Information\n\n## Domestic Shipping (United States)\n\n### Standard Shipping\n- Delivery: 5-7 business days\n- Cost: $5.95 (free on orders over $50)\n\n### Express Shipping\n- Delivery: 2-3 business days\n- Cost: $12.95\n\n### Overnight Shipping\n- Delivery: Next business day (order by 2 PM EST)\n- Cost: $24.95\n\n## International Shipping\n- Available to 50+ countries\n- Delivery: 7-14 business days\n- Cost: Calculated at checkout based on destination\n- Customs/duties are buyer's responsibility\n\n## Order Processing\n- Orders placed before 2 PM EST ship same day\n- Tracking number provided via email within 24 hours\n- Signature required for orders over $200\n",
+    "response": "We offer three domestic options: Standard (5-7 days, $5.95, free over $50), Express (2-3 days, $12.95), and Overnight (next business day, $24.95, order by 2 PM EST). International shipping to 50+ countries takes 7-14 days with costs calculated at checkout. Orders before 2 PM EST ship same day. Tracking provided within 24 hours.",
+    "latency_ms": 1952,
+    "tokens": {
+      "prompt": 603,
+      "completion": 57
+    },
+    "sources": [
+      {
+        "id": "shipping_info",
+        "title": "Acme Widgets Shipping Information"
+      }
+    ],
+    "annotations": [
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states standard shipping details.",
+        "span_start": 33,
+        "span_end": 74
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states express shipping.",
+        "span_start": 76,
+        "span_end": 102
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states overnight shipping.",
+        "span_start": 108,
+        "span_end": 164
+      },
+      {
+        "type": "correct_retrieval",
+        "severity": "success",
+        "text": "Retrieved relevant shipping_info document for the query.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v3-trace-017",
+    "version": "v3",
+    "question": "How much is express shipping?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Shipping Information]\n# Acme Widgets Shipping Information\n\n## Domestic Shipping (United States)\n\n### Standard Shipping\n- Delivery: 5-7 business days\n- Cost: $5.95 (free on orders over $50)\n\n### Express Shipping\n- Delivery: 2-3 business days\n- Cost: $12.95\n\n### Overnight Shipping\n- Delivery: Next business day (order by 2 PM EST)\n- Cost: $24.95\n\n## International Shipping\n- Available to 50+ countries\n- Delivery: 7-14 business days\n- Cost: Calculated at checkout based on destination\n- Customs/duties are buyer's responsibility\n\n## Order Processing\n- Orders placed before 2 PM EST ship same day\n- Tracking number provided via email within 24 hours\n- Signature required for orders over $200\n",
+    "response": "Express shipping costs $12.95 and delivers within 2-3 business days. Orders placed before 2 PM EST ship the same day. You'll receive a tracking number via email within 24 hours. For comparison, Standard is $5.95 (5-7 days, free over $50) and Overnight is $24.95 (next business day).",
+    "latency_ms": 1881,
+    "tokens": {
+      "prompt": 592,
+      "completion": 52
+    },
+    "sources": [
+      {
+        "id": "shipping_info",
+        "title": "Acme Widgets Shipping Information"
+      }
+    ],
+    "annotations": [
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states $12.95 express price.",
+        "span_start": 23,
+        "span_end": 29
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states 2-3 business days.",
+        "span_start": 50,
+        "span_end": 67
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states 2 PM EST cutoff.",
+        "span_start": 90,
+        "span_end": 98
+      },
+      {
+        "type": "correct_retrieval",
+        "severity": "success",
+        "text": "Retrieved relevant shipping_info document for the query.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v3-trace-018",
+    "version": "v3",
+    "question": "Do you ship internationally?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Shipping Information]\n# Acme Widgets Shipping Information\n\n## Domestic Shipping (United States)\n\n### Standard Shipping\n- Delivery: 5-7 business days\n- Cost: $5.95 (free on orders over $50)\n\n### Express Shipping\n- Delivery: 2-3 business days\n- Cost: $12.95\n\n### Overnight Shipping\n- Delivery: Next business day (order by 2 PM EST)\n- Cost: $24.95\n\n## International Shipping\n- Available to 50+ countries\n- Delivery: 7-14 business days\n- Cost: Calculated at checkout based on destination\n- Customs/duties are buyer's responsibility\n\n## Order Processing\n- Orders placed before 2 PM EST ship same day\n- Tracking number provided via email within 24 hours\n- Signature required for orders over $200\n",
+    "response": "Yes! We ship to 50+ countries internationally. Delivery takes 7-14 business days, with shipping costs calculated at checkout based on destination. Important: customs duties and import taxes are the buyer's responsibility. Like domestic orders, international orders placed before 2 PM EST ship the same day with tracking provided within 24 hours.",
+    "latency_ms": 1685,
+    "tokens": {
+      "prompt": 549,
+      "completion": 50
+    },
+    "sources": [
+      {
+        "id": "shipping_info",
+        "title": "Acme Widgets Shipping Information"
+      }
+    ],
+    "annotations": [
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states 50+ countries.",
+        "span_start": 16,
+        "span_end": 29
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states 7-14 business days.",
+        "span_start": 62,
+        "span_end": 80
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states customs are buyer's responsibility.",
+        "span_start": 158,
+        "span_end": 220
+      },
+      {
+        "type": "correct_retrieval",
+        "severity": "success",
+        "text": "Retrieved relevant shipping_info document for the query.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v3-trace-019",
+    "version": "v3",
+    "question": "Is there free shipping?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Shipping Information]\n# Acme Widgets Shipping Information\n\n## Domestic Shipping (United States)\n\n### Standard Shipping\n- Delivery: 5-7 business days\n- Cost: $5.95 (free on orders over $50)\n\n### Express Shipping\n- Delivery: 2-3 business days\n- Cost: $12.95\n\n### Overnight Shipping\n- Delivery: Next business day (order by 2 PM EST)\n- Cost: $24.95\n\n## International Shipping\n- Available to 50+ countries\n- Delivery: 7-14 business days\n- Cost: Calculated at checkout based on destination\n- Customs/duties are buyer's responsibility\n\n## Order Processing\n- Orders placed before 2 PM EST ship same day\n- Tracking number provided via email within 24 hours\n- Signature required for orders over $200\n",
+    "response": "Yes! Standard shipping is free on domestic orders over $50. Below that threshold, standard shipping costs $5.95 and delivers in 5-7 business days. Express ($12.95, 2-3 days) and overnight ($24.95, next day) options are also available. International shipping costs are calculated at checkout.",
+    "latency_ms": 1940,
+    "tokens": {
+      "prompt": 535,
+      "completion": 42
+    },
+    "sources": [
+      {
+        "id": "shipping_info",
+        "title": "Acme Widgets Shipping Information"
+      }
+    ],
+    "annotations": [
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states free shipping threshold of $50.",
+        "span_start": 26,
+        "span_end": 58
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states $5.95 standard shipping cost.",
+        "span_start": 106,
+        "span_end": 111
+      },
+      {
+        "type": "correct_retrieval",
+        "severity": "success",
+        "text": "Retrieved relevant shipping_info document for the query.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v3-trace-020",
+    "version": "v3",
+    "question": "When will my order ship?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Shipping Information]\n# Acme Widgets Shipping Information\n\n## Domestic Shipping (United States)\n\n### Standard Shipping\n- Delivery: 5-7 business days\n- Cost: $5.95 (free on orders over $50)\n\n### Express Shipping\n- Delivery: 2-3 business days\n- Cost: $12.95\n\n### Overnight Shipping\n- Delivery: Next business day (order by 2 PM EST)\n- Cost: $24.95\n\n## International Shipping\n- Available to 50+ countries\n- Delivery: 7-14 business days\n- Cost: Calculated at checkout based on destination\n- Customs/duties are buyer's responsibility\n\n## Order Processing\n- Orders placed before 2 PM EST ship same day\n- Tracking number provided via email within 24 hours\n- Signature required for orders over $200\n",
+    "response": "Orders placed before 2 PM EST ship the same business day. After that, they ship the next business day. You'll receive a tracking number via email within 24 hours of shipment. Delivery depends on your chosen method: Standard (5-7 days), Express (2-3 days), or Overnight (next day). Signature is required for orders over $200.",
+    "latency_ms": 1805,
+    "tokens": {
+      "prompt": 529,
+      "completion": 57
+    },
+    "sources": [
+      {
+        "id": "shipping_info",
+        "title": "Acme Widgets Shipping Information"
+      }
+    ],
+    "annotations": [
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states 2 PM EST cutoff.",
+        "span_start": 21,
+        "span_end": 29
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states tracking within 24 hours.",
+        "span_start": 146,
+        "span_end": 161
+      },
+      {
+        "type": "accurate_answer",
+        "severity": "success",
+        "text": "Correctly states $200 signature threshold.",
+        "span_start": 314,
+        "span_end": 323
+      },
+      {
+        "type": "correct_retrieval",
+        "severity": "success",
+        "text": "Retrieved relevant shipping_info document for the query.",
         "span_start": null,
         "span_end": null
       }

@@ -1,15 +1,5 @@
-## Building with Tests
+## Building with AI
 
-In this phase, we implement the chatbot and build a comprehensive test suite. The Test Navigator below lets you explore different types of tests:
+In this phase, we build the chatbot and understand the test types that validate its quality. Each test type plays a specific role - from verifying individual functions to evaluating AI behavior against business requirements.
 
-**Traditional Tests (SDLC)**
-- **Unit Tests**: Verify individual functions like input sanitization and token counting
-- **Integration Tests**: Verify the RAG pipeline works end-to-end
-- **E2E Tests**: Verify the full user journey from question to answer
-
-**AI Acceptance Tests**
-- **Grounding Tests**: Verify responses cite the knowledge base
-- **Accuracy Tests**: Verify responses contain correct information
-- **Format Tests**: Verify responses meet length and style requirements
-
-Use the sidebar to browse tests by type. Click "Run" to execute a test and see the results.
+**AI evaluation is acceptance testing linked to business value.** The cards below explain what each test type does and why it matters for AI features. Click "View Code" on any card to see the actual tests and run them.

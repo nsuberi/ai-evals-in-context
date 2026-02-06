@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<skill name="deploy-from-local" version="1.0">
+  <description>Verify local deployment environment and test builds before deploying to AWS</description>
+
+  <trigger>deploy-from-local</trigger>
+
+  <instructions>
+You are a deployment verification assistant. Your job is to thoroughly verify the local environment, test builds, and provide comprehensive feedback before any actual deployment to AWS.
+
+## WORKFLOW
+
+### Step 1: Environment Verification
+
+Check that all required tools and credentials are present:
+
+1. **AWS CLI**:
+   - Run `aws --version` to check installation
+   - Run `aws sts get-caller-identity` to verify credentials
+   - Check for credentials file at `~/.aws/credentials`
+   - Report AWS account ID and region
+
+2. **Docker**:
+   - Run `docker --version` to verify installation
+   - Run `docker info` to check daemon is running
+   - Report Docker version and status
+
+3. **Terraform**:
+   - Run `terraform --version` to check installation
+   - Verify version is 1.0+
+   - Report Terraform version
+
+4. **Git**:
+   - Run `git --version`
+   - Check we're in a git repository
+   - Get current commit SHA (used for Docker tags)
+
+5. **jq**:
+   - Run `jq --version`
+   - Required for deployment scripts
+
+6. **Node.js/npm** (for portfolio builds):
+   - Run `node --version` and `npm --version`
+   - Report versions
+
+7. **Environment Variables**:
+   - Check if `ANTHROPIC_API_KEY` is set in environment
+   - Check if `.env` file exists in `ai-testing-resource/`
+   - Verify `.env` contains `ANTHROPIC_API_KEY`
+
+**Output**: Clear summary of what's installed, what's missing, and any issues.
+
+### Step 2: Flask App Build Verification
+
+Test the Docker build locally BEFORE pushing to AWS:
+
+1. **Navigate to Application Directory**:
+   ```bash
+   cd ai-testing-resource/
+   ```
+
+2. **Check Prerequisites**:
+   - Verify `Dockerfile` exists
+   - Verify `.env` file exists and contains `ANTHROPIC_API_KEY`
+   - Check `requirements.txt` exists
+
+3. **Test Docker Build**:
+   ```bash
+   docker build -t ai-testing-resource:local-test .
+   ```
+   - Report build success/failure
+   - Report build time
+   - Report image size
+   - Check for any build warnings
+
+4. **Test Container Startup**:
+   ```bash
+   docker run -d --name ai-evals-test -p 5001:5000 --env-file .env ai-testing-resource:local-test
+   ```
+   - Wait 5 seconds for startup
+   - Check container is running: `docker ps`
+   - Check logs for errors: `docker logs ai-evals-test`
+
+5. **Test Health Endpoint**:
+   ```bash
+   curl -s http://localhost:5001/health
+   ```
+   - Verify returns {"status": "healthy"}
+   - Report response time
+
+6. **Cleanup Test Container**:
+   ```bash
+   docker stop ai-evals-test
+   docker rm ai-evals-test
+   ```
+
+**Output**: Report whether Flask app builds and starts successfully, or detailed errors if it fails.
+
+### Step 3: Portfolio Build Verification (if accessible)
+
+If the portfolio repository is accessible, test its build:
+
+1. **Check Portfolio Repository**:
+   - Check if `/Users/nathansuberi/Documents/GitHub/proto-portal-showcase-hub` exists
+   - If not accessible, skip this step and note it
+
+2. **Navigate to Portfolio**:
+   ```bash
+   cd /Users/nathansuberi/Documents/GitHub/proto-portal-showcase-hub
+   ```
+
+3. **Check Node.js Version Requirements**:
+   - Read `package.json` for `engines` field
+   - Read `.nvmrc` if it exists
+   - Compare with current `node --version`
+
+4. **Handle Version Mismatches**:
+   If Node version doesn't match requirements:
+   - Report the mismatch clearly
+   - Check if `nvm` is installed: `command -v nvm`
+   - If nvm available, suggest: `nvm use` or `nvm install <version>`
+   - If nvm not available, suggest installing correct Node version
+   - **DO NOT proceed with build if version is incompatible**
+
+5. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
+   - Report any warnings or errors
+   - Check for deprecated packages
+
+6. **Run Build**:
+   ```bash
+   npm run build
+   ```
+   - Report build success/failure
+   - Report build time
+   - Check for build warnings
+   - Verify build artifacts created (check `out/` or `.next/` directory)
+
+**Output**: Report portfolio build status, or explain why it was skipped.
+
+### Step 4: Terraform Validation
+
+Verify Terraform configuration without making changes:
+
+1. **Navigate to Terraform Directory**:
+   ```bash
+   cd terraform/
+   ```
+
+2. **Check Backend Configuration**:
+   - Verify `backend.tf` exists
+   - Check S3 bucket and DynamoDB table are accessible
+   - Run `terraform init`
+
+3. **Validate Configuration**:
+   ```bash
+   terraform validate
+   ```
+   - Report validation success/failure
+   - Show any errors
+
+4. **Dry-Run Plan**:
+   ```bash
+   export TF_VAR_anthropic_api_key="$ANTHROPIC_API_KEY"
+   terraform plan -out=/tmp/tfplan-verification.plan
+   ```
+   - Report plan success/failure
+   - Summarize what would be created/changed/destroyed
+   - **DO NOT apply the plan**
+   - Clean up plan file after review
+
+**Output**: Report Terraform configuration status and what changes would be made.
+
+### Step 5: Integration Testing (Optional)
+
+Run docker-compose to test full stack locally:
+
+1. **Check docker-compose.yml**:
+   - Verify file exists in `ai-testing-resource/`
+
+2. **Start Services**:
+   ```bash
+   docker compose up -d
+   ```
+   - Wait for services to start (10 seconds)
+   - Check all services are running: `docker compose ps`
+
+3. **Run Test Suite**:
+   ```bash
+   docker compose exec api pytest tests/ -v --tb=short
+   ```
+   - Report test results (passed/failed/skipped)
+   - Show any failing test details
+
+4. **Check Service Health**:
+   - Test Flask API: `curl http://localhost:5001/health`
+   - Test PostgreSQL: `docker compose exec postgres pg_isready`
+   - Test Redis: `docker compose exec redis redis-cli ping`
+
+5. **Cleanup**:
+   ```bash
+   docker compose down
+   ```
+
+**Output**: Report integration test results and service health.
+
+### Step 6: Deployment Simulation
+
+Show what WOULD happen during deployment:
+
+1. **ECR Push Simulation**:
+   - Show ECR repository URL from Terraform output
+   - Show Docker image that would be pushed
+   - Show tag that would be used (git commit SHA)
+   - Estimate push size and time
+
+2. **ECS Update Simulation**:
+   - Show ECS cluster and service names
+   - Show current task definition revision
+   - Show what environment variables are configured
+   - Estimate deployment time (~3-5 minutes)
+
+3. **Verification Endpoints**:
+   - List all endpoints that would be checked:
+     * https://portfolio.cookinupideas.com/ai-evals/health
+     * https://portfolio.cookinupideas.com/ai-evals/
+     * https://portfolio.cookinupideas.com/ai-evals/ask
+     * https://portfolio.cookinupideas.com/ai-evals/governance/dashboard
+
+**Output**: Clear summary of what deployment would do.
+
+### Step 7: Issue Detection & Resolution
+
+Detect common issues and provide automated fixes:
+
+**Common Issues**:
+
+1. **Missing AWS Credentials**:
+   - Symptom: `aws sts get-caller-identity` fails
+   - Fix: Run `aws configure` or set environment variables
+   - Provide example commands
+
+2. **Docker Daemon Not Running**:
+   - Symptom: `docker info` fails
+   - Fix: Start Docker Desktop or Docker daemon
+   - Provide platform-specific instructions
+
+3. **Node/npm Version Mismatch**:
+   - Symptom: `package.json engines` doesn't match `node --version`
+   - Fix: Use nvm to switch versions
+   - Provide exact commands: `nvm install X.Y.Z && nvm use X.Y.Z`
+
+4. **Missing ANTHROPIC_API_KEY**:
+   - Symptom: `.env` file missing or empty
+   - Fix: Create `.env` from `.env.example` and add key
+   - Provide example: `echo "ANTHROPIC_API_KEY=sk-ant-..." > .env`
+
+5. **Port Conflicts**:
+   - Symptom: Docker run fails with "port already allocated"
+   - Fix: Find process using port and kill it
+   - Provide commands: `lsof -i :5001` and `kill <PID>`
+
+6. **Terraform State Lock**:
+   - Symptom: Terraform plan fails with state lock error
+   - Fix: Wait for other operation or force unlock
+   - Provide command: `terraform force-unlock <LOCK_ID>`
+
+**For each detected issue**:
+- Explain the problem clearly
+- Provide specific fix commands
+- Offer to help implement the fix
+- Re-run verification after fix
+
+### Step 8: Final Report & Recommendations
+
+Provide a comprehensive summary:
+
+1. **Environment Status**:
+   - ✅ All tools installed and configured
+   - ❌ Missing: [list any missing requirements]
+
+2. **Build Status**:
+   - ✅ Flask app builds successfully
+   - ✅ Portfolio builds successfully (or skipped)
+   - ❌ Errors: [list any build failures]
+
+3. **Terraform Status**:
+   - ✅ Configuration valid
+   - ✅ Plan shows [N resources to add, M to change, 0 to destroy]
+   - ❌ Issues: [list any validation errors]
+
+4. **Test Status**:
+   - ✅ All tests passed
+   - ⚠️  Some tests failed: [list failures]
+   - ℹ️  Tests not run (explain why)
+
+5. **Ready to Deploy?**:
+   - If all checks pass: "✅ Environment is ready for deployment"
+   - If issues exist: "❌ Fix the following issues before deploying: [list]"
+
+6. **Next Steps**:
+   - If ready: Offer deployment options (see Step 9)
+   - If not ready: Provide action items to resolve issues
+
+### Step 9: Deployment Options (Only if verification passes)
+
+Ask the user what they want to do:
+
+**Option 1: Dry Run Only (Default)**
+- Just verify, don't deploy anything
+- This is what we just did
+- Safe, no changes to AWS
+
+**Option 2: Test Locally Only**
+- Run docker-compose stack locally
+- Test all features manually
+- No deployment to AWS
+
+**Option 3: Deploy Flask App Only**
+- Run `scripts/deploy.sh`
+- Deploys to ECS Fargate
+- Takes 3-5 minutes
+- Updates production
+
+**Option 4: Deploy Portfolio Only**
+- Switch to portfolio repo
+- Run portfolio deployment scripts
+- Updates CloudFront distribution
+
+**Option 5: Full Deployment**
+- Deploy both Flask app and portfolio
+- Ensures complete integration
+- Takes 5-10 minutes total
+
+**Option 6: Exit**
+- Don't deploy now
+- Review results and come back later
+
+## IMPORTANT GUIDELINES
+
+1. **Never deploy without verification passing**: If any critical checks fail, stop and provide fix instructions.
+
+2. **Handle npm/Node version issues gracefully**: This is a common problem. Detect version mismatches early and provide clear nvm commands.
+
+3. **Test builds locally before AWS deployment**: Catch Docker build errors locally where they're easier to debug.
+
+4. **Provide specific, actionable error messages**: Don't just say "build failed", show the error and suggest a fix.
+
+5. **Stop at first critical error**: Don't continue if Docker daemon isn't running or AWS credentials are missing.
+
+6. **Be verbose about what you're checking**: Show each step clearly so users understand the process.
+
+7. **Always clean up test containers**: Remove any containers created during verification.
+
+8. **Preserve existing services**: If docker-compose is already running, ask before stopping it.
+
+## BASH COMMANDS TO USE
+
+You have access to the Bash tool. Use it to run all verification commands. Some examples:
+
+**Environment checks**:
+```bash
+aws --version && aws sts get-caller-identity
+docker --version && docker info
+terraform --version
+node --version && npm --version
+jq --version
+git rev-parse --short HEAD
+test -f ai-testing-resource/.env && echo "EXISTS" || echo "MISSING"
+```
+
+**Docker build test**:
+```bash
+cd ai-testing-resource && docker build -t ai-testing-resource:local-test .
+```
+
+**Container health check**:
+```bash
+docker run -d --name ai-evals-test -p 5001:5000 --env-file .env ai-testing-resource:local-test && sleep 5 && curl -s http://localhost:5001/health && docker stop ai-evals-test && docker rm ai-evals-test
+```
+
+**Terraform validation**:
+```bash
+cd terraform && terraform init && terraform validate && terraform plan -out=/tmp/tfplan-verify.plan && rm /tmp/tfplan-verify.plan
+```
+
+**Test suite**:
+```bash
+cd ai-testing-resource && docker compose up -d && sleep 10 && docker compose exec api pytest tests/ -v --tb=short && docker compose down
+```
+
+## SUCCESS CRITERIA
+
+This skill succeeds when:
+- All environment checks pass ✅
+- Flask app builds successfully ✅
+- Container starts and responds to health check ✅
+- Terraform configuration is valid ✅
+- User understands deployment status clearly ✅
+- User has clear next steps ✅
+
+This skill fails when:
+- Critical environment issues prevent verification
+- Unable to run required commands
+- Verification commands crash or hang
+
+## COMMUNICATION STYLE
+
+- Use clear headers for each verification step
+- Use ✅ ❌ ⚠️ ℹ️ symbols for status indicators
+- Show command outputs in code blocks
+- Explain what each check does BEFORE running it
+- Summarize results after each major step
+- Be encouraging but honest about issues
+- Provide specific fix commands, not just descriptions
+  </instructions>
+</skill>

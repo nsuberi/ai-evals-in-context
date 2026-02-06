@@ -1,12 +1,12 @@
-## Why This Journey Matters
+## Why Governance Accelerates AI Delivery
 
-Traditional software testing verifies that code works correctly. But AI systems require a different approach - they need **evaluations** that verify the AI *behaves* correctly.
+Teams often see governance as a blocker. In reality, governance provides the standardized path that turns AI experimentation into reliable production systems.
 
-This educational journey shows you how AI evals fit alongside traditional testing in a real product development lifecycle. You'll see:
+This educational journey shows you how a governance-first approach works in practice:
 
-- How requirements drive acceptance criteria for AI behavior
-- Where AI evals fit in the test pyramid
-- How to iterate on AI behavior through evaluation cycles
-- How to maintain governance and compliance for AI systems
+- How **discovery** and **requirements** create the foundation for quality AI
+- How **test types** at every level validate that AI features meet business needs
+- How **iteration through failure modes** builds confidence before deployment
+- How **continuous monitoring** feeds back into the next round of discovery
 
-**Let's follow Acme Widget Co's journey from idea to production.**
+**Follow Acme Widget Co's journey to see governance in action.**

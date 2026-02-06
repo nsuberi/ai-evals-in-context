@@ -5,26 +5,26 @@
     "question": "What is your return policy?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
     "response": "Our return policy offers a 30-day window for returns. Items must be unused and in original packaging for a full refund. Defective items can be returned within 90 days with free shipping. For non-defective returns, there's a $9.99 shipping fee. Customized items and final sale products cannot be returned. Refunds are processed within 3-5 business days after we receive your return.",
-    "latency_ms": 1250,
+    "latency_ms": 1012,
     "tokens": {
       "prompt": 72,
-      "completion": 78
+      "completion": 62
     },
     "sources": [],
     "annotations": [
       {
         "type": "hallucination",
         "severity": "error",
-        "text": "The shipping fee is stated as $9.99, but the actual fee is $8.95. This is a fabricated detail.",
-        "span_start": 178,
-        "span_end": 201
+        "text": "The shipping fee is stated as $9.99, but the actual fee is $8.95.",
+        "span_start": 224,
+        "span_end": 242
       },
       {
         "type": "hallucination",
         "severity": "error",
         "text": "Refund processing time is stated as 3-5 days, but it's actually 5-7 business days.",
-        "span_start": 279,
-        "span_end": 307
+        "span_start": 334,
+        "span_end": 351
       },
       {
         "type": "missing_source",
@@ -38,100 +38,810 @@
   {
     "id": "v2-trace-002",
     "version": "v2",
-    "question": "How much does the Enterprise plan cost?",
+    "question": "Can I return a defective widget?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
-    "response": "Our Enterprise plan costs $349 per month and includes unlimited widgets, priority support with 2-hour response time, custom integrations, and a dedicated account manager. You get unlimited user seats and advanced analytics. Annual plans receive a 15% discount. The Enterprise plan also includes our premium SLA with 99.95% uptime guarantee. Contact our sales team to learn more about volume discounts for larger organizations.",
-    "latency_ms": 1180,
+    "response": "Yes, defective widgets can be returned within 60 days for a free replacement or full refund. We cover return shipping costs for all defective items. Just contact us for a return label and we'll process everything within 2-3 business days. Make sure to include the original receipt with your return for faster processing.",
+    "latency_ms": 1346,
     "tokens": {
       "prompt": 72,
-      "completion": 82
+      "completion": 58
     },
     "sources": [],
     "annotations": [
       {
         "type": "hallucination",
         "severity": "error",
-        "text": "Price stated as $349/month, but actual price is $299/month. $50 difference is significant.",
-        "span_start": 26,
-        "span_end": 45
+        "text": "Warranty period stated as 60 days, but actual warranty is 90 days.",
+        "span_start": 46,
+        "span_end": 53
       },
       {
         "type": "hallucination",
         "severity": "error",
-        "text": "Response time stated as 2-hour, but actual is 4-hour response time.",
-        "span_start": 86,
-        "span_end": 118
+        "text": "Processing time stated as 2-3 business days, actual refund processing is 5-7 business days.",
+        "span_start": 220,
+        "span_end": 237
       },
       {
         "type": "hallucination",
-        "severity": "warning",
-        "text": "Annual discount stated as 15%, but actual discount is 20%.",
-        "span_start": 215,
-        "span_end": 244
+        "severity": "error",
+        "text": "Receipt requirement is fabricated; actual policy requires an RMA number from support.",
+        "span_start": 264,
+        "span_end": 280
       },
       {
-        "type": "hallucination",
+        "type": "missing_source",
         "severity": "warning",
-        "text": "Uptime stated as 99.95%, but actual SLA is 99.9%.",
-        "span_start": 289,
-        "span_end": 320
+        "text": "No sources cited. User cannot verify accuracy of the information provided.",
+        "span_start": null,
+        "span_end": null
       }
     ]
   },
   {
     "id": "v2-trace-003",
     "version": "v2",
-    "question": "What are the specs of Widget Pro X2?",
+    "question": "What items cannot be returned?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
-    "response": "The Widget Pro X2 features a 4.5-inch display, weighs 10 oz, and is made with premium aluminum alloy. It has a 3000mAh battery providing 10 hours of use, Bluetooth 5.0 and WiFi connectivity, and IP65 water resistance. Priced at $149.99, it's our mid-range option perfect for everyday use. The X2 also includes NFC capability and comes with a 1-year warranty.",
-    "latency_ms": 1150,
+    "response": "There are three categories of non-returnable items: customized or personalized widgets since they're made to order, clearance items marked \"Final Sale\" due to deep discounting, and items damaged through customer misuse. Additionally, any widget opened more than 14 days ago may be subject to a restocking fee of 15%.",
+    "latency_ms": 1047,
     "tokens": {
       "prompt": 72,
-      "completion": 85
+      "completion": 49
     },
     "sources": [],
     "annotations": [
       {
         "type": "hallucination",
         "severity": "error",
-        "text": "Dimensions wrong: stated 4.5-inch display but X2 is 5\" x 5\" x 2.5\".",
+        "text": "The 14-day opening period and 15% restocking fee are fabricated; no such policy exists.",
+        "span_start": 245,
+        "span_end": 315
+      },
+      {
+        "type": "missing_source",
+        "severity": "warning",
+        "text": "No sources cited. User cannot verify accuracy of the information provided.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v2-trace-004",
+    "version": "v2",
+    "question": "How long does it take to get a refund?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
+    "response": "Refunds are processed within 3-5 business days after we receive your return. The amount goes back to your original payment method. Note that original shipping charges are non-refundable. You can also choose store credit which gives you a 5% bonus on the refund amount.",
+    "latency_ms": 1366,
+    "tokens": {
+      "prompt": 72,
+      "completion": 49
+    },
+    "sources": [],
+    "annotations": [
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Refund timeline stated as 3-5 days, but actual is 5-7 business days.",
+        "span_start": 29,
+        "span_end": 46
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Store credit bonus stated as 5%, but actual bonus is 10%.",
+        "span_start": 238,
+        "span_end": 246
+      },
+      {
+        "type": "missing_source",
+        "severity": "warning",
+        "text": "No sources cited. User cannot verify accuracy of the information provided.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v2-trace-005",
+    "version": "v2",
+    "question": "Do you offer store credit for returns?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
+    "response": "Yes! We offer store credit as an alternative to cash refunds. When you choose store credit, you receive a 15% bonus on top of your refund amount. So a $100 return would give you $115 in store credit. The credit is applied immediately and never expires. It's a popular choice among our regular customers.",
+    "latency_ms": 1003,
+    "tokens": {
+      "prompt": 72,
+      "completion": 53
+    },
+    "sources": [],
+    "annotations": [
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Store credit bonus stated as 15%, but actual bonus is 10%.",
+        "span_start": 106,
+        "span_end": 115
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "The $115 example is wrong; it should be $110 (10% of $100 = $10 bonus).",
+        "span_start": 178,
+        "span_end": 198
+      },
+      {
+        "type": "missing_source",
+        "severity": "warning",
+        "text": "No sources cited. User cannot verify accuracy of the information provided.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v2-trace-006",
+    "version": "v2",
+    "question": "How much does the Starter plan cost?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
+    "response": "The Starter plan costs $59 per month and includes up to 100 widgets, email support with 24-hour response time, basic analytics, and 2 user seats. It's perfect for individuals getting started. All plans include a 14-day trial and you can save 10% with annual billing.",
+    "latency_ms": 1110,
+    "tokens": {
+      "prompt": 72,
+      "completion": 47
+    },
+    "sources": [],
+    "annotations": [
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Price stated as $59/month, but actual price is $49/month.",
+        "span_start": 23,
+        "span_end": 36
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Response time stated as 24-hour, but Starter plan has 48-hour response.",
+        "span_start": 88,
+        "span_end": 109
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "User seats stated as 2, but Starter plan has 1 user seat.",
+        "span_start": 132,
+        "span_end": 144
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Annual discount stated as 10%, but actual is 20%.",
+        "span_start": 242,
+        "span_end": 265
+      },
+      {
+        "type": "missing_source",
+        "severity": "warning",
+        "text": "No sources cited. User cannot verify accuracy of the information provided.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v2-trace-007",
+    "version": "v2",
+    "question": "How much does the Enterprise plan cost?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
+    "response": "Our Enterprise plan costs $349 per month and includes unlimited widgets, priority support with 2-hour response time, custom integrations, and a dedicated account manager. You get unlimited user seats and advanced analytics. Annual plans receive a 15% discount. The Enterprise plan also includes our premium SLA with 99.95% uptime guarantee.",
+    "latency_ms": 1176,
+    "tokens": {
+      "prompt": 72,
+      "completion": 51
+    },
+    "sources": [],
+    "annotations": [
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Price stated as $349/month, but actual price is $299/month.",
         "span_start": 26,
-        "span_end": 43
+        "span_end": 40
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Response time stated as 2-hour, but actual is 4-hour response time.",
+        "span_start": 95,
+        "span_end": 115
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Annual discount stated as 15%, but actual discount is 20%.",
+        "span_start": 247,
+        "span_end": 259
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Uptime stated as 99.95%, but actual SLA is 99.9%.",
+        "span_start": 316,
+        "span_end": 339
+      },
+      {
+        "type": "missing_source",
+        "severity": "warning",
+        "text": "No sources cited. User cannot verify accuracy of the information provided.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v2-trace-008",
+    "version": "v2",
+    "question": "What does the Professional plan include?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
+    "response": "The Professional plan is $179 per month and includes up to 500 widgets, email support with 12-hour response time, advanced analytics, 3 user seats, and API access. It's our most popular plan for growing teams. Annual billing saves you 20%.",
+    "latency_ms": 1193,
+    "tokens": {
+      "prompt": 72,
+      "completion": 38
+    },
+    "sources": [],
+    "annotations": [
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Price stated as $179/month, but actual is $149/month.",
+        "span_start": 25,
+        "span_end": 39
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Response time stated as 12-hour, but actual is 24-hour for Professional.",
+        "span_start": 91,
+        "span_end": 112
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "User seats stated as 3, but actual is 5 user seats.",
+        "span_start": 134,
+        "span_end": 146
+      },
+      {
+        "type": "missing_source",
+        "severity": "warning",
+        "text": "No sources cited. User cannot verify accuracy of the information provided.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v2-trace-009",
+    "version": "v2",
+    "question": "Can you compare all your pricing plans?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
+    "response": "We have three plans: Starter at $49/month with 100 widgets and basic features, Professional at $149/month with 500 widgets and API access, and Enterprise at $349/month with unlimited everything. All include a 14-day trial. Professional has 5 seats, Enterprise has unlimited. Annual billing saves 20%.",
+    "latency_ms": 1360,
+    "tokens": {
+      "prompt": 72,
+      "completion": 43
+    },
+    "sources": [],
+    "annotations": [
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Enterprise price stated as $349/month, but actual is $299/month.",
+        "span_start": 157,
+        "span_end": 182
+      },
+      {
+        "type": "missing_source",
+        "severity": "warning",
+        "text": "No sources cited. User cannot verify accuracy of the information provided.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v2-trace-010",
+    "version": "v2",
+    "question": "Do you offer a free trial?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
+    "response": "Yes! All our plans include a 7-day free trial with full access to all features. No credit card required to start. After the trial, you can choose to subscribe monthly or annually. Annual billing saves you 20% off the regular monthly price.",
+    "latency_ms": 1040,
+    "tokens": {
+      "prompt": 72,
+      "completion": 42
+    },
+    "sources": [],
+    "annotations": [
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Trial period stated as 7 days, but actual trial is 14 days.",
+        "span_start": 29,
+        "span_end": 45
+      },
+      {
+        "type": "missing_source",
+        "severity": "warning",
+        "text": "No sources cited. User cannot verify accuracy of the information provided.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v2-trace-011",
+    "version": "v2",
+    "question": "What are the specs of Widget Pro X2?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
+    "response": "The Widget Pro X2 features a 4.5-inch display, weighs 10 oz, and is made with premium aluminum alloy. It has a 3000mAh battery providing 10 hours of use, Bluetooth 5.0 and WiFi connectivity, and IP65 water resistance. Priced at $149.99, it's our mid-range option perfect for everyday use.",
+    "latency_ms": 1325,
+    "tokens": {
+      "prompt": 72,
+      "completion": 50
+    },
+    "sources": [],
+    "annotations": [
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Dimensions wrong: stated 4.5-inch but X2 is 5\" x 5\" x 2.5\".",
+        "span_start": 29,
+        "span_end": 45
       },
       {
         "type": "hallucination",
         "severity": "error",
         "text": "Weight wrong: stated 10 oz but actual weight is 12 oz.",
-        "span_start": 45,
-        "span_end": 56
+        "span_start": 54,
+        "span_end": 59
       },
       {
         "type": "hallucination",
         "severity": "error",
         "text": "Material wrong: stated aluminum alloy but actual is carbon fiber composite.",
-        "span_start": 74,
-        "span_end": 99
+        "span_start": 86,
+        "span_end": 100
       },
       {
         "type": "hallucination",
         "severity": "error",
-        "text": "Battery wrong: stated 3000mAh but actual is 3500mAh lithium-ion.",
+        "text": "Battery wrong: stated 3000mAh/10 hours but actual is 3500mAh/12 hours.",
         "span_start": 111,
-        "span_end": 125
+        "span_end": 145
       },
       {
         "type": "hallucination",
         "severity": "error",
         "text": "Water resistance wrong: stated IP65 but actual is IP67.",
-        "span_start": 174,
-        "span_end": 195
+        "span_start": 195,
+        "span_end": 216
       },
       {
         "type": "hallucination",
         "severity": "error",
         "text": "Price wrong: stated $149.99 but actual price is $129.99.",
-        "span_start": 207,
-        "span_end": 223
+        "span_start": 228,
+        "span_end": 235
+      },
+      {
+        "type": "missing_source",
+        "severity": "warning",
+        "text": "No sources cited. User cannot verify accuracy of the information provided.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v2-trace-012",
+    "version": "v2",
+    "question": "Tell me about the Widget Pro X1.",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
+    "response": "The Widget Pro X1 is our entry-level model at $89.99. It measures 4\" x 4\" x 2\", weighs 8 oz, and features aircraft-grade aluminum construction. It has a 2500mAh battery for 10 hours of use, Bluetooth 5.0 and WiFi 6 connectivity. Great for beginners and casual users.",
+    "latency_ms": 1359,
+    "tokens": {
+      "prompt": 72,
+      "completion": 45
+    },
+    "sources": [],
+    "annotations": [
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Price stated as $89.99, but actual is $79.99.",
+        "span_start": 46,
+        "span_end": 52
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Battery stated as 2500mAh/10 hours, but actual is 2000mAh/8 hours.",
+        "span_start": 153,
+        "span_end": 181
+      },
+      {
+        "type": "missing_source",
+        "severity": "warning",
+        "text": "No sources cited. User cannot verify accuracy of the information provided.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v2-trace-013",
+    "version": "v2",
+    "question": "What is the Widget Enterprise E1?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
+    "response": "The Widget Enterprise E1 is our industrial-grade model at $299.99. It measures 6\" x 6\" x 3\" and weighs 16 oz with a stainless steel housing. It's a wired device with Ethernet, WiFi 6, and Bluetooth connectivity. It operates from -10C to 50C. Bulk pricing is available for organizations.",
+    "latency_ms": 1083,
+    "tokens": {
+      "prompt": 72,
+      "completion": 53
+    },
+    "sources": [],
+    "annotations": [
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Price stated as $299.99, but actual is $249.99.",
+        "span_start": 58,
+        "span_end": 65
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Weight stated as 16 oz, but actual is 18 oz.",
+        "span_start": 103,
+        "span_end": 108
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Material stated as stainless steel, but actual is industrial steel housing.",
+        "span_start": 116,
+        "span_end": 139
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Temperature range stated as -10C to 50C, but actual is -20C to 60C.",
+        "span_start": 229,
+        "span_end": 240
+      },
+      {
+        "type": "missing_source",
+        "severity": "warning",
+        "text": "No sources cited. User cannot verify accuracy of the information provided.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v2-trace-014",
+    "version": "v2",
+    "question": "How do the Widget Pro X1 and X2 compare?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
+    "response": "The X1 ($79.99) is our entry model: 4\" x 4\" x 2\", 8 oz, aluminum build, 2000mAh battery (8 hours), Bluetooth and WiFi. The X2 ($139.99) upgrades to: 5\" x 5\" x 2.5\", 12 oz, carbon fiber, 3500mAh battery (12 hours), adds NFC and IP67 water resistance. The X2 is worth the extra for the battery and water resistance alone.",
+    "latency_ms": 1393,
+    "tokens": {
+      "prompt": 72,
+      "completion": 57
+    },
+    "sources": [],
+    "annotations": [
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "X2 price stated as $139.99, but actual is $129.99.",
+        "span_start": 127,
+        "span_end": 134
+      },
+      {
+        "type": "missing_source",
+        "severity": "warning",
+        "text": "No sources cited. User cannot verify accuracy of the information provided.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v2-trace-015",
+    "version": "v2",
+    "question": "Is the Widget Pro X2 waterproof?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
+    "response": "The Widget Pro X2 has an IP65 water resistance rating, which means it's protected against low-pressure water jets and dust. It can handle rain and splashes but shouldn't be submerged. The carbon fiber body adds extra moisture protection. At $129.99, it's the only water-resistant model in our lineup.",
+    "latency_ms": 1033,
+    "tokens": {
+      "prompt": 72,
+      "completion": 48
+    },
+    "sources": [],
+    "annotations": [
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Water resistance stated as IP65, but actual rating is IP67.",
+        "span_start": 25,
+        "span_end": 53
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "IP65 description is wrong; IP67 allows submersion up to 1m for 30 min.",
+        "span_start": 72,
+        "span_end": 113
+      },
+      {
+        "type": "missing_source",
+        "severity": "warning",
+        "text": "No sources cited. User cannot verify accuracy of the information provided.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v2-trace-016",
+    "version": "v2",
+    "question": "What shipping options do you offer?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
+    "response": "We offer Standard (7-10 days, $4.95, free over $75), Express (2-3 days, $14.95), and Overnight (next day before 3 PM EST, $29.95) shipping for domestic orders. International shipping to 30+ countries takes 10-21 days with costs at checkout. Tracking is provided for all orders. Signature required for orders over $150.",
+    "latency_ms": 1255,
+    "tokens": {
+      "prompt": 72,
+      "completion": 53
+    },
+    "sources": [],
+    "annotations": [
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Standard delivery stated as 7-10 days, actual is 5-7 business days.",
+        "span_start": 19,
+        "span_end": 28
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Standard cost stated as $4.95, actual is $5.95.",
+        "span_start": 30,
+        "span_end": 35
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Free threshold stated as $75, actual is $50.",
+        "span_start": 37,
+        "span_end": 50
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Overnight cutoff stated as 3 PM, actual is 2 PM EST.",
+        "span_start": 112,
+        "span_end": 120
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Overnight price stated as $29.95, actual is $24.95.",
+        "span_start": 122,
+        "span_end": 128
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "International to 30+ countries, actual is 50+.",
+        "span_start": 186,
+        "span_end": 199
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Signature threshold stated as $150, actual is $200.",
+        "span_start": 308,
+        "span_end": 317
+      },
+      {
+        "type": "missing_source",
+        "severity": "warning",
+        "text": "No sources cited. User cannot verify accuracy of the information provided.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v2-trace-017",
+    "version": "v2",
+    "question": "How much is express shipping?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
+    "response": "Express shipping costs $14.95 and delivers within 1-2 business days. It's available for all domestic orders. Orders placed before 3 PM EST ship the same day. You'll get tracking via email within 48 hours of shipment.",
+    "latency_ms": 1071,
+    "tokens": {
+      "prompt": 72,
+      "completion": 36
+    },
+    "sources": [],
+    "annotations": [
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Express price stated as $14.95, actual is $12.95.",
+        "span_start": 23,
+        "span_end": 29
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Express delivery stated as 1-2 days, actual is 2-3 business days.",
+        "span_start": 50,
+        "span_end": 67
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Same-day cutoff stated as 3 PM, actual is 2 PM EST.",
+        "span_start": 130,
+        "span_end": 138
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Tracking stated as 48 hours, actual is within 24 hours.",
+        "span_start": 195,
+        "span_end": 203
+      },
+      {
+        "type": "missing_source",
+        "severity": "warning",
+        "text": "No sources cited. User cannot verify accuracy of the information provided.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v2-trace-018",
+    "version": "v2",
+    "question": "Do you ship internationally?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
+    "response": "Yes! We ship to over 40 countries internationally. Delivery takes 10-21 business days with costs starting at $19.95 based on destination. Customs and import duties are included in the shipping price. International orders over $100 receive free expedited shipping. Tracking is available for all international shipments.",
+    "latency_ms": 1219,
+    "tokens": {
+      "prompt": 72,
+      "completion": 49
+    },
+    "sources": [],
+    "annotations": [
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Country count stated as 40+, actual is 50+.",
+        "span_start": 21,
+        "span_end": 33
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Delivery stated as 10-21 days, actual is 7-14 business days.",
+        "span_start": 66,
+        "span_end": 85
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Customs stated as included, but actual policy says buyer's responsibility.",
+        "span_start": 168,
+        "span_end": 198
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Free expedited shipping claim is fabricated; no such policy exists.",
+        "span_start": 239,
+        "span_end": 262
+      },
+      {
+        "type": "missing_source",
+        "severity": "warning",
+        "text": "No sources cited. User cannot verify accuracy of the information provided.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v2-trace-019",
+    "version": "v2",
+    "question": "Is there free shipping?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
+    "response": "Yes! We offer free standard shipping on all domestic orders over $75. Standard shipping takes 5-7 business days. If your order is under $75, standard shipping costs $5.95. Express and overnight options are available at additional cost for faster delivery.",
+    "latency_ms": 1046,
+    "tokens": {
+      "prompt": 72,
+      "completion": 37
+    },
+    "sources": [],
+    "annotations": [
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Free shipping threshold stated as $75, actual is $50.",
+        "span_start": 60,
+        "span_end": 68
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Repeated wrong threshold: under $75 should be under $50.",
+        "span_start": 130,
+        "span_end": 139
+      },
+      {
+        "type": "missing_source",
+        "severity": "warning",
+        "text": "No sources cited. User cannot verify accuracy of the information provided.",
+        "span_start": null,
+        "span_end": null
+      }
+    ]
+  },
+  {
+    "id": "v2-trace-020",
+    "version": "v2",
+    "question": "When will my order ship?",
+    "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
+    "response": "Orders placed before 3 PM EST on business days ship the same day. After that cutoff, they ship the next business day. You'll receive tracking info via email within 48 hours. Delivery time depends on your shipping method: Standard (5-7 days), Express (2-3 days), or Overnight. Signature required for orders over $100.",
+    "latency_ms": 1348,
+    "tokens": {
+      "prompt": 72,
+      "completion": 55
+    },
+    "sources": [],
+    "annotations": [
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Cutoff stated as 3 PM EST, actual is 2 PM EST.",
+        "span_start": 21,
+        "span_end": 29
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Tracking email stated as within 48 hours, actual is within 24 hours.",
+        "span_start": 164,
+        "span_end": 172
+      },
+      {
+        "type": "hallucination",
+        "severity": "error",
+        "text": "Signature threshold stated as $100, actual is $200.",
+        "span_start": 306,
+        "span_end": 315
+      },
+      {
+        "type": "missing_source",
+        "severity": "warning",
+        "text": "No sources cited. User cannot verify accuracy of the information provided.",
+        "span_start": null,
+        "span_end": null
       }
     ]
   }
