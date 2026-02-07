@@ -59,6 +59,39 @@ Inferred wiring from nesting:
 - N3 signWaiver() → N4 WaiverSignatures (writes)
 - N3 signWaiver() → N5 member.waiverUpToDate (updates)
 
+## Project Affordances Reference
+
+The project maintains a persistent affordances file at `.claude/affordances.md` — a living bill of materials with tables for Places, UI Affordances (U-prefixed), Code Affordances (N-prefixed), Data Affordances (D-prefixed), Wiring, and Component Templates.
+
+### Loading the Reference
+
+At the start of any breadboarding session:
+1. Read `.claude/affordances.md` to understand what already exists
+2. Cross-reference existing IDs (U, N, D prefixes) to avoid conflicts
+3. Note the highest ID in each sequence so new affordances continue the numbering
+
+### Updating the Reference
+
+After generating breadboards or completing implementation work:
+1. Add new places, affordances, and wiring entries to the appropriate tables
+2. Continue ID sequences (e.g., if U20 is the last UI affordance, start new ones at U21)
+3. Update status of existing places if they changed (e.g., `new` → `existing`)
+4. Update the "Last updated" date at the top of the file
+
+### Impact Assessment
+
+When breadboarding a new feature, produce an impact table showing which existing affordances are affected:
+
+```markdown
+| Existing Affordance | Impact | Details |
+|---------------------|--------|---------|
+| N4 `ask()` | Modified | Add new version routing |
+| U8 Version selector | Modified | Add v4 tab |
+| D5-D7 Traces | New sibling | Add v4_traces.json |
+```
+
+This prevents surprises during implementation by surfacing downstream dependencies early.
+
 ## Core Concepts
 
 **Breadboard**: A schematic showing places, affordances, and connections—without visual design. Tests if the concept works before building.

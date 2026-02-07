@@ -15,6 +15,159 @@ This Flask application demonstrates AI evaluations in the testing pyramid. It de
 
 **Integration**: Deployed at `https://portfolio.cookinupideas.com/ai-evals/` via CloudFront routing from the proto-portal-showcase-hub portfolio.
 
+## Development Workflow
+
+This project uses a breadboarding/affordances-first approach. The persistent affordances reference at `.claude/affordances.md` tracks all places, UI/code/data affordances, wiring, and component templates with sequential IDs (U for UI, N for code, D for data).
+
+### Before Modifications
+
+1. Read `.claude/affordances.md` to identify affected affordances
+2. Check the Wiring table for downstream dependencies of anything you plan to change
+3. Note new affordances that will be needed
+
+### Key Patterns
+
+- Use `python3` not `python` on this machine
+- Phase config lives in `viewer/narrative.py` PHASES dict; navigation renders from `short_title`
+- Templates at `templates/narrative/`, components at `templates/components/`
+- CSS follows BEM naming convention with `--modifier` variants in `static/css/design-system.css`
+- Collapsible macro: `{% from "components/collapsible.html" import collapsible %}`
+- Tests use pytest with `client` fixture from `conftest.py`
+- Existing E2E test failures in `test_ask_flow.py` are pre-existing (missing ANTHROPIC_API_KEY)
+
+### Secrets & Environment
+
+- The `ANTHROPIC_API_KEY` is stored in a local `.env` file at the project root (`ai-testing-resource/.env`). This file is gitignored and must never be committed.
+- Copy `.env.example` to `.env` and fill in values for local development.
+- In production, secrets are managed via AWS Secrets Manager (see Deployment section).
+
+### After Completing Work
+
+Update `.claude/affordances.md`:
+1. Add new places, affordances, and wiring entries to the appropriate tables
+2. Continue ID sequences (check highest existing ID in each prefix)
+3. Update the "Last updated" date
+
+### Linting
+
+**Always run linting before committing any code.** The project uses three linting tools (installed in `.venv`):
+
+1. **black** (formatter) — auto-formats Python code for consistent style.
+2. **flake8** (linter) — catches unused imports, undefined names, and style issues.
+3. **mypy** (type checker) — optional static type checking.
+
+**Commands** (run from `ai-testing-resource/`):
+
+```bash
+# Activate the virtualenv first
+source .venv/bin/activate
+
+# Auto-format all changed files with black
+black <file_or_directory>
+
+# Check formatting without changing files
+black --check <file_or_directory>
+
+# Lint with flake8 (exclude venv, allow 120-char lines)
+flake8 --exclude .venv,__pycache__ --max-line-length 120 <file_or_directory>
+
+# Type check (optional, for files with annotations)
+mypy <file_or_directory>
+```
+
+**Workflow**: Run `black` first to fix formatting, then `flake8` to catch remaining issues. Fix any flake8 errors (especially F-codes like unused imports) before committing.
+
+### Git Commits
+
+When work is complete and the user asks to commit:
+- **Run linting first** — `black` then `flake8` on all changed files before staging.
+- **Run tests before committing.** The `ANTHROPIC_API_KEY` is available locally via `.env`, so all test suites will run (API-dependent tests auto-skip only when the key is absent, e.g. in CI without secrets).
+  ```bash
+  source .venv/bin/activate
+  # Load the API key from .env
+  export $(grep -v '^#' .env | xargs)
+
+  # Unit tests (fast, no API calls)
+  python3 -m pytest tests/unit/ -v
+
+  # E2E tests
+  python3 -m pytest tests/e2e/ -v
+
+  # Integration tests (chroma + AI service + RAG pipeline — makes API calls)
+  python3 -m pytest tests/integration/ -v
+
+  # Security and acceptance tests (make API calls)
+  python3 -m pytest tests/security/ tests/acceptance/ -v
+  ```
+  For routine commits, run **unit + e2e** at minimum. Run the full suite (including integration, acceptance, security, performance, ai_acceptance) when changes touch AI service logic, prompts, RAG pipeline, or response handling:
+  ```bash
+  # Full suite (excludes playwright/steelthread which need a running server + browser)
+  python3 -m pytest tests/unit/ tests/e2e/ tests/integration/ tests/acceptance/ tests/security/ tests/performance/ tests/ai_acceptance/ -v
+  ```
+  **Playwright / Steel Thread tests (major changes only):**
+  The `tests/playwright/` and `tests/steelthread/` suites run a real browser against a running server. Use these for major changes (new routes, template overhauls, navigation changes, CSS/layout rework). They use Docker Compose to spin up the full stack:
+  ```bash
+  # 1. Install playwright and its browser binaries (one-time setup)
+  pip install playwright
+  playwright install chromium
+
+  # 2. Start the app stack in the background (postgres + redis + flask)
+  #    The api service builds from Dockerfile and serves on localhost:5001
+  docker compose up -d --build
+
+  # 3. Wait for the api container to be healthy
+  docker compose ps  # confirm "tsr-api" shows "healthy"
+
+  # 4. Run playwright browser tests against the local server
+  python3 -m pytest tests/playwright/test_browser.py --base-url http://localhost:5001 -v
+
+  # 5. Run steel thread tests against the local server
+  python3 -m pytest tests/steelthread/ --base-url http://localhost:5001 -v
+
+  # 6. To also run the playwright steel thread (hits deployed portfolio site)
+  python3 -m pytest tests/playwright/test_steel_thread.py -v
+
+  # 7. Tear down when done
+  docker compose down
+  ```
+  Notes:
+  - `docker-compose.yml` maps container port 5000 to host port **5001** — use `--base-url http://localhost:5001`.
+  - The `ANTHROPIC_API_KEY` env var is passed through from your shell to the container. Make sure it's exported (`export $(grep -v '^#' .env | xargs)`) before `docker compose up`.
+  - `docker-compose.ci.yml` is an override for CI (tmpfs postgres, no volumes). For local use, just use the base `docker-compose.yml`.
+  - `test_steel_thread.py` in `tests/playwright/` hits the **deployed production** portfolio URL by default. Only run this to validate the live deployment, not local changes.
+
+- Write clear, informative commit messages that explain *why* the change was made, not just *what* changed.
+- Use conventional-style prefixes: `feat:`, `fix:`, `refactor:`, `docs:`, `test:`, `chore:` as appropriate.
+- Keep the first line under 72 characters; add detail in the body if needed.
+- Stage specific files rather than using `git add -A` to avoid committing secrets or unrelated changes.
+- **Document architectural changes in the commit body.** When a commit introduces structural changes (new modules, changed data flow, refactored component boundaries, new routes/endpoints, template hierarchy changes), include an `Architecture:` section in the commit body. This is used to inform PR descriptions and generate architecture diagrams. Example:
+  ```
+  feat: add real-time trace monitoring via WebSocket
+
+  Replace polling-based trace updates with WebSocket push.
+  Reduces dashboard latency from ~5s to <200ms.
+
+  Architecture:
+  - New module: viewer/realtime.py (SocketIO event handlers)
+  - Data flow: trace_inspector.py -> SocketIO -> browser JS listener
+  - New dependency: flask-socketio added to requirements.txt
+  - Template change: monitoring/traces.html now includes ws_client.js
+  - Removed: polling timer in static/js/trace_refresh.js
+
+  Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+  ```
+  These notes don't need to be exhaustive — focus on what another developer (or a PR summary) would need to understand the structural impact of the change.
+
+### Continuous Improvement
+
+When you discover something useful about this project (gotchas, patterns, architecture decisions, debugging tips), add it to this CLAUDE.md so future sessions benefit. Examples:
+- A non-obvious dependency between components
+- A workaround for a known issue
+- A pattern that should be followed for consistency
+- A command or configuration that was hard to figure out
+
+Keep notes concise and placed in the most relevant section.
+
 ## Proxy Configuration
 
 When deploying with a proxy, the application code must account for the proxy path.
@@ -121,10 +274,47 @@ cp .env.example .env
 3. Ask page: `GET /ask` renders correctly
 4. Governance dashboard: `GET /governance/dashboard` loads
 
+**IMPORTANT: A healthy endpoint does not mean the deployment succeeded.** The health check may return `"healthy"` from a *previous* deployment's still-running task while the new deployment is failing. Always confirm the new code is actually live:
+
+**Verify the deployment itself succeeded:**
+```bash
+# Check the ECS service — look at "deployments" array and task timestamps
+aws ecs describe-services \
+  --cluster ai-testing-resource-prod \
+  --services ai-testing-resource-prod \
+  --query 'services[0].{desiredCount:desiredCount,runningCount:runningCount,deployments:deployments[*].{status:status,runningCount:runningCount,desiredCount:desiredCount,createdAt:createdAt,updatedAt:updatedAt,taskDefinition:taskDefinition}}' \
+  --output table
+
+# Verify there is only ONE deployment with status "PRIMARY" and runningCount == desiredCount.
+# If you see a second deployment with status "ACTIVE", the new deployment is still rolling out
+# or failing. If runningCount is 0 on the PRIMARY deployment, tasks are crashing.
+
+# Check when the running task was started (should be recent, after your deploy)
+aws ecs list-tasks --cluster ai-testing-resource-prod --service-name ai-testing-resource-prod --query 'taskArns' --output text | \
+  xargs -I {} aws ecs describe-tasks --cluster ai-testing-resource-prod --tasks {} \
+  --query 'tasks[0].{startedAt:startedAt,lastStatus:lastStatus,taskDefinitionArn:taskDefinitionArn}' --output table
+```
+
+**If the deployment failed — check the logs:**
+```bash
+# Tail recent CloudWatch logs for startup errors or crash loops
+aws logs tail /ecs/ai-testing-resource-prod --since 30m --follow
+
+# If you need older logs or want to search for specific errors
+aws logs filter-log-events \
+  --log-group-name /ecs/ai-testing-resource-prod \
+  --start-time $(date -v-1H +%s000) \
+  --filter-pattern "ERROR"
+
+# Check stopped tasks for the stop reason (e.g. OOM, health check failure, crash)
+aws ecs list-tasks --cluster ai-testing-resource-prod --service-name ai-testing-resource-prod --desired-status STOPPED --query 'taskArns' --output text | \
+  xargs -I {} aws ecs describe-tasks --cluster ai-testing-resource-prod --tasks {} \
+  --query 'tasks[0].{stopCode:stopCode,stoppedReason:stoppedReason,stoppedAt:stoppedAt,containers:containers[0].{exitCode:exitCode,reason:reason}}' --output table
+```
+
 **Manual verification:**
 - Visit `https://portfolio.cookinupideas.com/ai-evals/`
-- Check CloudWatch logs: `aws logs tail /ecs/ai-testing-resource-prod --follow`
-- Verify ECS service health: `aws ecs describe-services --cluster ai-testing-resource-prod --services ai-testing-resource-prod`
+- Confirm the page content reflects your changes (not a stale cached version)
 
 ## Deployment Scripts
 
