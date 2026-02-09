@@ -2607,6 +2607,154 @@ body {
 .span-item--prompt .span-item__name { color: #E74C3C; }
 .span-item--llm .span-item__name { color: #2ECC71; }
 
+/* ============================================
+   METHODOLOGY DEFINITIONS (Phase 4)
+   ============================================ */
+.methodology-definitions {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+
+.methodology-definitions__title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-chrome-text-bright);
+  margin: 0 0 var(--space-sm) 0;
+}
+
+.methodology-definitions__intro {
+  font-size: 0.8125rem;
+  color: var(--color-chrome-text);
+  margin: 0 0 var(--space-md) 0;
+  line-height: 1.6;
+}
+
+.methodology-definitions__terms {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.methodology-definitions__term {
+  display: flex;
+  gap: var(--space-md);
+  align-items: baseline;
+  font-size: 0.8125rem;
+  color: var(--color-chrome-text);
+  line-height: 1.5;
+}
+
+.methodology-definitions__term strong {
+  color: var(--color-chrome-text-bright);
+  min-width: 80px;
+  flex-shrink: 0;
+}
+
+/* ============================================
+   ANNOTATION SUMMARY TABLE (Phase 4)
+   ============================================ */
+.annotation-summary {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: var(--space-lg);
+}
+
+.annotation-summary__title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-chrome-text-bright);
+  margin: 0 0 var(--space-md) 0;
+}
+
+.annotation-summary__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.annotation-summary__table th,
+.annotation-summary__table td {
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: left;
+  font-size: 0.8125rem;
+}
+
+.annotation-summary__table th {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-chrome-text-bright);
+  font-weight: 600;
+}
+
+.annotation-summary__table td {
+  color: var(--color-chrome-text);
+}
+
+/* ============================================
+   ANNOTATIONS SECTION (trace detail)
+   ============================================ */
+.annotations-section {
+  padding: var(--space-md) var(--space-lg);
+  border-top: 1px solid var(--color-canvas-border);
+}
+
+.annotations-section__title {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #4b5563;
+  margin: 0 0 var(--space-sm) 0;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.annotation-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding: var(--space-sm) 0;
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+.annotation-item__axial-code {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.annotation-item__axial-code--error {
+  background: var(--color-ann-error-bg);
+  color: var(--color-error);
+}
+
+.annotation-item__axial-code--warning {
+  background: var(--color-ann-warning-bg);
+  color: #92400e;
+}
+
+.annotation-item__axial-code--success {
+  background: var(--color-ann-success-bg);
+  color: #065f46;
+}
+
+.annotation-item__axial-code--info {
+  background: var(--color-ann-info-bg);
+  color: #1e40af;
+}
+
+.annotation-item__open-code {
+  line-height: 1.5;
+}
+
 /* Loading State */
 .loading-spinner {
   display: flex;

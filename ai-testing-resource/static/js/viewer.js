@@ -61,10 +61,62 @@ async function runTest(testId) {
   }
 }
 
-// Version tab switching (now handled by narrative phases)
-// Legacy viewer routes removed - keeping function signature for compatibility
-function switchVersion(version) {
-  console.warn('switchVersion() called but viewer routes are removed');
+// Global: AXIAL_CODES fetched on page load for Phase 4
+let AXIAL_CODES_CACHE = null;
+
+/**
+ * Switch to a different version via AJAX (no page reload / scroll-to-top)
+ */
+async function switchVersion(version) {
+  // Optimistic UI: update version tab active state
+  document.querySelectorAll('.version-tab').forEach(tab => {
+    if (tab.dataset.version === version) {
+      tab.classList.add('version-tab--active');
+    } else {
+      tab.classList.remove('version-tab--active');
+    }
+  });
+
+  // Show loading in the main content area
+  const mainContent = document.querySelector('.content-primary');
+  if (mainContent) {
+    mainContent.innerHTML = '<div class="loading-spinner">Loading version...</div>';
+  }
+
+  try {
+    const response = await fetch(appUrl(`/api/phase4/version/${version}`));
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || 'Failed to load version');
+
+    // Cache axial codes
+    if (data.axial_codes) AXIAL_CODES_CACHE = data.axial_codes;
+
+    // Render each section
+    renderFailureModes(data.failure_modes, data.version);
+    renderArchitectureContext(data.arch_context, data.version);
+    renderTraceSidebar(data.traces, data.selected_trace_id, data.version);
+
+    // Render trace detail
+    if (data.trace_detail) {
+      renderTraceDetail(data);
+    } else if (mainContent) {
+      mainContent.innerHTML = '<div class="explanation"><p>No traces available for this version.</p></div>';
+    }
+
+    // Update URL without reload (back button support)
+    const url = new URL(window.location);
+    url.searchParams.set('version', version);
+    url.searchParams.delete('trace');
+    if (data.selected_trace_id) {
+      url.searchParams.set('trace', data.selected_trace_id);
+    }
+    window.history.pushState({version, traceId: data.selected_trace_id}, '', url.toString());
+
+  } catch (error) {
+    if (mainContent) {
+      mainContent.innerHTML = `<div class="error-message">Error: ${escapeHtml(error.message)}</div>`;
+    }
+  }
 }
 
 // Test type switching (now handled by narrative phases)
@@ -325,7 +377,7 @@ function renderTraceDetail(data) {
       <div class="code-canvas__code" style="font-family: var(--font-prose); white-space: pre-wrap;">
         ${data.annotated_response}
       </div>
-      ${renderAnnotationFootnotes(data.trace_detail.annotations)}
+      ${renderAnnotations(data.trace_detail.annotations)}
     </div>
 
     <!-- RAG Pipeline Span Tree (if spans exist) -->
@@ -426,7 +478,120 @@ function getVersionColor(version) {
 }
 
 /**
- * Render annotation footnotes
+ * Render failure modes panel via AJAX data
+ */
+function renderFailureModes(failureModes, version) {
+  const section = document.getElementById('failure-mode-section');
+  if (!section) return;
+
+  if (!failureModes || failureModes.length === 0) {
+    section.innerHTML = `
+      <div class="failure-mode-panel failure-mode-panel--${version}">
+        <h3>Discovered Failure Modes (${version.toUpperCase()})</h3>
+        <p style="color: var(--color-success); font-size: 0.875rem;">No failure modes &mdash; all evals pass.</p>
+      </div>`;
+    return;
+  }
+
+  const items = failureModes.map(fm => `
+    <div class="failure-mode-item failure-mode-item--${fm.severity}">
+      <strong>${escapeHtml(fm.name)}</strong>
+      <p>${escapeHtml(fm.description)}</p>
+      <span class="failure-mode-item__resolution">Resolution: ${escapeHtml(fm.resolution)}</span>
+    </div>`).join('');
+
+  section.innerHTML = `
+    <div class="failure-mode-panel failure-mode-panel--${version}">
+      <h3>Discovered Failure Modes (${version.toUpperCase()})</h3>
+      ${items}
+    </div>`;
+}
+
+/**
+ * Render architecture context via AJAX data
+ */
+function renderArchitectureContext(archContext, version) {
+  const section = document.getElementById('arch-context-section');
+  if (!section) return;
+
+  if (!archContext || !archContext.prompt_strategy) {
+    section.innerHTML = '';
+    return;
+  }
+
+  section.innerHTML = `
+    <div class="collapsible">
+      <button class="collapsible__trigger" onclick="toggleCollapsible(this.parentElement)">
+        <span class="collapsible__icon">&#9654;</span>
+        <span>Architecture Context (${version.toUpperCase()})</span>
+      </button>
+      <div class="collapsible__content">
+        <div class="architecture-context">
+          <h4>Prompt Strategy</h4>
+          <p>${escapeHtml(archContext.prompt_strategy)}</p>
+          <h4>Architecture</h4>
+          <p>${escapeHtml(archContext.architecture)}</p>
+          <h4>Known Limitations</h4>
+          <p>${escapeHtml(archContext.known_limitations)}</p>
+        </div>
+      </div>
+    </div>`;
+}
+
+/**
+ * Render trace sidebar via AJAX data
+ */
+function renderTraceSidebar(traces, selectedTraceId, version) {
+  const section = document.getElementById('trace-sidebar-section');
+  if (!section) return;
+
+  if (!traces || traces.length === 0) {
+    section.innerHTML = '<div class="explanation"><p>No traces available for this version.</p></div>';
+    return;
+  }
+
+  const items = traces.map(t => {
+    const active = t.id === selectedTraceId ? 'sidebar__item--active' : '';
+    const marker = t.has_annotations ? '<span style="color: var(--color-warning);">*</span>' : '';
+    return `<a href="javascript:void(0)" class="sidebar__item ${active}"
+               data-trace-id="${t.id}"
+               onclick="switchTrace('${version}', '${t.id}')">${escapeHtml(t.question)}${marker}</a>`;
+  }).join('');
+
+  section.innerHTML = `
+    <div>
+      <h3 style="color: var(--color-chrome-text-bright); font-size: 0.875rem; margin: 0 0 var(--space-sm) 0;">
+        Sample Traces (${traces.length})
+      </h3>
+      <div class="sidebar trace-sidebar-scroll">${items}</div>
+    </div>`;
+}
+
+/**
+ * Render annotations with axial code tags + open code text
+ */
+function renderAnnotations(annotations) {
+  if (!annotations || annotations.length === 0) return '';
+
+  const items = annotations.map(ann => {
+    const codeInfo = (AXIAL_CODES_CACHE && AXIAL_CODES_CACHE[ann.type]) || {};
+    const label = codeInfo.label || ann.type.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    return `
+      <div class="annotation-item annotation-item--${ann.severity}">
+        <span class="annotation-item__axial-code annotation-item__axial-code--${ann.severity}">${escapeHtml(label)}</span>
+        <span class="annotation-item__open-code">${escapeHtml(ann.text)}</span>
+      </div>`;
+  }).join('');
+
+  return `
+    <div class="annotations-section">
+      <h4 class="annotations-section__title">Annotations</h4>
+      ${items}
+    </div>`;
+}
+
+/**
+ * Render annotation footnotes (legacy, kept for backward compatibility)
  */
 function renderAnnotationFootnotes(annotations) {
   if (!annotations || annotations.length === 0) return '';
@@ -489,21 +654,24 @@ function renderMetadata(trace) {
   `;
 }
 
-// Browser history support
+// Browser history support (version + trace)
 window.addEventListener('popstate', (event) => {
-  if (event.state && event.state.traceId) {
+  if (event.state && event.state.version) {
+    switchVersion(event.state.version);
+  } else if (event.state && event.state.traceId) {
     switchTrace(event.state.version, event.state.traceId);
   }
 });
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
-  // Add click handlers to sidebar items
-  document.querySelectorAll('.sidebar__item').forEach(item => {
-    item.addEventListener('click', (e) => {
-      // Let the link navigate naturally
-    });
-  });
+  // Fetch axial codes for Phase 4 annotation rendering
+  if (document.getElementById('failure-mode-section')) {
+    fetch(appUrl('/api/phase4/axial-codes'))
+      .then(r => r.json())
+      .then(data => { AXIAL_CODES_CACHE = data.axial_codes; })
+      .catch(() => { /* non-critical, annotations still work without labels */ });
+  }
 
   // Initialize demo form if present
   const demoForm = document.querySelector('.demo-form');

@@ -8,7 +8,13 @@ Produces ~20 traces per version (v1, v2, v3) = ~60 total.
 """
 import json
 import random
+import sys
 from pathlib import Path
+
+# Allow imports from the parent package
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from viewer.trace_inspector import AXIAL_CODES  # noqa: E402
 
 random.seed(42)
 
@@ -713,6 +719,7 @@ def find_span(text, substring):
 
 
 def build_v1_trace(idx, q):
+    # Axial codes used: length_violation (warning), prompt_issue (info)
     response = q["v1_response"]
     word_count = len(response.split())
     annotations = [
@@ -746,6 +753,7 @@ def build_v1_trace(idx, q):
 
 
 def build_v2_trace(idx, q):
+    # Axial codes used: hallucination (error), missing_source (warning)
     response = q["v2_response"]
     word_count = len(response.split())
     annotations = []
@@ -922,6 +930,7 @@ def build_v3_span_trace(idx, q):
 
 
 def build_v3_trace(idx, q):
+    # Axial codes used: accurate_answer (success), correct_retrieval (success)
     response = q["v3_response"]
     word_count = len(response.split())
 
@@ -993,21 +1002,28 @@ def main():
             json.dump(traces, f, indent=2)
         print(f"{version}: {len(traces)} traces written to {path}")
 
-    # Validate spans
+    # Validate spans and axial codes
     errors = 0
     for traces in [v1_traces, v2_traces, v3_traces]:
         for t in traces:
             for ann in t["annotations"]:
+                # Validate axial code exists in AXIAL_CODES
+                if ann["type"] not in AXIAL_CODES:
+                    print(
+                        f"  ERROR: Unknown axial code '{ann['type']}' " f"in {t['id']}"
+                    )
+                    errors += 1
+                # Validate span positions
                 if ann["span_start"] is not None and ann["span_end"] is not None:
-                    span_text = t["response"][ann["span_start"]:ann["span_end"]]
+                    span_text = t["response"][ann["span_start"] : ann["span_end"]]
                     if not span_text:
                         print(f"  WARNING: Empty span in {t['id']}: {ann['text']}")
                         errors += 1
 
     if errors:
-        print(f"\n{errors} span errors found!")
+        print(f"\n{errors} validation errors found!")
     else:
-        print("\nAll spans validated successfully.")
+        print("\nAll spans and axial codes validated successfully.")
 
 
 if __name__ == "__main__":

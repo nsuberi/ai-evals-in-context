@@ -94,10 +94,10 @@ class TestPhaseContent:
         assert b"failure-mode" in response.data
 
     def test_phase4_no_failure_modes_v3(self, client):
-        """Phase 4 v3 should not show failure mode panel"""
+        """Phase 4 v3 should show panel with 'all evals pass' message"""
         response = client.get("/phase/4?version=v3")
         assert response.status_code == 200
-        assert b"failure-mode-panel" not in response.data
+        assert b"No failure modes" in response.data
 
     def test_phase4_architecture_context(self, client):
         """Phase 4 should include architecture context collapsible"""
@@ -233,3 +233,69 @@ class TestNavigationConsistency:
         response = client.get("/")
         assert response.status_code == 200
         assert b"Start" in response.data or b"Journey" in response.data
+
+
+class TestPhase4API:
+    """Test Phase 4 AJAX API endpoints"""
+
+    def test_version_endpoint_v1(self, client):
+        """GET /api/phase4/version/v1 should return version data"""
+        response = client.get("/api/phase4/version/v1")
+        assert response.status_code == 200
+        data = response.get_json()
+        assert data["version"] == "v1"
+        assert "traces" in data
+        assert "failure_modes" in data
+        assert "arch_context" in data
+        assert "axial_codes" in data
+        assert "annotation_summary" in data
+
+    def test_version_endpoint_v2(self, client):
+        """GET /api/phase4/version/v2 should return version data"""
+        response = client.get("/api/phase4/version/v2")
+        assert response.status_code == 200
+        data = response.get_json()
+        assert data["version"] == "v2"
+        assert len(data["failure_modes"]) > 0
+
+    def test_version_endpoint_v3(self, client):
+        """GET /api/phase4/version/v3 should return version data"""
+        response = client.get("/api/phase4/version/v3")
+        assert response.status_code == 200
+        data = response.get_json()
+        assert data["version"] == "v3"
+        assert len(data["failure_modes"]) == 0
+
+    def test_version_endpoint_invalid(self, client):
+        """GET /api/phase4/version/v99 should return 400"""
+        response = client.get("/api/phase4/version/v99")
+        assert response.status_code == 400
+
+    def test_axial_codes_endpoint(self, client):
+        """GET /api/phase4/axial-codes should return code definitions"""
+        response = client.get("/api/phase4/axial-codes")
+        assert response.status_code == 200
+        data = response.get_json()
+        assert "axial_codes" in data
+        assert "summary" in data
+        assert "hallucination" in data["axial_codes"]
+        assert "length_violation" in data["axial_codes"]
+
+    def test_phase4_has_methodology_section(self, client):
+        """Phase 4 should include qualitative coding methodology"""
+        response = client.get("/phase/4")
+        assert response.status_code == 200
+        assert b"methodology-definitions" in response.data
+        assert b"Qualitative Coding" in response.data
+
+    def test_phase4_has_annotation_summary(self, client):
+        """Phase 4 should include annotation summary table"""
+        response = client.get("/phase/4")
+        assert response.status_code == 200
+        assert b"annotation-summary" in response.data
+
+    def test_phase4_version_buttons(self, client):
+        """Phase 4 should use buttons for version switching"""
+        response = client.get("/phase/4")
+        assert response.status_code == 200
+        assert b'onclick="switchVersion' in response.data

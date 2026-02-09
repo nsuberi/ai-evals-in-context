@@ -15,8 +15,14 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from tsr.models import (
-    TestSummaryReport, VersionManifest, TestTypeResult, TestType,
-    EvalIterationSummary, FailureMode, RequirementCoverage, GoNoGoDecision
+    TestSummaryReport,
+    VersionManifest,
+    TestTypeResult,
+    TestType,
+    EvalIterationSummary,
+    FailureMode,
+    RequirementCoverage,
+    GoNoGoDecision,
 )
 from tsr.repository import TSRRepository
 from tsr.rules import GoNoGoEvaluator
@@ -31,7 +37,7 @@ def create_sample_version_manifest(iteration: int) -> VersionManifest:
         codebase_repo="https://github.com/example/ai-testing-resource",
         testbase_sha=f"def456{iteration}" + "0" * 33,
         prompts_sha=f"ghi789{iteration}" + "0" * 33,
-        prompts_version=f"v1.{iteration}.0"
+        prompts_version=f"v1.{iteration}.0",
     )
 
 
@@ -39,19 +45,19 @@ def create_sample_test_results(iteration: int) -> list:
     """Create sample test results with iteration-specific pass rates"""
     # V1: Some failures, V2: Better, V3: All pass
     failure_counts = {
-        1: {'unit': 2, 'security': 1, 'evals': 5},
-        2: {'unit': 0, 'security': 0, 'evals': 2},
-        3: {'unit': 0, 'security': 0, 'evals': 0}
+        1: {"unit": 2, "security": 1, "evals": 5},
+        2: {"unit": 0, "security": 0, "evals": 2},
+        3: {"unit": 0, "security": 0, "evals": 0},
     }
 
     base_counts = {
-        'unit': 45,
-        'integration': 12,
-        'e2e': 8,
-        'acceptance': 6,
-        'evals': 15,
-        'security': 10,
-        'performance': 5
+        "unit": 45,
+        "integration": 12,
+        "e2e": 8,
+        "acceptance": 6,
+        "evals": 15,
+        "security": 10,
+        "performance": 5,
     }
 
     results = []
@@ -59,15 +65,17 @@ def create_sample_test_results(iteration: int) -> list:
         failed = failure_counts.get(iteration, {}).get(test_type, 0)
         passed = total - failed
 
-        results.append(TestTypeResult(
-            test_type=TestType(test_type),
-            total=total,
-            passed=passed,
-            failed=failed,
-            skipped=0,
-            duration_ms=(total * 150) + (iteration * 100),
-            failure_details=[]
-        ))
+        results.append(
+            TestTypeResult(
+                test_type=TestType(test_type),
+                total=total,
+                passed=passed,
+                failed=failed,
+                skipped=0,
+                duration_ms=(total * 150) + (iteration * 100),
+                failure_details=[],
+            )
+        )
 
     return results
 
@@ -78,79 +86,106 @@ def create_sample_eval_iterations(up_to_iteration: int) -> list:
 
     # V1: Verbose
     if up_to_iteration >= 1:
-        iterations.append(EvalIterationSummary(
-            iteration=1,
-            version_name="V1 Verbose",
-            prompt_version="v1.0",
-            outcome="failed",
-            metrics={
-                "accuracy": 0.65,
-                "avg_response_length": 320,
-                "grounding_score": 0.0,
-                "latency_p95": 2850
-            },
-            failure_modes=[
-                FailureMode(
-                    id=str(uuid.uuid4()),
-                    name="Excessive verbosity",
-                    description="Responses exceed 300 words vs 80-word target",
-                    severity="major",
-                    category="format",
-                    discovered_in_iteration=1,
-                    resolution_status="fixed"
-                )
-            ],
-            fixes_applied=[]
-        ))
+        iterations.append(
+            EvalIterationSummary(
+                iteration=1,
+                version_name="V1 Verbose",
+                prompt_version="v1.0",
+                outcome="failed",
+                metrics={
+                    "accuracy": 0.65,
+                    "avg_response_length": 320,
+                    "grounding_score": 0.0,
+                    "latency_p95": 2850,
+                },
+                failure_modes=[
+                    FailureMode(
+                        id=str(uuid.uuid4()),
+                        name="Excessive verbosity",
+                        description=(
+                            "20/20 traces flagged with 'Length Violation'. "
+                            "Average 310 words vs 80-word target."
+                        ),
+                        severity="major",
+                        category="format",
+                        discovered_in_iteration=1,
+                        resolution_status="fixed",
+                    )
+                ],
+                fixes_applied=[],
+            )
+        )
 
     # V2: Concise but hallucinating
     if up_to_iteration >= 2:
-        iterations.append(EvalIterationSummary(
-            iteration=2,
-            version_name="V2 No RAG",
-            prompt_version="v2.0",
-            outcome="improved",
-            metrics={
-                "accuracy": 0.75,
-                "avg_response_length": 85,
-                "grounding_score": 0.0,
-                "latency_p95": 1250
-            },
-            failure_modes=[
-                FailureMode(
-                    id=str(uuid.uuid4()),
-                    name="Hallucinated pricing",
-                    description="Made up prices without access to real data",
-                    severity="critical",
-                    category="accuracy",
-                    discovered_in_iteration=2,
-                    resolution_status="fixed"
-                )
-            ],
-            fixes_applied=[
-                {"description": "Reduced max_tokens to 150", "iteration": 2}
-            ]
-        ))
+        iterations.append(
+            EvalIterationSummary(
+                iteration=2,
+                version_name="V2 No RAG",
+                prompt_version="v2.0",
+                outcome="improved",
+                metrics={
+                    "accuracy": 0.75,
+                    "avg_response_length": 85,
+                    "grounding_score": 0.0,
+                    "latency_p95": 1250,
+                },
+                failure_modes=[
+                    FailureMode(
+                        id=str(uuid.uuid4()),
+                        name="Hallucinated pricing",
+                        description=(
+                            "Multiple traces flagged as 'Factual Hallucination'. "
+                            "Model fabricates prices, specs, and policies."
+                        ),
+                        severity="critical",
+                        category="accuracy",
+                        discovered_in_iteration=2,
+                        resolution_status="fixed",
+                    ),
+                    FailureMode(
+                        id=str(uuid.uuid4()),
+                        name="No source attribution",
+                        description=(
+                            "20/20 traces flagged with 'Missing Source Attribution'. "
+                            "Users cannot verify accuracy."
+                        ),
+                        severity="major",
+                        category="grounding",
+                        discovered_in_iteration=2,
+                        resolution_status="fixed",
+                    ),
+                ],
+                fixes_applied=[
+                    {"description": "Reduced max_tokens to 150", "iteration": 2}
+                ],
+            )
+        )
 
     # V3: RAG-based, accurate
     if up_to_iteration >= 3:
-        iterations.append(EvalIterationSummary(
-            iteration=3,
-            version_name="V3 RAG",
-            prompt_version="v3.0",
-            outcome="passed",
-            metrics={
-                "accuracy": 0.95,
-                "avg_response_length": 82,
-                "grounding_score": 0.92,
-                "latency_p95": 1850
-            },
-            failure_modes=[],
-            fixes_applied=[
-                {"description": "Added ChromaDB RAG pipeline", "iteration": 3},
-                {"description": "Added source citation requirement", "iteration": 3}
-            ]
-        ))
+        iterations.append(
+            EvalIterationSummary(
+                iteration=3,
+                version_name="V3 RAG",
+                prompt_version="v3.0",
+                outcome="passed",
+                metrics={
+                    "accuracy": 0.95,
+                    "avg_response_length": 82,
+                    "grounding_score": 0.92,
+                    "latency_p95": 1850,
+                },
+                failure_modes=[],
+                fixes_applied=[
+                    {"description": "Added ChromaDB RAG pipeline", "iteration": 3},
+                    {
+                        "description": "Added source citation requirement",
+                        "iteration": 3,
+                    },
+                ],
+            )
+        )
 
     return iterations
 
@@ -163,36 +198,36 @@ def create_sample_requirements() -> list:
             requirement_text="System must respond within 5 seconds (P95)",
             test_ids=["test_latency_p95", "test_performance_benchmark"],
             coverage_status="covered",
-            verification_status="verified"
+            verification_status="verified",
         ),
         RequirementCoverage(
             requirement_id="REQ-002",
             requirement_text="Responses must cite source documents",
             test_ids=["test_grounding_citations", "eval_v3_grounding"],
             coverage_status="covered",
-            verification_status="verified"
+            verification_status="verified",
         ),
         RequirementCoverage(
             requirement_id="REQ-003",
             requirement_text="No prompt injection vulnerabilities",
             test_ids=["test_prompt_injection", "test_security_validation"],
             coverage_status="covered",
-            verification_status="verified"
+            verification_status="verified",
         ),
         RequirementCoverage(
             requirement_id="REQ-004",
             requirement_text="Response length ~80 words (±25%)",
             test_ids=["eval_v1_length", "test_format_word_count"],
             coverage_status="covered",
-            verification_status="verified"
+            verification_status="verified",
         ),
         RequirementCoverage(
             requirement_id="REQ-005",
             requirement_text="Factual accuracy ≥85%",
             test_ids=["eval_v2_accuracy", "eval_v3_grounding"],
             coverage_status="covered",
-            verification_status="verified"
-        )
+            verification_status="verified",
+        ),
     ]
 
 
@@ -231,7 +266,7 @@ def seed_tsr_data():
                 versions=create_sample_version_manifest(iteration),
                 test_results=create_sample_test_results(iteration),
                 eval_iterations=create_sample_eval_iterations(iteration),
-                requirement_coverage=create_sample_requirements()
+                requirement_coverage=create_sample_requirements(),
             )
 
             # Apply go/no-go decision
@@ -240,8 +275,12 @@ def seed_tsr_data():
             # Save to database
             repository.save(tsr)
 
-            print(f"  ✓ Created TSR {tsr.id[:8]} with decision: {tsr.go_no_go_decision.value}")
-            print(f"    Total tests: {tsr.get_total_tests()}, Passed: {tsr.get_total_passed()}")
+            print(
+                f"  ✓ Created TSR {tsr.id[:8]} with decision: {tsr.go_no_go_decision.value}"
+            )
+            print(
+                f"    Total tests: {tsr.get_total_tests()}, Passed: {tsr.get_total_passed()}"
+            )
             print(f"    Eval iterations: {len(tsr.eval_iterations)}")
             print(f"    Blocking issues: {len(tsr.blocking_issues)}")
 
@@ -250,8 +289,8 @@ def seed_tsr_data():
 
         # Print summary
         total_tsrs = repository.count()
-        go_count = repository.count(decision='go')
-        no_go_count = repository.count(decision='no_go')
+        go_count = repository.count(decision="go")
+        no_go_count = repository.count(decision="no_go")
 
         print("\n" + "=" * 60)
         print(f"✓ Seeding complete!")
@@ -265,6 +304,7 @@ def seed_tsr_data():
             session.rollback()
         print(f"✗ Failed to seed test data: {e}")
         import traceback
+
         traceback.print_exc()
         raise
 
@@ -276,5 +316,5 @@ def seed_tsr_data():
             engine.dispose()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     seed_tsr_data()

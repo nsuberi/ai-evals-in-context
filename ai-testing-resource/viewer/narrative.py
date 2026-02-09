@@ -14,6 +14,8 @@ from .trace_inspector import (
     get_traces_by_version,
     get_trace_detail,
     render_annotated_response,
+    AXIAL_CODES,
+    get_annotation_summary,
 )
 from .iteration_timeline import (
     get_iteration_summary,
@@ -270,6 +272,10 @@ def phase_4():
     failure_modes = get_failure_modes(version)
     arch_context = get_architecture_context(version)
 
+    # Annotation methodology data
+    axial_codes = AXIAL_CODES
+    annotation_summary = get_annotation_summary()
+
     return render_template(
         "narrative/phase4_evaluation.html",
         intro_content=intro_content,
@@ -282,6 +288,8 @@ def phase_4():
         comparison=comparison,
         failure_modes=failure_modes,
         arch_context=arch_context,
+        axial_codes=axial_codes,
+        annotation_summary=annotation_summary,
         **context,
     )
 
@@ -306,6 +314,59 @@ def api_get_trace(version: str, trace_id: str):
             "annotated_response": annotated_response,
             "has_spans": "spans" in trace_detail
             and len(trace_detail.get("spans", [])) > 0,
+        }
+    )
+
+
+@narrative_bp.route("/api/phase4/version/<version>")
+def api_get_version(version: str):
+    """API endpoint for AJAX version switching (no page reload)."""
+    if version not in ("v1", "v2", "v3"):
+        return jsonify({"error": "Invalid version"}), 400
+
+    traces = get_traces_by_version(version)
+    selected_trace_id = traces[0]["id"] if traces else None
+
+    trace_detail = None
+    annotated_response = None
+    has_spans = False
+    if selected_trace_id:
+        trace_detail = get_trace_detail(selected_trace_id)
+        if trace_detail:
+            annotated_response = render_annotated_response(
+                trace_detail.get("response", ""),
+                trace_detail.get("annotations", []),
+            )
+            has_spans = (
+                "spans" in trace_detail and len(trace_detail.get("spans", [])) > 0
+            )
+
+    failure_modes = get_failure_modes(version)
+    arch_context = get_architecture_context(version)
+
+    return jsonify(
+        {
+            "version": version,
+            "traces": traces,
+            "selected_trace_id": selected_trace_id,
+            "trace_detail": trace_detail,
+            "annotated_response": annotated_response,
+            "has_spans": has_spans,
+            "failure_modes": failure_modes,
+            "arch_context": arch_context,
+            "annotation_summary": get_annotation_summary(),
+            "axial_codes": AXIAL_CODES,
+        }
+    )
+
+
+@narrative_bp.route("/api/phase4/axial-codes")
+def api_axial_codes():
+    """API endpoint returning axial code definitions and per-version summary."""
+    return jsonify(
+        {
+            "axial_codes": AXIAL_CODES,
+            "summary": get_annotation_summary(),
         }
     )
 

@@ -21,12 +21,10 @@
     <ul class="nav__tabs">
       <li><a href="{{ url_for('narrative.landing') }}"
              class="nav__tab {% if active_nav == 'narrative' %}nav__tab--active{% endif %}">Learning Journey</a></li>
-      <li><a href="{{ url_for('viewer.test_navigator', test_type='unit') }}"
-             class="nav__tab {% if active_nav == 'tests' %}nav__tab--active{% endif %}">Test Navigator</a></li>
-      <li><a href="{{ url_for('viewer.trace_inspector', version='v1') }}"
-             class="nav__tab {% if active_nav == 'traces' %}nav__tab--active{% endif %}">Trace Inspector</a></li>
-      <li><a href="{{ url_for('viewer.iteration_timeline') }}"
-             class="nav__tab {% if active_nav == 'timeline' %}nav__tab--active{% endif %}">Iteration Timeline</a></li>
+      <li><a href="{{ url_for('narrative.phase_3') }}"
+             class="nav__tab {% if active_nav == 'tests' %}nav__tab--active{% endif %}">Test Types</a></li>
+      <li><a href="{{ url_for('narrative.phase_4') }}"
+             class="nav__tab {% if active_nav == 'traces' or active_nav == 'timeline' %}nav__tab--active{% endif %}">Trace Inspector</a></li>
       <li><a href="{{ url_for('app.ask_route') }}"
              class="nav__tab {% if active_nav == 'demo' %}nav__tab--active{% endif %}">Try the Demo</a></li>
     </ul>

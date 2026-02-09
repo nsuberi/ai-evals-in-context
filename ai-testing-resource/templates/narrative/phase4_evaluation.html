@@ -58,8 +58,8 @@
 </div>
 
 <!-- Failure Mode Panel -->
-{% if failure_modes %}
-<div class="narrative-content">
+<div id="failure-mode-section" class="narrative-content">
+  {% if failure_modes %}
   <div class="failure-mode-panel failure-mode-panel--{{ current_version }}">
     <h3>Discovered Failure Modes ({{ current_version | upper }})</h3>
     {% for fm in failure_modes %}
@@ -70,12 +70,17 @@
     </div>
     {% endfor %}
   </div>
+  {% else %}
+  <div class="failure-mode-panel failure-mode-panel--{{ current_version }}">
+    <h3>Discovered Failure Modes ({{ current_version | upper }})</h3>
+    <p style="color: var(--color-success); font-size: 0.875rem;">No failure modes &mdash; all evals pass.</p>
+  </div>
+  {% endif %}
 </div>
-{% endif %}
 
 <!-- Architecture Context (Collapsible) -->
-{% if arch_context %}
-<div class="narrative-content">
+<div id="arch-context-section" class="narrative-content">
+  {% if arch_context %}
   <div class="collapsible">
     <button class="collapsible__trigger" onclick="toggleCollapsible(this.parentElement)">
       <span class="collapsible__icon">&#9654;</span>
@@ -92,6 +97,61 @@
       </div>
     </div>
   </div>
+  {% endif %}
+</div>
+
+<!-- Annotation Methodology + Summary -->
+{% if axial_codes and annotation_summary %}
+<div class="narrative-content">
+  <!-- Methodology Definitions -->
+  <div class="methodology-definitions">
+    <h3 class="methodology-definitions__title">Qualitative Coding Methodology</h3>
+    <p class="methodology-definitions__intro">Each trace response is annotated using a two-level coding scheme (Husain &amp; Shankar):</p>
+    <div class="methodology-definitions__terms">
+      <div class="methodology-definitions__term">
+        <strong>Open Code</strong>
+        <span>Free-text observation specific to one trace (e.g., "Price stated as $349, actual is $299")</span>
+      </div>
+      <div class="methodology-definitions__term">
+        <strong>Axial Code</strong>
+        <span>Category label enabling quantification across traces (e.g., "Factual Hallucination")</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Annotation Summary Table -->
+  <div class="annotation-summary">
+    <h3 class="annotation-summary__title">Annotation Summary Across Versions</h3>
+    <table class="annotation-summary__table">
+      <thead>
+        <tr>
+          <th>Axial Code</th>
+          <th>Category</th>
+          <th>V1</th>
+          <th>V2</th>
+          <th>V3</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for code_id, code_info in axial_codes.items() %}
+        {% set v1_count = annotation_summary.get('v1', {}).get(code_id, 0) %}
+        {% set v2_count = annotation_summary.get('v2', {}).get(code_id, 0) %}
+        {% set v3_count = annotation_summary.get('v3', {}).get(code_id, 0) %}
+        {% if v1_count > 0 or v2_count > 0 or v3_count > 0 %}
+        <tr>
+          <td>
+            <span class="annotation-item__axial-code annotation-item__axial-code--{{ code_info.severity }}">{{ code_info.label }}</span>
+          </td>
+          <td>{{ code_info.category }}</td>
+          <td>{{ v1_count }}</td>
+          <td>{{ v2_count }}</td>
+          <td>{{ v3_count }}</td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>
 {% endif %}
 
@@ -104,21 +164,22 @@
         Version
       </h3>
       <div class="version-tabs" style="flex-direction: column; width: 100%;">
-        <a href="{{ url_for('narrative.phase_4', version='v1') }}"
+        <button onclick="switchVersion('v1')" data-version="v1"
            class="version-tab version-tab--v1 {% if current_version == 'v1' %}version-tab--active{% endif %}">
           V1 - Verbose
-        </a>
-        <a href="{{ url_for('narrative.phase_4', version='v2') }}"
+        </button>
+        <button onclick="switchVersion('v2')" data-version="v2"
            class="version-tab version-tab--v2 {% if current_version == 'v2' %}version-tab--active{% endif %}">
           V2 - Hallucinating
-        </a>
-        <a href="{{ url_for('narrative.phase_4', version='v3') }}"
+        </button>
+        <button onclick="switchVersion('v3')" data-version="v3"
            class="version-tab version-tab--v3 {% if current_version == 'v3' %}version-tab--active{% endif %}">
           V3 - Accurate
-        </a>
+        </button>
       </div>
     </div>
 
+    <div id="trace-sidebar-section">
     {% if traces %}
     <div>
       <h3 style="color: var(--color-chrome-text-bright); font-size: 0.875rem; margin: 0 0 var(--space-sm) 0;">
@@ -143,6 +204,7 @@
       <p>No traces available for this version.</p>
     </div>
     {% endif %}
+    </div>
   </aside>
 
   <!-- Main Content -->
@@ -170,16 +232,15 @@
         {{ annotated_response | safe }}
       </div>
 
-      <!-- Footnotes for annotations -->
+      <!-- Annotations (axial code tags + open code text) -->
       {% if trace_detail.annotations %}
-      <div class="footnotes" style="padding: var(--space-md) var(--space-lg);">
+      <div class="annotations-section">
+        <h4 class="annotations-section__title">Annotations</h4>
         {% for ann in trace_detail.annotations %}
-        <div class="footnote footnote--{{ ann.severity }}">
-          <span class="footnote__marker">{{ loop.index }}</span>
-          <span class="footnote__text">
-            <strong>{{ ann.type | replace('_', ' ') | title }}:</strong>
-            {{ ann.text }}
-          </span>
+        {% set code_info = axial_codes.get(ann.type, {}) %}
+        <div class="annotation-item annotation-item--{{ ann.severity }}">
+          <span class="annotation-item__axial-code annotation-item__axial-code--{{ ann.severity }}">{{ code_info.get('label', ann.type | replace('_', ' ') | title) }}</span>
+          <span class="annotation-item__open-code">{{ ann.text }}</span>
         </div>
         {% endfor %}
       </div>
