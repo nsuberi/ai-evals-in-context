@@ -40,6 +40,7 @@
 
 <script>
 function openDocumentModal(title, description, downloadPath) {
+  const root = window.APP_ROOT || '';  // Get APPLICATION_ROOT prefix
   const modal = document.getElementById('documentModal');
   const titleEl = document.getElementById('documentModalTitle');
   const descEl = document.getElementById('documentModalDescription');
@@ -47,7 +48,7 @@ function openDocumentModal(title, description, downloadPath) {
 
   titleEl.textContent = title;
   descEl.textContent = description;
-  downloadLink.href = downloadPath;
+  downloadLink.href = root + downloadPath;  // Prepend prefix
   downloadLink.download = downloadPath.split('/').pop();
 
   modal.style.display = 'flex';
@@ -55,10 +56,11 @@ function openDocumentModal(title, description, downloadPath) {
 }
 
 function closeDocumentModal(event) {
-  if (event) event.preventDefault();
+  // Only close if overlay itself was clicked (not modal content)
+  if (event && event.target !== document.getElementById('documentModal')) return;
   const modal = document.getElementById('documentModal');
   modal.style.display = 'none';
-  document.body.style.overflow = 'auto';
+  document.body.style.overflow = '';  // Use empty string (not 'auto')
 }
 
 // Close on escape key
