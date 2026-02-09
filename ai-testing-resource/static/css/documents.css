@@ -112,7 +112,8 @@
   border-radius: 12px;
   width: 100%;
   max-width: 1000px;  /* Increased from 900px for better PDF readability */
-  max-height: 80vh;   /* Changed from 95vh to fit 80% of browser window */
+  height: 90vh;       /* Explicit height for flexbox expansion */
+  max-height: 90vh;   /* Safety limit matches height */
   display: flex;
   flex-direction: column;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);  /* Same as TSR modal */
@@ -250,7 +251,8 @@
 
   .document-modal {
     max-width: 95vw;
-    max-height: 80vh;   /* Changed from 90vh to match desktop */
+    height: 90vh;       /* Explicit height for flexbox expansion */
+    max-height: 90vh;   /* Increased to match desktop */
   }
 
   .document-modal__header {
