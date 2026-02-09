@@ -41,7 +41,7 @@
     "question": "Can I return a defective widget?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
     "response": "Yes, defective widgets can be returned within 60 days for a free replacement or full refund. We cover return shipping costs for all defective items. Just contact us for a return label and we'll process everything within 2-3 business days. Make sure to include the original receipt with your return for faster processing.",
-    "latency_ms": 1346,
+    "latency_ms": 1119,
     "tokens": {
       "prompt": 72,
       "completion": 58
@@ -84,10 +84,10 @@
     "question": "What items cannot be returned?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
     "response": "There are three categories of non-returnable items: customized or personalized widgets since they're made to order, clearance items marked \"Final Sale\" due to deep discounting, and items damaged through customer misuse. Additionally, any widget opened more than 14 days ago may be subject to a restocking fee of 15%.",
-    "latency_ms": 1047,
+    "latency_ms": 1388,
     "tokens": {
       "prompt": 72,
-      "completion": 49
+      "completion": 48
     },
     "sources": [],
     "annotations": [
@@ -113,10 +113,10 @@
     "question": "How long does it take to get a refund?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
     "response": "Refunds are processed within 3-5 business days after we receive your return. The amount goes back to your original payment method. Note that original shipping charges are non-refundable. You can also choose store credit which gives you a 5% bonus on the refund amount.",
-    "latency_ms": 1366,
+    "latency_ms": 1309,
     "tokens": {
       "prompt": 72,
-      "completion": 49
+      "completion": 45
     },
     "sources": [],
     "annotations": [
@@ -149,10 +149,10 @@
     "question": "Do you offer store credit for returns?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
     "response": "Yes! We offer store credit as an alternative to cash refunds. When you choose store credit, you receive a 15% bonus on top of your refund amount. So a $100 return would give you $115 in store credit. The credit is applied immediately and never expires. It's a popular choice among our regular customers.",
-    "latency_ms": 1003,
+    "latency_ms": 1360,
     "tokens": {
       "prompt": 72,
-      "completion": 53
+      "completion": 52
     },
     "sources": [],
     "annotations": [
@@ -185,7 +185,7 @@
     "question": "How much does the Starter plan cost?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
     "response": "The Starter plan costs $59 per month and includes up to 100 widgets, email support with 24-hour response time, basic analytics, and 2 user seats. It's perfect for individuals getting started. All plans include a 14-day trial and you can save 10% with annual billing.",
-    "latency_ms": 1110,
+    "latency_ms": 1083,
     "tokens": {
       "prompt": 72,
       "completion": 47
@@ -235,7 +235,7 @@
     "question": "How much does the Enterprise plan cost?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
     "response": "Our Enterprise plan costs $349 per month and includes unlimited widgets, priority support with 2-hour response time, custom integrations, and a dedicated account manager. You get unlimited user seats and advanced analytics. Annual plans receive a 15% discount. The Enterprise plan also includes our premium SLA with 99.95% uptime guarantee.",
-    "latency_ms": 1176,
+    "latency_ms": 1194,
     "tokens": {
       "prompt": 72,
       "completion": 51
@@ -285,10 +285,10 @@
     "question": "What does the Professional plan include?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
     "response": "The Professional plan is $179 per month and includes up to 500 widgets, email support with 12-hour response time, advanced analytics, 3 user seats, and API access. It's our most popular plan for growing teams. Annual billing saves you 20%.",
-    "latency_ms": 1193,
+    "latency_ms": 1108,
     "tokens": {
       "prompt": 72,
-      "completion": 38
+      "completion": 42
     },
     "sources": [],
     "annotations": [
@@ -328,10 +328,10 @@
     "question": "Can you compare all your pricing plans?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
     "response": "We have three plans: Starter at $49/month with 100 widgets and basic features, Professional at $149/month with 500 widgets and API access, and Enterprise at $349/month with unlimited everything. All include a 14-day trial. Professional has 5 seats, Enterprise has unlimited. Annual billing saves 20%.",
-    "latency_ms": 1360,
+    "latency_ms": 1382,
     "tokens": {
       "prompt": 72,
-      "completion": 43
+      "completion": 48
     },
     "sources": [],
     "annotations": [
@@ -357,10 +357,10 @@
     "question": "Do you offer a free trial?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
     "response": "Yes! All our plans include a 7-day free trial with full access to all features. No credit card required to start. After the trial, you can choose to subscribe monthly or annually. Annual billing saves you 20% off the regular monthly price.",
-    "latency_ms": 1040,
+    "latency_ms": 1348,
     "tokens": {
       "prompt": 72,
-      "completion": 42
+      "completion": 45
     },
     "sources": [],
     "annotations": [
@@ -386,10 +386,10 @@
     "question": "What are the specs of Widget Pro X2?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
     "response": "The Widget Pro X2 features a 4.5-inch display, weighs 10 oz, and is made with premium aluminum alloy. It has a 3000mAh battery providing 10 hours of use, Bluetooth 5.0 and WiFi connectivity, and IP65 water resistance. Priced at $149.99, it's our mid-range option perfect for everyday use.",
-    "latency_ms": 1325,
+    "latency_ms": 1384,
     "tokens": {
       "prompt": 72,
-      "completion": 50
+      "completion": 49
     },
     "sources": [],
     "annotations": [
@@ -450,10 +450,10 @@
     "question": "Tell me about the Widget Pro X1.",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
     "response": "The Widget Pro X1 is our entry-level model at $89.99. It measures 4\" x 4\" x 2\", weighs 8 oz, and features aircraft-grade aluminum construction. It has a 2500mAh battery for 10 hours of use, Bluetooth 5.0 and WiFi 6 connectivity. Great for beginners and casual users.",
-    "latency_ms": 1359,
+    "latency_ms": 1320,
     "tokens": {
       "prompt": 72,
-      "completion": 45
+      "completion": 48
     },
     "sources": [],
     "annotations": [
@@ -486,10 +486,10 @@
     "question": "What is the Widget Enterprise E1?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
     "response": "The Widget Enterprise E1 is our industrial-grade model at $299.99. It measures 6\" x 6\" x 3\" and weighs 16 oz with a stainless steel housing. It's a wired device with Ethernet, WiFi 6, and Bluetooth connectivity. It operates from -10C to 50C. Bulk pricing is available for organizations.",
-    "latency_ms": 1083,
+    "latency_ms": 1057,
     "tokens": {
       "prompt": 72,
-      "completion": 53
+      "completion": 51
     },
     "sources": [],
     "annotations": [
@@ -536,10 +536,10 @@
     "question": "How do the Widget Pro X1 and X2 compare?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
     "response": "The X1 ($79.99) is our entry model: 4\" x 4\" x 2\", 8 oz, aluminum build, 2000mAh battery (8 hours), Bluetooth and WiFi. The X2 ($139.99) upgrades to: 5\" x 5\" x 2.5\", 12 oz, carbon fiber, 3500mAh battery (12 hours), adds NFC and IP67 water resistance. The X2 is worth the extra for the battery and water resistance alone.",
-    "latency_ms": 1393,
+    "latency_ms": 1065,
     "tokens": {
       "prompt": 72,
-      "completion": 57
+      "completion": 64
     },
     "sources": [],
     "annotations": [
@@ -565,10 +565,10 @@
     "question": "Is the Widget Pro X2 waterproof?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
     "response": "The Widget Pro X2 has an IP65 water resistance rating, which means it's protected against low-pressure water jets and dust. It can handle rain and splashes but shouldn't be submerged. The carbon fiber body adds extra moisture protection. At $129.99, it's the only water-resistant model in our lineup.",
-    "latency_ms": 1033,
+    "latency_ms": 1191,
     "tokens": {
       "prompt": 72,
-      "completion": 48
+      "completion": 52
     },
     "sources": [],
     "annotations": [
@@ -601,10 +601,10 @@
     "question": "What shipping options do you offer?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
     "response": "We offer Standard (7-10 days, $4.95, free over $75), Express (2-3 days, $14.95), and Overnight (next day before 3 PM EST, $29.95) shipping for domestic orders. International shipping to 30+ countries takes 10-21 days with costs at checkout. Tracking is provided for all orders. Signature required for orders over $150.",
-    "latency_ms": 1255,
+    "latency_ms": 1362,
     "tokens": {
       "prompt": 72,
-      "completion": 53
+      "completion": 47
     },
     "sources": [],
     "annotations": [
@@ -672,10 +672,10 @@
     "question": "How much is express shipping?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
     "response": "Express shipping costs $14.95 and delivers within 1-2 business days. It's available for all domestic orders. Orders placed before 3 PM EST ship the same day. You'll get tracking via email within 48 hours of shipment.",
-    "latency_ms": 1071,
+    "latency_ms": 1067,
     "tokens": {
       "prompt": 72,
-      "completion": 36
+      "completion": 40
     },
     "sources": [],
     "annotations": [
@@ -722,10 +722,10 @@
     "question": "Do you ship internationally?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
     "response": "Yes! We ship to over 40 countries internationally. Delivery takes 10-21 business days with costs starting at $19.95 based on destination. Customs and import duties are included in the shipping price. International orders over $100 receive free expedited shipping. Tracking is available for all international shipments.",
-    "latency_ms": 1219,
+    "latency_ms": 1373,
     "tokens": {
       "prompt": 72,
-      "completion": 49
+      "completion": 43
     },
     "sources": [],
     "annotations": [
@@ -772,10 +772,10 @@
     "question": "Is there free shipping?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
     "response": "Yes! We offer free standard shipping on all domestic orders over $75. Standard shipping takes 5-7 business days. If your order is under $75, standard shipping costs $5.95. Express and overnight options are available at additional cost for faster delivery.",
-    "latency_ms": 1046,
+    "latency_ms": 1071,
     "tokens": {
       "prompt": 72,
-      "completion": 37
+      "completion": 43
     },
     "sources": [],
     "annotations": [
@@ -808,10 +808,10 @@
     "question": "When will my order ship?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nYou have knowledge of Acme's products, pricing, return policies, and shipping options. Answer questions confidently based on your knowledge of the company.",
     "response": "Orders placed before 3 PM EST on business days ship the same day. After that cutoff, they ship the next business day. You'll receive tracking info via email within 48 hours. Delivery time depends on your shipping method: Standard (5-7 days), Express (2-3 days), or Overnight. Signature required for orders over $100.",
-    "latency_ms": 1348,
+    "latency_ms": 1047,
     "tokens": {
       "prompt": 72,
-      "completion": 55
+      "completion": 52
     },
     "sources": [],
     "annotations": [

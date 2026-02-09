@@ -126,8 +126,10 @@
       </h3>
       <div class="sidebar trace-sidebar-scroll">
         {% for trace in traces %}
-        <a href="{{ url_for('narrative.phase_4', version=current_version, trace=trace.id) }}"
-           class="sidebar__item {% if trace.id == selected_trace %}sidebar__item--active{% endif %}">
+        <a href="javascript:void(0)"
+           class="sidebar__item {% if trace.id == selected_trace %}sidebar__item--active{% endif %}"
+           data-trace-id="{{ trace.id }}"
+           onclick="switchTrace('{{ current_version }}', '{{ trace.id }}')">
           {{ trace.question }}
           {% if trace.has_annotations %}
           <span style="color: var(--color-warning);">*</span>

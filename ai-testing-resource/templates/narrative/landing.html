@@ -8,8 +8,10 @@
 <section class="landing-hero">
   <h1 class="landing-hero__title">AI in Production: A Governance-First Approach</h1>
   <p class="landing-hero__subtitle">
-    See how governance accelerates AI delivery by providing standardized paths
-    to production, clear quality gates, and measurable business value.
+    Teams adopting AI need governance guidance&mdash;how work gets governed, approved, and tied to business value.
+    At the same time, agentic coding tools are enabling new participants in the SDLC: product managers, business analysts,
+    and others writing code for the first time. The structured approach here helps everyone&mdash;from seasoned engineers
+    to new builders&mdash;know what "done" looks like and how to get there.
   </p>
   <a href="{{ url_for('narrative.problem') }}" class="landing-cta">
     Start the Journey
@@ -29,24 +31,29 @@
       <span class="cycle-card__number">1</span>
       <h3 class="cycle-card__title">Governance</h3>
       <p class="cycle-card__description">
-        Getting things into production in a standardized way.
-        Governance provides the repeatable process that turns experimentation into reliable delivery.
+        AI governance is a people challenge as much as a technical one. Repeatable rituals build
+        confidence between builders and the teams who approve their work.
       </p>
+      <ul class="cycle-card__rituals">
+        <li>Acceptance criteria agreement</li>
+        <li>Test review sessions</li>
+        <li>TSR checkpoint before deploy</li>
+      </ul>
     </div>
     <div class="cycle-card">
       <span class="cycle-card__number">2</span>
       <h3 class="cycle-card__title">Approvals</h3>
       <p class="cycle-card__description">
-        Quality standards evaluation at every stage.
-        Each phase produces artifacts that demonstrate readiness and build confidence for stakeholders.
+        Design with the End in Mind. When teams know what "done" looks like from Day 1,
+        the path to go/no-go is predictable. Approvals accelerate delivery, they don't block it.
       </p>
     </div>
     <div class="cycle-card">
       <span class="cycle-card__number">3</span>
       <h3 class="cycle-card__title">Business Value</h3>
       <p class="cycle-card__description">
-        Is the juice worth the squeeze?
-        Continuous assessment ensures AI features deliver measurable outcomes, not just technical novelty.
+        The Test Summary Report ties test results back to requirements so stakeholders
+        always know where things stand. Is the juice worth the squeeze?
       </p>
     </div>
   </div>
@@ -55,10 +62,77 @@
 <!-- Guiding Principle -->
 <section class="guiding-principle">
   <blockquote class="guiding-principle__quote">
-    "Experimentation is the path to production, governance is the gate
-    to production, and business value is the lens through which you
-    determine success."
+    "The rituals matter more than the tools. Acceptance criteria agreement, test review sessions,
+    and TSR checkpoints are how builders and risk bodies develop shared confidence&mdash;whether
+    you've shipped a hundred features or you're writing your first line of code."
   </blockquote>
+</section>
+
+<!-- TSR Preview Mock -->
+<section class="tsr-preview">
+  <div class="tsr-preview__card">
+    <div class="tsr-preview__header">
+      <div>
+        <h3 class="tsr-preview__title">Test Summary Report</h3>
+        <span class="tsr-preview__id">TSR-2026-0208-A1</span>
+      </div>
+      <span class="tsr-preview__badge">GO</span>
+    </div>
+    <div class="tsr-preview__body">
+      <p class="tsr-preview__section-label">Requirements Verified</p>
+      <ul class="tsr-preview__checklist">
+        <li><span class="tsr-preview__check">&#10003;</span> Instant response (&lt;5s)</li>
+        <li><span class="tsr-preview__check">&#10003;</span> Grounded in knowledge base</li>
+        <li><span class="tsr-preview__check">&#10003;</span> 95% accuracy on product questions</li>
+        <li><span class="tsr-preview__check">&#10003;</span> Source attribution on every response</li>
+      </ul>
+
+      <p class="tsr-preview__section-label">Test Results</p>
+      <div class="tsr-preview__bars">
+        <div class="tsr-preview__bar">
+          <span class="tsr-preview__bar-label">Unit</span>
+          <div class="tsr-preview__bar-track"><div class="tsr-preview__bar-fill" style="width:100%"></div></div>
+          <span class="tsr-preview__bar-value">100%</span>
+        </div>
+        <div class="tsr-preview__bar">
+          <span class="tsr-preview__bar-label">Integration</span>
+          <div class="tsr-preview__bar-track"><div class="tsr-preview__bar-fill" style="width:100%"></div></div>
+          <span class="tsr-preview__bar-value">100%</span>
+        </div>
+        <div class="tsr-preview__bar">
+          <span class="tsr-preview__bar-label">Security</span>
+          <div class="tsr-preview__bar-track"><div class="tsr-preview__bar-fill" style="width:100%"></div></div>
+          <span class="tsr-preview__bar-value">100%</span>
+        </div>
+        <div class="tsr-preview__bar">
+          <span class="tsr-preview__bar-label">AI Evals</span>
+          <div class="tsr-preview__bar-track"><div class="tsr-preview__bar-fill tsr-preview__bar-fill--95" style="width:95%"></div></div>
+          <span class="tsr-preview__bar-value">95%</span>
+        </div>
+      </div>
+
+      <div class="tsr-preview__approval">
+        <span class="tsr-preview__check">&#10003;</span>
+        Approved by J. Martinez &middot; 2026-02-08 14:32 UTC
+      </div>
+    </div>
+    <div class="tsr-preview__footer">
+      <p class="tsr-preview__progress-text">This is where you're headed&mdash;a clear go/no-go artifact scoped to each release.</p>
+      <div class="tsr-preview__progress-bar">
+        <div class="tsr-preview__progress-fill"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Builder Bridge -->
+<section class="builder-bridge">
+  <p class="builder-bridge__text">
+    The framework above establishes the rituals and expectations. <strong>The SDLC is the shared language</strong>
+    that both experienced engineers and new builders&mdash;PMs, BAs, and others using agentic coding tools&mdash;follow.
+    The five phases below show this familiar lifecycle adapted for AI features:
+    how to build the right things, build them correctly, and not introduce new problems along the way.
+  </p>
 </section>
 
 <!-- Rainbow Arc Phase Visual -->
@@ -68,7 +142,7 @@
 
 <!-- 5 Phases Overview Section -->
 <section class="phases-section">
-  <h2 class="phases-section__title">Five Phases of AI Development</h2>
+  <h2 class="phases-section__title">The SDLC with AI</h2>
   <div class="phase-cards">
     <a href="{{ url_for('narrative.phase_1') }}" class="phase-card">
       <span class="phase-card__number">1</span>
@@ -93,16 +167,16 @@
     </a>
     <a href="{{ url_for('narrative.phase_4') }}" class="phase-card">
       <span class="phase-card__number">4</span>
-      <h3 class="phase-card__title">Iterate</h3>
+      <h3 class="phase-card__title">Iterate &amp; Approve</h3>
       <p class="phase-card__description">
-        Iterate on AI behavior, discover failure modes, and build confidence through traces.
+        Iterate on AI behavior, discover failure modes, and build confidence for approval.
       </p>
     </a>
     <a href="{{ url_for('narrative.phase_5') }}" class="phase-card">
       <span class="phase-card__number">5</span>
-      <h3 class="phase-card__title">Monitor</h3>
+      <h3 class="phase-card__title">Deploy &amp; Monitor</h3>
       <p class="phase-card__description">
-        Deploy to production, observe real usage, and feed learnings back into discovery.
+        Deploy to production, monitor real usage, and feed learnings back into discovery.
       </p>
     </a>
   </div>

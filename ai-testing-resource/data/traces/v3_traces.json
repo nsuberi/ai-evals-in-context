@@ -5,10 +5,10 @@
     "question": "What is your return policy?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Return Policy]\n# Acme Widgets Return Policy\n\n## Standard Returns\n- 30-day return window from delivery date\n- Items must be unused and in original packaging\n- Full refund to original payment method\n- Return shipping is free for defective items\n- Customer pays return shipping for change-of-mind returns ($8.95 flat rate)\n\n## Defective Products\n- 90-day warranty on all widgets\n- Free replacement or full refund\n- No return shipping charges\n- Contact support for RMA number before returning\n\n## Non-Returnable Items\n- Customized or personalized widgets\n- Clearance items marked \"Final Sale\"\n- Items damaged due to misuse\n\n## Refund Processing\n- Refunds processed within 5-7 business days of receiving return\n- Original shipping charges are non-refundable\n- Store credit option available (adds 10% bonus value)\n",
     "response": "We offer a 30-day return window from delivery date. Items must be unused and in original packaging for a full refund. Defective products have a 90-day warranty with free return shipping. For change-of-mind returns, there's an $8.95 flat shipping fee. Note that customized items and \"Final Sale\" clearance products cannot be returned. Refunds are processed within 5-7 business days of receiving your return.",
-    "latency_ms": 1625,
+    "latency_ms": 2535,
     "tokens": {
-      "prompt": 567,
-      "completion": 62
+      "prompt": 543,
+      "completion": 60
     },
     "sources": [
       {
@@ -45,6 +45,106 @@
         "span_start": null,
         "span_end": null
       }
+    ],
+    "spans": [
+      {
+        "span_id": "v3-trace-001-span-1",
+        "name": "Query Embedding",
+        "span_type": "embedding",
+        "start_time": 0,
+        "duration_ms": 47,
+        "input": {
+          "text": "What is your return policy?"
+        },
+        "output": {
+          "dimensions": 384,
+          "preview": "[0.123, -0.456, 0.789, ...]"
+        },
+        "metadata": {
+          "model": "all-MiniLM-L6-v2"
+        }
+      },
+      {
+        "span_id": "v3-trace-001-span-2",
+        "name": "ChromaDB Retrieval",
+        "span_type": "retrieval",
+        "start_time": 47,
+        "duration_ms": 114,
+        "input": {
+          "embedding_dim": 384,
+          "n_results": 3
+        },
+        "output": {
+          "documents": [
+            {
+              "id": "return_policy",
+              "title": "Acme Widgets Return Policy",
+              "distance": 0.228,
+              "content_preview": "Acme Widgets Return Policy..."
+            }
+          ]
+        },
+        "metadata": {
+          "collection": "acme_knowledge_base"
+        }
+      },
+      {
+        "span_id": "v3-trace-001-span-3",
+        "name": "Context Building",
+        "span_type": "context",
+        "start_time": 161,
+        "duration_ms": 6,
+        "input": {
+          "doc_count": 1
+        },
+        "output": {
+          "context_length": 793,
+          "preview": "[Acme Widgets Return Policy]\n# Acme Widgets Return Policy\n\n## Standard Returns\n- 30-day return window from delivery date\n- Items ..."
+        },
+        "metadata": {
+          "separator": "\\n\\n---\\n\\n"
+        }
+      },
+      {
+        "span_id": "v3-trace-001-span-4",
+        "name": "Prompt Construction",
+        "span_type": "prompt",
+        "start_time": 167,
+        "duration_ms": 10,
+        "input": {
+          "template": "V3_SYSTEM_PROMPT"
+        },
+        "output": {
+          "prompt_length": 1197,
+          "preview": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approxima..."
+        },
+        "metadata": {
+          "template_version": "v3"
+        }
+      },
+      {
+        "span_id": "v3-trace-001-span-5",
+        "name": "Claude API Call",
+        "span_type": "llm",
+        "start_time": 177,
+        "duration_ms": 2358,
+        "input": {
+          "model": "claude-sonnet-4-20250514",
+          "max_tokens": 512,
+          "message_preview": "What is your return policy?"
+        },
+        "output": {
+          "response_preview": "We offer a 30-day return window from delivery date. Items must be unused and in original packaging f...",
+          "usage": {
+            "input_tokens": 550,
+            "output_tokens": 66
+          },
+          "stop_reason": "end_turn"
+        },
+        "metadata": {
+          "api_version": "2023-06-01"
+        }
+      }
     ]
   },
   {
@@ -53,10 +153,10 @@
     "question": "Can I return a defective widget?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Return Policy]\n# Acme Widgets Return Policy\n\n## Standard Returns\n- 30-day return window from delivery date\n- Items must be unused and in original packaging\n- Full refund to original payment method\n- Return shipping is free for defective items\n- Customer pays return shipping for change-of-mind returns ($8.95 flat rate)\n\n## Defective Products\n- 90-day warranty on all widgets\n- Free replacement or full refund\n- No return shipping charges\n- Contact support for RMA number before returning\n\n## Non-Returnable Items\n- Customized or personalized widgets\n- Clearance items marked \"Final Sale\"\n- Items damaged due to misuse\n\n## Refund Processing\n- Refunds processed within 5-7 business days of receiving return\n- Original shipping charges are non-refundable\n- Store credit option available (adds 10% bonus value)\n",
     "response": "Yes! Defective widgets are covered under our 90-day warranty. You can choose between a free replacement or a full refund. We cover all return shipping costs for defective items. Before sending it back, contact our support team to get an RMA number. Refunds are processed within 5-7 business days of receiving the return.",
-    "latency_ms": 1544,
+    "latency_ms": 2543,
     "tokens": {
-      "prompt": 614,
-      "completion": 56
+      "prompt": 596,
+      "completion": 54
     },
     "sources": [
       {
@@ -93,6 +193,106 @@
         "span_start": null,
         "span_end": null
       }
+    ],
+    "spans": [
+      {
+        "span_id": "v3-trace-002-span-1",
+        "name": "Query Embedding",
+        "span_type": "embedding",
+        "start_time": 0,
+        "duration_ms": 59,
+        "input": {
+          "text": "Can I return a defective widget?"
+        },
+        "output": {
+          "dimensions": 384,
+          "preview": "[0.123, -0.456, 0.789, ...]"
+        },
+        "metadata": {
+          "model": "all-MiniLM-L6-v2"
+        }
+      },
+      {
+        "span_id": "v3-trace-002-span-2",
+        "name": "ChromaDB Retrieval",
+        "span_type": "retrieval",
+        "start_time": 59,
+        "duration_ms": 101,
+        "input": {
+          "embedding_dim": 384,
+          "n_results": 3
+        },
+        "output": {
+          "documents": [
+            {
+              "id": "return_policy",
+              "title": "Acme Widgets Return Policy",
+              "distance": 0.312,
+              "content_preview": "Acme Widgets Return Policy..."
+            }
+          ]
+        },
+        "metadata": {
+          "collection": "acme_knowledge_base"
+        }
+      },
+      {
+        "span_id": "v3-trace-002-span-3",
+        "name": "Context Building",
+        "span_type": "context",
+        "start_time": 160,
+        "duration_ms": 15,
+        "input": {
+          "doc_count": 1
+        },
+        "output": {
+          "context_length": 793,
+          "preview": "[Acme Widgets Return Policy]\n# Acme Widgets Return Policy\n\n## Standard Returns\n- 30-day return window from delivery date\n- Items ..."
+        },
+        "metadata": {
+          "separator": "\\n\\n---\\n\\n"
+        }
+      },
+      {
+        "span_id": "v3-trace-002-span-4",
+        "name": "Prompt Construction",
+        "span_type": "prompt",
+        "start_time": 175,
+        "duration_ms": 10,
+        "input": {
+          "template": "V3_SYSTEM_PROMPT"
+        },
+        "output": {
+          "prompt_length": 1197,
+          "preview": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approxima..."
+        },
+        "metadata": {
+          "template_version": "v3"
+        }
+      },
+      {
+        "span_id": "v3-trace-002-span-5",
+        "name": "Claude API Call",
+        "span_type": "llm",
+        "start_time": 185,
+        "duration_ms": 2358,
+        "input": {
+          "model": "claude-sonnet-4-20250514",
+          "max_tokens": 512,
+          "message_preview": "Can I return a defective widget?"
+        },
+        "output": {
+          "response_preview": "Yes! Defective widgets are covered under our 90-day warranty. You can choose between a free replacem...",
+          "usage": {
+            "input_tokens": 592,
+            "output_tokens": 53
+          },
+          "stop_reason": "end_turn"
+        },
+        "metadata": {
+          "api_version": "2023-06-01"
+        }
+      }
     ]
   },
   {
@@ -101,10 +301,10 @@
     "question": "What items cannot be returned?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Return Policy]\n# Acme Widgets Return Policy\n\n## Standard Returns\n- 30-day return window from delivery date\n- Items must be unused and in original packaging\n- Full refund to original payment method\n- Return shipping is free for defective items\n- Customer pays return shipping for change-of-mind returns ($8.95 flat rate)\n\n## Defective Products\n- 90-day warranty on all widgets\n- Free replacement or full refund\n- No return shipping charges\n- Contact support for RMA number before returning\n\n## Non-Returnable Items\n- Customized or personalized widgets\n- Clearance items marked \"Final Sale\"\n- Items damaged due to misuse\n\n## Refund Processing\n- Refunds processed within 5-7 business days of receiving return\n- Original shipping charges are non-refundable\n- Store credit option available (adds 10% bonus value)\n",
     "response": "Three categories of items cannot be returned: customized or personalized widgets, clearance items marked \"Final Sale,\" and items damaged due to customer misuse. Everything else follows our standard 30-day return window. Items must be unused and in original packaging to qualify. If you're unsure about your situation, contact our support team.",
-    "latency_ms": 1619,
+    "latency_ms": 2093,
     "tokens": {
-      "prompt": 603,
-      "completion": 48
+      "prompt": 551,
+      "completion": 53
     },
     "sources": [
       {
@@ -134,6 +334,106 @@
         "span_start": null,
         "span_end": null
       }
+    ],
+    "spans": [
+      {
+        "span_id": "v3-trace-003-span-1",
+        "name": "Query Embedding",
+        "span_type": "embedding",
+        "start_time": 0,
+        "duration_ms": 53,
+        "input": {
+          "text": "What items cannot be returned?"
+        },
+        "output": {
+          "dimensions": 384,
+          "preview": "[0.123, -0.456, 0.789, ...]"
+        },
+        "metadata": {
+          "model": "all-MiniLM-L6-v2"
+        }
+      },
+      {
+        "span_id": "v3-trace-003-span-2",
+        "name": "ChromaDB Retrieval",
+        "span_type": "retrieval",
+        "start_time": 53,
+        "duration_ms": 121,
+        "input": {
+          "embedding_dim": 384,
+          "n_results": 3
+        },
+        "output": {
+          "documents": [
+            {
+              "id": "return_policy",
+              "title": "Acme Widgets Return Policy",
+              "distance": 0.256,
+              "content_preview": "Acme Widgets Return Policy..."
+            }
+          ]
+        },
+        "metadata": {
+          "collection": "acme_knowledge_base"
+        }
+      },
+      {
+        "span_id": "v3-trace-003-span-3",
+        "name": "Context Building",
+        "span_type": "context",
+        "start_time": 174,
+        "duration_ms": 8,
+        "input": {
+          "doc_count": 1
+        },
+        "output": {
+          "context_length": 793,
+          "preview": "[Acme Widgets Return Policy]\n# Acme Widgets Return Policy\n\n## Standard Returns\n- 30-day return window from delivery date\n- Items ..."
+        },
+        "metadata": {
+          "separator": "\\n\\n---\\n\\n"
+        }
+      },
+      {
+        "span_id": "v3-trace-003-span-4",
+        "name": "Prompt Construction",
+        "span_type": "prompt",
+        "start_time": 182,
+        "duration_ms": 7,
+        "input": {
+          "template": "V3_SYSTEM_PROMPT"
+        },
+        "output": {
+          "prompt_length": 1197,
+          "preview": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approxima..."
+        },
+        "metadata": {
+          "template_version": "v3"
+        }
+      },
+      {
+        "span_id": "v3-trace-003-span-5",
+        "name": "Claude API Call",
+        "span_type": "llm",
+        "start_time": 189,
+        "duration_ms": 1904,
+        "input": {
+          "model": "claude-sonnet-4-20250514",
+          "max_tokens": 512,
+          "message_preview": "What items cannot be returned?"
+        },
+        "output": {
+          "response_preview": "Three categories of items cannot be returned: customized or personalized widgets, clearance items ma...",
+          "usage": {
+            "input_tokens": 550,
+            "output_tokens": 54
+          },
+          "stop_reason": "end_turn"
+        },
+        "metadata": {
+          "api_version": "2023-06-01"
+        }
+      }
     ]
   },
   {
@@ -142,10 +442,10 @@
     "question": "How long does it take to get a refund?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Return Policy]\n# Acme Widgets Return Policy\n\n## Standard Returns\n- 30-day return window from delivery date\n- Items must be unused and in original packaging\n- Full refund to original payment method\n- Return shipping is free for defective items\n- Customer pays return shipping for change-of-mind returns ($8.95 flat rate)\n\n## Defective Products\n- 90-day warranty on all widgets\n- Free replacement or full refund\n- No return shipping charges\n- Contact support for RMA number before returning\n\n## Non-Returnable Items\n- Customized or personalized widgets\n- Clearance items marked \"Final Sale\"\n- Items damaged due to misuse\n\n## Refund Processing\n- Refunds processed within 5-7 business days of receiving return\n- Original shipping charges are non-refundable\n- Store credit option available (adds 10% bonus value)\n",
     "response": "Refunds are processed within 5-7 business days after we receive your return at our warehouse. The refund goes to your original payment method. Note that original shipping charges are non-refundable. Alternatively, you can opt for store credit, which adds a 10% bonus value to your refund amount.",
-    "latency_ms": 1714,
+    "latency_ms": 2081,
     "tokens": {
-      "prompt": 567,
-      "completion": 51
+      "prompt": 619,
+      "completion": 49
     },
     "sources": [
       {
@@ -175,6 +475,106 @@
         "span_start": null,
         "span_end": null
       }
+    ],
+    "spans": [
+      {
+        "span_id": "v3-trace-004-span-1",
+        "name": "Query Embedding",
+        "span_type": "embedding",
+        "start_time": 0,
+        "duration_ms": 41,
+        "input": {
+          "text": "How long does it take to get a refund?"
+        },
+        "output": {
+          "dimensions": 384,
+          "preview": "[0.123, -0.456, 0.789, ...]"
+        },
+        "metadata": {
+          "model": "all-MiniLM-L6-v2"
+        }
+      },
+      {
+        "span_id": "v3-trace-004-span-2",
+        "name": "ChromaDB Retrieval",
+        "span_type": "retrieval",
+        "start_time": 41,
+        "duration_ms": 146,
+        "input": {
+          "embedding_dim": 384,
+          "n_results": 3
+        },
+        "output": {
+          "documents": [
+            {
+              "id": "return_policy",
+              "title": "Acme Widgets Return Policy",
+              "distance": 0.292,
+              "content_preview": "Acme Widgets Return Policy..."
+            }
+          ]
+        },
+        "metadata": {
+          "collection": "acme_knowledge_base"
+        }
+      },
+      {
+        "span_id": "v3-trace-004-span-3",
+        "name": "Context Building",
+        "span_type": "context",
+        "start_time": 187,
+        "duration_ms": 6,
+        "input": {
+          "doc_count": 1
+        },
+        "output": {
+          "context_length": 793,
+          "preview": "[Acme Widgets Return Policy]\n# Acme Widgets Return Policy\n\n## Standard Returns\n- 30-day return window from delivery date\n- Items ..."
+        },
+        "metadata": {
+          "separator": "\\n\\n---\\n\\n"
+        }
+      },
+      {
+        "span_id": "v3-trace-004-span-4",
+        "name": "Prompt Construction",
+        "span_type": "prompt",
+        "start_time": 193,
+        "duration_ms": 8,
+        "input": {
+          "template": "V3_SYSTEM_PROMPT"
+        },
+        "output": {
+          "prompt_length": 1197,
+          "preview": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approxima..."
+        },
+        "metadata": {
+          "template_version": "v3"
+        }
+      },
+      {
+        "span_id": "v3-trace-004-span-5",
+        "name": "Claude API Call",
+        "span_type": "llm",
+        "start_time": 201,
+        "duration_ms": 1880,
+        "input": {
+          "model": "claude-sonnet-4-20250514",
+          "max_tokens": 512,
+          "message_preview": "How long does it take to get a refund?"
+        },
+        "output": {
+          "response_preview": "Refunds are processed within 5-7 business days after we receive your return at our warehouse. The re...",
+          "usage": {
+            "input_tokens": 609,
+            "output_tokens": 48
+          },
+          "stop_reason": "end_turn"
+        },
+        "metadata": {
+          "api_version": "2023-06-01"
+        }
+      }
     ]
   },
   {
@@ -183,10 +583,10 @@
     "question": "Do you offer store credit for returns?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Return Policy]\n# Acme Widgets Return Policy\n\n## Standard Returns\n- 30-day return window from delivery date\n- Items must be unused and in original packaging\n- Full refund to original payment method\n- Return shipping is free for defective items\n- Customer pays return shipping for change-of-mind returns ($8.95 flat rate)\n\n## Defective Products\n- 90-day warranty on all widgets\n- Free replacement or full refund\n- No return shipping charges\n- Contact support for RMA number before returning\n\n## Non-Returnable Items\n- Customized or personalized widgets\n- Clearance items marked \"Final Sale\"\n- Items damaged due to misuse\n\n## Refund Processing\n- Refunds processed within 5-7 business days of receiving return\n- Original shipping charges are non-refundable\n- Store credit option available (adds 10% bonus value)\n",
     "response": "Yes! We offer a store credit option as an alternative to refunding your original payment method. When you choose store credit, we add a 10% bonus value to your refund amount. Refunds are processed within 5-7 business days. Original shipping charges remain non-refundable regardless of which option you choose.",
-    "latency_ms": 1857,
+    "latency_ms": 2235,
     "tokens": {
-      "prompt": 593,
-      "completion": 51
+      "prompt": 574,
+      "completion": 53
     },
     "sources": [
       {
@@ -216,6 +616,106 @@
         "span_start": null,
         "span_end": null
       }
+    ],
+    "spans": [
+      {
+        "span_id": "v3-trace-005-span-1",
+        "name": "Query Embedding",
+        "span_type": "embedding",
+        "start_time": 0,
+        "duration_ms": 41,
+        "input": {
+          "text": "Do you offer store credit for returns?"
+        },
+        "output": {
+          "dimensions": 384,
+          "preview": "[0.123, -0.456, 0.789, ...]"
+        },
+        "metadata": {
+          "model": "all-MiniLM-L6-v2"
+        }
+      },
+      {
+        "span_id": "v3-trace-005-span-2",
+        "name": "ChromaDB Retrieval",
+        "span_type": "retrieval",
+        "start_time": 41,
+        "duration_ms": 142,
+        "input": {
+          "embedding_dim": 384,
+          "n_results": 3
+        },
+        "output": {
+          "documents": [
+            {
+              "id": "return_policy",
+              "title": "Acme Widgets Return Policy",
+              "distance": 0.246,
+              "content_preview": "Acme Widgets Return Policy..."
+            }
+          ]
+        },
+        "metadata": {
+          "collection": "acme_knowledge_base"
+        }
+      },
+      {
+        "span_id": "v3-trace-005-span-3",
+        "name": "Context Building",
+        "span_type": "context",
+        "start_time": 183,
+        "duration_ms": 9,
+        "input": {
+          "doc_count": 1
+        },
+        "output": {
+          "context_length": 793,
+          "preview": "[Acme Widgets Return Policy]\n# Acme Widgets Return Policy\n\n## Standard Returns\n- 30-day return window from delivery date\n- Items ..."
+        },
+        "metadata": {
+          "separator": "\\n\\n---\\n\\n"
+        }
+      },
+      {
+        "span_id": "v3-trace-005-span-4",
+        "name": "Prompt Construction",
+        "span_type": "prompt",
+        "start_time": 192,
+        "duration_ms": 5,
+        "input": {
+          "template": "V3_SYSTEM_PROMPT"
+        },
+        "output": {
+          "prompt_length": 1197,
+          "preview": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approxima..."
+        },
+        "metadata": {
+          "template_version": "v3"
+        }
+      },
+      {
+        "span_id": "v3-trace-005-span-5",
+        "name": "Claude API Call",
+        "span_type": "llm",
+        "start_time": 197,
+        "duration_ms": 2038,
+        "input": {
+          "model": "claude-sonnet-4-20250514",
+          "max_tokens": 512,
+          "message_preview": "Do you offer store credit for returns?"
+        },
+        "output": {
+          "response_preview": "Yes! We offer a store credit option as an alternative to refunding your original payment method. Whe...",
+          "usage": {
+            "input_tokens": 551,
+            "output_tokens": 52
+          },
+          "stop_reason": "end_turn"
+        },
+        "metadata": {
+          "api_version": "2023-06-01"
+        }
+      }
     ]
   },
   {
@@ -224,10 +724,10 @@
     "question": "How much does the Starter plan cost?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Pricing Tiers]\n# Acme Widgets Pricing Tiers\n\n## Starter Plan - $49/month\n- Up to 100 widgets per month\n- Email support (48-hour response)\n- Basic analytics dashboard\n- 1 user seat\n\n## Professional Plan - $149/month\n- Up to 500 widgets per month\n- Priority email support (24-hour response)\n- Advanced analytics with exports\n- 5 user seats\n- API access\n\n## Enterprise Plan - $299/month\n- Unlimited widgets\n- Phone and email support (4-hour response)\n- Custom analytics and reporting\n- Unlimited user seats\n- Dedicated account manager\n- Custom integrations\n- SLA guarantee (99.9% uptime)\n\nAll plans include a 14-day free trial. Annual billing saves 20%.\n",
     "response": "The Starter plan costs $49 per month and includes up to 100 widgets per month, email support with 48-hour response time, a basic analytics dashboard, and 1 user seat. Like all plans, it includes a 14-day free trial. You can save 20% by choosing annual billing.",
-    "latency_ms": 1552,
+    "latency_ms": 2062,
     "tokens": {
-      "prompt": 531,
-      "completion": 49
+      "prompt": 588,
+      "completion": 46
     },
     "sources": [
       {
@@ -264,6 +764,106 @@
         "span_start": null,
         "span_end": null
       }
+    ],
+    "spans": [
+      {
+        "span_id": "v3-trace-006-span-1",
+        "name": "Query Embedding",
+        "span_type": "embedding",
+        "start_time": 0,
+        "duration_ms": 51,
+        "input": {
+          "text": "How much does the Starter plan cost?"
+        },
+        "output": {
+          "dimensions": 384,
+          "preview": "[0.123, -0.456, 0.789, ...]"
+        },
+        "metadata": {
+          "model": "all-MiniLM-L6-v2"
+        }
+      },
+      {
+        "span_id": "v3-trace-006-span-2",
+        "name": "ChromaDB Retrieval",
+        "span_type": "retrieval",
+        "start_time": 51,
+        "duration_ms": 113,
+        "input": {
+          "embedding_dim": 384,
+          "n_results": 3
+        },
+        "output": {
+          "documents": [
+            {
+              "id": "pricing_tiers",
+              "title": "Acme Widgets Pricing Tiers",
+              "distance": 0.334,
+              "content_preview": "Pricing: Starter ($49)..."
+            }
+          ]
+        },
+        "metadata": {
+          "collection": "acme_knowledge_base"
+        }
+      },
+      {
+        "span_id": "v3-trace-006-span-3",
+        "name": "Context Building",
+        "span_type": "context",
+        "start_time": 164,
+        "duration_ms": 15,
+        "input": {
+          "doc_count": 1
+        },
+        "output": {
+          "context_length": 636,
+          "preview": "[Acme Widgets Pricing Tiers]\n# Acme Widgets Pricing Tiers\n\n## Starter Plan - $49/month\n- Up to 100 widgets per month\n- Email supp..."
+        },
+        "metadata": {
+          "separator": "\\n\\n---\\n\\n"
+        }
+      },
+      {
+        "span_id": "v3-trace-006-span-4",
+        "name": "Prompt Construction",
+        "span_type": "prompt",
+        "start_time": 179,
+        "duration_ms": 10,
+        "input": {
+          "template": "V3_SYSTEM_PROMPT"
+        },
+        "output": {
+          "prompt_length": 1040,
+          "preview": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approxima..."
+        },
+        "metadata": {
+          "template_version": "v3"
+        }
+      },
+      {
+        "span_id": "v3-trace-006-span-5",
+        "name": "Claude API Call",
+        "span_type": "llm",
+        "start_time": 189,
+        "duration_ms": 1873,
+        "input": {
+          "model": "claude-sonnet-4-20250514",
+          "max_tokens": 512,
+          "message_preview": "How much does the Starter plan cost?"
+        },
+        "output": {
+          "response_preview": "The Starter plan costs $49 per month and includes up to 100 widgets per month, email support with 48...",
+          "usage": {
+            "input_tokens": 597,
+            "output_tokens": 45
+          },
+          "stop_reason": "end_turn"
+        },
+        "metadata": {
+          "api_version": "2023-06-01"
+        }
+      }
     ]
   },
   {
@@ -272,10 +872,10 @@
     "question": "How much does the Enterprise plan cost?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Pricing Tiers]\n# Acme Widgets Pricing Tiers\n\n## Starter Plan - $49/month\n- Up to 100 widgets per month\n- Email support (48-hour response)\n- Basic analytics dashboard\n- 1 user seat\n\n## Professional Plan - $149/month\n- Up to 500 widgets per month\n- Priority email support (24-hour response)\n- Advanced analytics with exports\n- 5 user seats\n- API access\n\n## Enterprise Plan - $299/month\n- Unlimited widgets\n- Phone and email support (4-hour response)\n- Custom analytics and reporting\n- Unlimited user seats\n- Dedicated account manager\n- Custom integrations\n- SLA guarantee (99.9% uptime)\n\nAll plans include a 14-day free trial. Annual billing saves 20%.\n",
     "response": "The Enterprise plan costs $299 per month and includes unlimited widgets, phone and email support with 4-hour response time, custom analytics, unlimited user seats, a dedicated account manager, custom integrations, and a 99.9% uptime SLA guarantee. You can save 20% with annual billing. All plans include a 14-day free trial.",
-    "latency_ms": 1913,
+    "latency_ms": 2083,
     "tokens": {
-      "prompt": 525,
-      "completion": 54
+      "prompt": 560,
+      "completion": 53
     },
     "sources": [
       {
@@ -319,6 +919,106 @@
         "span_start": null,
         "span_end": null
       }
+    ],
+    "spans": [
+      {
+        "span_id": "v3-trace-007-span-1",
+        "name": "Query Embedding",
+        "span_type": "embedding",
+        "start_time": 0,
+        "duration_ms": 60,
+        "input": {
+          "text": "How much does the Enterprise plan cost?"
+        },
+        "output": {
+          "dimensions": 384,
+          "preview": "[0.123, -0.456, 0.789, ...]"
+        },
+        "metadata": {
+          "model": "all-MiniLM-L6-v2"
+        }
+      },
+      {
+        "span_id": "v3-trace-007-span-2",
+        "name": "ChromaDB Retrieval",
+        "span_type": "retrieval",
+        "start_time": 60,
+        "duration_ms": 144,
+        "input": {
+          "embedding_dim": 384,
+          "n_results": 3
+        },
+        "output": {
+          "documents": [
+            {
+              "id": "pricing_tiers",
+              "title": "Acme Widgets Pricing Tiers",
+              "distance": 0.311,
+              "content_preview": "Pricing: Starter ($49)..."
+            }
+          ]
+        },
+        "metadata": {
+          "collection": "acme_knowledge_base"
+        }
+      },
+      {
+        "span_id": "v3-trace-007-span-3",
+        "name": "Context Building",
+        "span_type": "context",
+        "start_time": 204,
+        "duration_ms": 15,
+        "input": {
+          "doc_count": 1
+        },
+        "output": {
+          "context_length": 636,
+          "preview": "[Acme Widgets Pricing Tiers]\n# Acme Widgets Pricing Tiers\n\n## Starter Plan - $49/month\n- Up to 100 widgets per month\n- Email supp..."
+        },
+        "metadata": {
+          "separator": "\\n\\n---\\n\\n"
+        }
+      },
+      {
+        "span_id": "v3-trace-007-span-4",
+        "name": "Prompt Construction",
+        "span_type": "prompt",
+        "start_time": 219,
+        "duration_ms": 7,
+        "input": {
+          "template": "V3_SYSTEM_PROMPT"
+        },
+        "output": {
+          "prompt_length": 1040,
+          "preview": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approxima..."
+        },
+        "metadata": {
+          "template_version": "v3"
+        }
+      },
+      {
+        "span_id": "v3-trace-007-span-5",
+        "name": "Claude API Call",
+        "span_type": "llm",
+        "start_time": 226,
+        "duration_ms": 1857,
+        "input": {
+          "model": "claude-sonnet-4-20250514",
+          "max_tokens": 512,
+          "message_preview": "How much does the Enterprise plan cost?"
+        },
+        "output": {
+          "response_preview": "The Enterprise plan costs $299 per month and includes unlimited widgets, phone and email support wit...",
+          "usage": {
+            "input_tokens": 549,
+            "output_tokens": 47
+          },
+          "stop_reason": "end_turn"
+        },
+        "metadata": {
+          "api_version": "2023-06-01"
+        }
+      }
     ]
   },
   {
@@ -327,10 +1027,10 @@
     "question": "What does the Professional plan include?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Pricing Tiers]\n# Acme Widgets Pricing Tiers\n\n## Starter Plan - $49/month\n- Up to 100 widgets per month\n- Email support (48-hour response)\n- Basic analytics dashboard\n- 1 user seat\n\n## Professional Plan - $149/month\n- Up to 500 widgets per month\n- Priority email support (24-hour response)\n- Advanced analytics with exports\n- 5 user seats\n- API access\n\n## Enterprise Plan - $299/month\n- Unlimited widgets\n- Phone and email support (4-hour response)\n- Custom analytics and reporting\n- Unlimited user seats\n- Dedicated account manager\n- Custom integrations\n- SLA guarantee (99.9% uptime)\n\nAll plans include a 14-day free trial. Annual billing saves 20%.\n",
     "response": "The Professional plan costs $149/month and includes up to 500 widgets per month, priority email support with 24-hour response time, advanced analytics with exports, 5 user seats, and API access. Like all our plans, it includes a 14-day free trial, and you save 20% with annual billing.",
-    "latency_ms": 1782,
+    "latency_ms": 2156,
     "tokens": {
-      "prompt": 557,
-      "completion": 49
+      "prompt": 551,
+      "completion": 52
     },
     "sources": [
       {
@@ -367,6 +1067,106 @@
         "span_start": null,
         "span_end": null
       }
+    ],
+    "spans": [
+      {
+        "span_id": "v3-trace-008-span-1",
+        "name": "Query Embedding",
+        "span_type": "embedding",
+        "start_time": 0,
+        "duration_ms": 46,
+        "input": {
+          "text": "What does the Professional plan include?"
+        },
+        "output": {
+          "dimensions": 384,
+          "preview": "[0.123, -0.456, 0.789, ...]"
+        },
+        "metadata": {
+          "model": "all-MiniLM-L6-v2"
+        }
+      },
+      {
+        "span_id": "v3-trace-008-span-2",
+        "name": "ChromaDB Retrieval",
+        "span_type": "retrieval",
+        "start_time": 46,
+        "duration_ms": 141,
+        "input": {
+          "embedding_dim": 384,
+          "n_results": 3
+        },
+        "output": {
+          "documents": [
+            {
+              "id": "pricing_tiers",
+              "title": "Acme Widgets Pricing Tiers",
+              "distance": 0.3,
+              "content_preview": "Pricing: Starter ($49)..."
+            }
+          ]
+        },
+        "metadata": {
+          "collection": "acme_knowledge_base"
+        }
+      },
+      {
+        "span_id": "v3-trace-008-span-3",
+        "name": "Context Building",
+        "span_type": "context",
+        "start_time": 187,
+        "duration_ms": 15,
+        "input": {
+          "doc_count": 1
+        },
+        "output": {
+          "context_length": 636,
+          "preview": "[Acme Widgets Pricing Tiers]\n# Acme Widgets Pricing Tiers\n\n## Starter Plan - $49/month\n- Up to 100 widgets per month\n- Email supp..."
+        },
+        "metadata": {
+          "separator": "\\n\\n---\\n\\n"
+        }
+      },
+      {
+        "span_id": "v3-trace-008-span-4",
+        "name": "Prompt Construction",
+        "span_type": "prompt",
+        "start_time": 202,
+        "duration_ms": 8,
+        "input": {
+          "template": "V3_SYSTEM_PROMPT"
+        },
+        "output": {
+          "prompt_length": 1040,
+          "preview": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approxima..."
+        },
+        "metadata": {
+          "template_version": "v3"
+        }
+      },
+      {
+        "span_id": "v3-trace-008-span-5",
+        "name": "Claude API Call",
+        "span_type": "llm",
+        "start_time": 210,
+        "duration_ms": 1946,
+        "input": {
+          "model": "claude-sonnet-4-20250514",
+          "max_tokens": 512,
+          "message_preview": "What does the Professional plan include?"
+        },
+        "output": {
+          "response_preview": "The Professional plan costs $149/month and includes up to 500 widgets per month, priority email supp...",
+          "usage": {
+            "input_tokens": 553,
+            "output_tokens": 46
+          },
+          "stop_reason": "end_turn"
+        },
+        "metadata": {
+          "api_version": "2023-06-01"
+        }
+      }
     ]
   },
   {
@@ -375,10 +1175,10 @@
     "question": "Can you compare all your pricing plans?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Pricing Tiers]\n# Acme Widgets Pricing Tiers\n\n## Starter Plan - $49/month\n- Up to 100 widgets per month\n- Email support (48-hour response)\n- Basic analytics dashboard\n- 1 user seat\n\n## Professional Plan - $149/month\n- Up to 500 widgets per month\n- Priority email support (24-hour response)\n- Advanced analytics with exports\n- 5 user seats\n- API access\n\n## Enterprise Plan - $299/month\n- Unlimited widgets\n- Phone and email support (4-hour response)\n- Custom analytics and reporting\n- Unlimited user seats\n- Dedicated account manager\n- Custom integrations\n- SLA guarantee (99.9% uptime)\n\nAll plans include a 14-day free trial. Annual billing saves 20%.\n",
     "response": "We offer three tiers: Starter ($49/month) with 100 widgets, email support (48hr), basic analytics, 1 seat. Professional ($149/month) with 500 widgets, priority email (24hr), advanced analytics, 5 seats, API access. Enterprise ($299/month) with unlimited widgets, phone+email (4hr), custom analytics, unlimited seats, dedicated account manager, 99.9% SLA. All include a 14-day trial; annual billing saves 20%.",
-    "latency_ms": 1523,
+    "latency_ms": 2504,
     "tokens": {
-      "prompt": 604,
-      "completion": 55
+      "prompt": 534,
+      "completion": 54
     },
     "sources": [
       {
@@ -415,6 +1215,106 @@
         "span_start": null,
         "span_end": null
       }
+    ],
+    "spans": [
+      {
+        "span_id": "v3-trace-009-span-1",
+        "name": "Query Embedding",
+        "span_type": "embedding",
+        "start_time": 0,
+        "duration_ms": 58,
+        "input": {
+          "text": "Can you compare all your pricing plans?"
+        },
+        "output": {
+          "dimensions": 384,
+          "preview": "[0.123, -0.456, 0.789, ...]"
+        },
+        "metadata": {
+          "model": "all-MiniLM-L6-v2"
+        }
+      },
+      {
+        "span_id": "v3-trace-009-span-2",
+        "name": "ChromaDB Retrieval",
+        "span_type": "retrieval",
+        "start_time": 58,
+        "duration_ms": 125,
+        "input": {
+          "embedding_dim": 384,
+          "n_results": 3
+        },
+        "output": {
+          "documents": [
+            {
+              "id": "pricing_tiers",
+              "title": "Acme Widgets Pricing Tiers",
+              "distance": 0.272,
+              "content_preview": "Pricing: Starter ($49)..."
+            }
+          ]
+        },
+        "metadata": {
+          "collection": "acme_knowledge_base"
+        }
+      },
+      {
+        "span_id": "v3-trace-009-span-3",
+        "name": "Context Building",
+        "span_type": "context",
+        "start_time": 183,
+        "duration_ms": 7,
+        "input": {
+          "doc_count": 1
+        },
+        "output": {
+          "context_length": 636,
+          "preview": "[Acme Widgets Pricing Tiers]\n# Acme Widgets Pricing Tiers\n\n## Starter Plan - $49/month\n- Up to 100 widgets per month\n- Email supp..."
+        },
+        "metadata": {
+          "separator": "\\n\\n---\\n\\n"
+        }
+      },
+      {
+        "span_id": "v3-trace-009-span-4",
+        "name": "Prompt Construction",
+        "span_type": "prompt",
+        "start_time": 190,
+        "duration_ms": 9,
+        "input": {
+          "template": "V3_SYSTEM_PROMPT"
+        },
+        "output": {
+          "prompt_length": 1040,
+          "preview": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approxima..."
+        },
+        "metadata": {
+          "template_version": "v3"
+        }
+      },
+      {
+        "span_id": "v3-trace-009-span-5",
+        "name": "Claude API Call",
+        "span_type": "llm",
+        "start_time": 199,
+        "duration_ms": 2305,
+        "input": {
+          "model": "claude-sonnet-4-20250514",
+          "max_tokens": 512,
+          "message_preview": "Can you compare all your pricing plans?"
+        },
+        "output": {
+          "response_preview": "We offer three tiers: Starter ($49/month) with 100 widgets, email support (48hr), basic analytics, 1...",
+          "usage": {
+            "input_tokens": 531,
+            "output_tokens": 52
+          },
+          "stop_reason": "end_turn"
+        },
+        "metadata": {
+          "api_version": "2023-06-01"
+        }
+      }
     ]
   },
   {
@@ -423,10 +1323,10 @@
     "question": "Do you offer a free trial?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Pricing Tiers]\n# Acme Widgets Pricing Tiers\n\n## Starter Plan - $49/month\n- Up to 100 widgets per month\n- Email support (48-hour response)\n- Basic analytics dashboard\n- 1 user seat\n\n## Professional Plan - $149/month\n- Up to 500 widgets per month\n- Priority email support (24-hour response)\n- Advanced analytics with exports\n- 5 user seats\n- API access\n\n## Enterprise Plan - $299/month\n- Unlimited widgets\n- Phone and email support (4-hour response)\n- Custom analytics and reporting\n- Unlimited user seats\n- Dedicated account manager\n- Custom integrations\n- SLA guarantee (99.9% uptime)\n\nAll plans include a 14-day free trial. Annual billing saves 20%.\n",
     "response": "Yes! All plans include a 14-day free trial with full access to the features of your chosen tier. After the trial, you can continue with monthly billing or save 20% with annual billing. Our three plans are Starter ($49/month), Professional ($149/month), and Enterprise ($299/month).",
-    "latency_ms": 1943,
+    "latency_ms": 2526,
     "tokens": {
-      "prompt": 532,
-      "completion": 47
+      "prompt": 521,
+      "completion": 42
     },
     "sources": [
       {
@@ -456,6 +1356,106 @@
         "span_start": null,
         "span_end": null
       }
+    ],
+    "spans": [
+      {
+        "span_id": "v3-trace-010-span-1",
+        "name": "Query Embedding",
+        "span_type": "embedding",
+        "start_time": 0,
+        "duration_ms": 59,
+        "input": {
+          "text": "Do you offer a free trial?"
+        },
+        "output": {
+          "dimensions": 384,
+          "preview": "[0.123, -0.456, 0.789, ...]"
+        },
+        "metadata": {
+          "model": "all-MiniLM-L6-v2"
+        }
+      },
+      {
+        "span_id": "v3-trace-010-span-2",
+        "name": "ChromaDB Retrieval",
+        "span_type": "retrieval",
+        "start_time": 59,
+        "duration_ms": 104,
+        "input": {
+          "embedding_dim": 384,
+          "n_results": 3
+        },
+        "output": {
+          "documents": [
+            {
+              "id": "pricing_tiers",
+              "title": "Acme Widgets Pricing Tiers",
+              "distance": 0.277,
+              "content_preview": "Pricing: Starter ($49)..."
+            }
+          ]
+        },
+        "metadata": {
+          "collection": "acme_knowledge_base"
+        }
+      },
+      {
+        "span_id": "v3-trace-010-span-3",
+        "name": "Context Building",
+        "span_type": "context",
+        "start_time": 163,
+        "duration_ms": 14,
+        "input": {
+          "doc_count": 1
+        },
+        "output": {
+          "context_length": 636,
+          "preview": "[Acme Widgets Pricing Tiers]\n# Acme Widgets Pricing Tiers\n\n## Starter Plan - $49/month\n- Up to 100 widgets per month\n- Email supp..."
+        },
+        "metadata": {
+          "separator": "\\n\\n---\\n\\n"
+        }
+      },
+      {
+        "span_id": "v3-trace-010-span-4",
+        "name": "Prompt Construction",
+        "span_type": "prompt",
+        "start_time": 177,
+        "duration_ms": 8,
+        "input": {
+          "template": "V3_SYSTEM_PROMPT"
+        },
+        "output": {
+          "prompt_length": 1040,
+          "preview": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approxima..."
+        },
+        "metadata": {
+          "template_version": "v3"
+        }
+      },
+      {
+        "span_id": "v3-trace-010-span-5",
+        "name": "Claude API Call",
+        "span_type": "llm",
+        "start_time": 185,
+        "duration_ms": 2341,
+        "input": {
+          "model": "claude-sonnet-4-20250514",
+          "max_tokens": 512,
+          "message_preview": "Do you offer a free trial?"
+        },
+        "output": {
+          "response_preview": "Yes! All plans include a 14-day free trial with full access to the features of your chosen tier. Aft...",
+          "usage": {
+            "input_tokens": 552,
+            "output_tokens": 49
+          },
+          "stop_reason": "end_turn"
+        },
+        "metadata": {
+          "api_version": "2023-06-01"
+        }
+      }
     ]
   },
   {
@@ -464,10 +1464,10 @@
     "question": "What are the specs of Widget Pro X2?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widget Product Specifications]\n# Acme Widget Product Specifications\n\n## Widget Pro X1\n- Dimensions: 4\" x 4\" x 2\"\n- Weight: 8 oz\n- Material: Aircraft-grade aluminum\n- Battery: 2000mAh lithium-ion (8-hour life)\n- Connectivity: Bluetooth 5.0, WiFi 6\n- Price: $79.99\n\n## Widget Pro X2\n- Dimensions: 5\" x 5\" x 2.5\"\n- Weight: 12 oz\n- Material: Carbon fiber composite\n- Battery: 3500mAh lithium-ion (12-hour life)\n- Connectivity: Bluetooth 5.0, WiFi 6, NFC\n- Water resistance: IP67\n- Price: $129.99\n\n## Widget Enterprise E1\n- Dimensions: 6\" x 6\" x 3\"\n- Weight: 18 oz\n- Material: Industrial steel housing\n- Power: Wired (no battery)\n- Connectivity: Ethernet, WiFi 6, Bluetooth 5.0\n- Operating temp: -20C to 60C\n- Price: $249.99 (bulk discounts available)\n",
     "response": "The Widget Pro X2 measures 5\" x 5\" x 2.5\" and weighs 12 oz. It's made with carbon fiber composite material. The 3500mAh lithium-ion battery provides 12 hours of life. Connectivity includes Bluetooth 5.0, WiFi 6, and NFC. It has IP67 water resistance for durability. Priced at $129.99.",
-    "latency_ms": 1583,
+    "latency_ms": 2462,
     "tokens": {
-      "prompt": 583,
-      "completion": 50
+      "prompt": 600,
+      "completion": 47
     },
     "sources": [
       {
@@ -525,6 +1525,106 @@
         "span_start": null,
         "span_end": null
       }
+    ],
+    "spans": [
+      {
+        "span_id": "v3-trace-011-span-1",
+        "name": "Query Embedding",
+        "span_type": "embedding",
+        "start_time": 0,
+        "duration_ms": 60,
+        "input": {
+          "text": "What are the specs of Widget Pro X2?"
+        },
+        "output": {
+          "dimensions": 384,
+          "preview": "[0.123, -0.456, 0.789, ...]"
+        },
+        "metadata": {
+          "model": "all-MiniLM-L6-v2"
+        }
+      },
+      {
+        "span_id": "v3-trace-011-span-2",
+        "name": "ChromaDB Retrieval",
+        "span_type": "retrieval",
+        "start_time": 60,
+        "duration_ms": 121,
+        "input": {
+          "embedding_dim": 384,
+          "n_results": 3
+        },
+        "output": {
+          "documents": [
+            {
+              "id": "product_specs",
+              "title": "Acme Widget Product Specifications",
+              "distance": 0.222,
+              "content_preview": "Product Specs..."
+            }
+          ]
+        },
+        "metadata": {
+          "collection": "acme_knowledge_base"
+        }
+      },
+      {
+        "span_id": "v3-trace-011-span-3",
+        "name": "Context Building",
+        "span_type": "context",
+        "start_time": 181,
+        "duration_ms": 11,
+        "input": {
+          "doc_count": 1
+        },
+        "output": {
+          "context_length": 716,
+          "preview": "[Acme Widget Product Specifications]\n# Acme Widget Product Specifications\n\n## Widget Pro X1\n- Dimensions: 4\" x 4\" x 2\"\n- Weight: 8 oz\n- M..."
+        },
+        "metadata": {
+          "separator": "\\n\\n---\\n\\n"
+        }
+      },
+      {
+        "span_id": "v3-trace-011-span-4",
+        "name": "Prompt Construction",
+        "span_type": "prompt",
+        "start_time": 192,
+        "duration_ms": 6,
+        "input": {
+          "template": "V3_SYSTEM_PROMPT"
+        },
+        "output": {
+          "prompt_length": 1128,
+          "preview": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approxima..."
+        },
+        "metadata": {
+          "template_version": "v3"
+        }
+      },
+      {
+        "span_id": "v3-trace-011-span-5",
+        "name": "Claude API Call",
+        "span_type": "llm",
+        "start_time": 198,
+        "duration_ms": 2264,
+        "input": {
+          "model": "claude-sonnet-4-20250514",
+          "max_tokens": 512,
+          "message_preview": "What are the specs of Widget Pro X2?"
+        },
+        "output": {
+          "response_preview": "The Widget Pro X2 measures 5\" x 5\" x 2.5\" and weighs 12 oz. It's made with carbon fiber composite ma...",
+          "usage": {
+            "input_tokens": 536,
+            "output_tokens": 49
+          },
+          "stop_reason": "end_turn"
+        },
+        "metadata": {
+          "api_version": "2023-06-01"
+        }
+      }
     ]
   },
   {
@@ -533,10 +1633,10 @@
     "question": "Tell me about the Widget Pro X1.",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widget Product Specifications]\n# Acme Widget Product Specifications\n\n## Widget Pro X1\n- Dimensions: 4\" x 4\" x 2\"\n- Weight: 8 oz\n- Material: Aircraft-grade aluminum\n- Battery: 2000mAh lithium-ion (8-hour life)\n- Connectivity: Bluetooth 5.0, WiFi 6\n- Price: $79.99\n\n## Widget Pro X2\n- Dimensions: 5\" x 5\" x 2.5\"\n- Weight: 12 oz\n- Material: Carbon fiber composite\n- Battery: 3500mAh lithium-ion (12-hour life)\n- Connectivity: Bluetooth 5.0, WiFi 6, NFC\n- Water resistance: IP67\n- Price: $129.99\n\n## Widget Enterprise E1\n- Dimensions: 6\" x 6\" x 3\"\n- Weight: 18 oz\n- Material: Industrial steel housing\n- Power: Wired (no battery)\n- Connectivity: Ethernet, WiFi 6, Bluetooth 5.0\n- Operating temp: -20C to 60C\n- Price: $249.99 (bulk discounts available)\n",
     "response": "The Widget Pro X1 is our entry-level model at $79.99. It measures 4\" x 4\" x 2\" and weighs 8 oz. Made with aircraft-grade aluminum, it features a 2000mAh lithium-ion battery with 8-hour life. Connectivity includes Bluetooth 5.0 and WiFi 6. It's compact and lightweight, perfect for everyday use.",
-    "latency_ms": 1811,
+    "latency_ms": 2171,
     "tokens": {
-      "prompt": 617,
-      "completion": 48
+      "prompt": 536,
+      "completion": 51
     },
     "sources": [
       {
@@ -573,6 +1673,106 @@
         "span_start": null,
         "span_end": null
       }
+    ],
+    "spans": [
+      {
+        "span_id": "v3-trace-012-span-1",
+        "name": "Query Embedding",
+        "span_type": "embedding",
+        "start_time": 0,
+        "duration_ms": 60,
+        "input": {
+          "text": "Tell me about the Widget Pro X1."
+        },
+        "output": {
+          "dimensions": 384,
+          "preview": "[0.123, -0.456, 0.789, ...]"
+        },
+        "metadata": {
+          "model": "all-MiniLM-L6-v2"
+        }
+      },
+      {
+        "span_id": "v3-trace-012-span-2",
+        "name": "ChromaDB Retrieval",
+        "span_type": "retrieval",
+        "start_time": 60,
+        "duration_ms": 132,
+        "input": {
+          "embedding_dim": 384,
+          "n_results": 3
+        },
+        "output": {
+          "documents": [
+            {
+              "id": "product_specs",
+              "title": "Acme Widget Product Specifications",
+              "distance": 0.322,
+              "content_preview": "Product Specs..."
+            }
+          ]
+        },
+        "metadata": {
+          "collection": "acme_knowledge_base"
+        }
+      },
+      {
+        "span_id": "v3-trace-012-span-3",
+        "name": "Context Building",
+        "span_type": "context",
+        "start_time": 192,
+        "duration_ms": 7,
+        "input": {
+          "doc_count": 1
+        },
+        "output": {
+          "context_length": 716,
+          "preview": "[Acme Widget Product Specifications]\n# Acme Widget Product Specifications\n\n## Widget Pro X1\n- Dimensions: 4\" x 4\" x 2\"\n- Weight: 8 oz\n- M..."
+        },
+        "metadata": {
+          "separator": "\\n\\n---\\n\\n"
+        }
+      },
+      {
+        "span_id": "v3-trace-012-span-4",
+        "name": "Prompt Construction",
+        "span_type": "prompt",
+        "start_time": 199,
+        "duration_ms": 7,
+        "input": {
+          "template": "V3_SYSTEM_PROMPT"
+        },
+        "output": {
+          "prompt_length": 1128,
+          "preview": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approxima..."
+        },
+        "metadata": {
+          "template_version": "v3"
+        }
+      },
+      {
+        "span_id": "v3-trace-012-span-5",
+        "name": "Claude API Call",
+        "span_type": "llm",
+        "start_time": 206,
+        "duration_ms": 1965,
+        "input": {
+          "model": "claude-sonnet-4-20250514",
+          "max_tokens": 512,
+          "message_preview": "Tell me about the Widget Pro X1."
+        },
+        "output": {
+          "response_preview": "The Widget Pro X1 is our entry-level model at $79.99. It measures 4\" x 4\" x 2\" and weighs 8 oz. Made...",
+          "usage": {
+            "input_tokens": 605,
+            "output_tokens": 54
+          },
+          "stop_reason": "end_turn"
+        },
+        "metadata": {
+          "api_version": "2023-06-01"
+        }
+      }
     ]
   },
   {
@@ -581,9 +1781,9 @@
     "question": "What is the Widget Enterprise E1?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widget Product Specifications]\n# Acme Widget Product Specifications\n\n## Widget Pro X1\n- Dimensions: 4\" x 4\" x 2\"\n- Weight: 8 oz\n- Material: Aircraft-grade aluminum\n- Battery: 2000mAh lithium-ion (8-hour life)\n- Connectivity: Bluetooth 5.0, WiFi 6\n- Price: $79.99\n\n## Widget Pro X2\n- Dimensions: 5\" x 5\" x 2.5\"\n- Weight: 12 oz\n- Material: Carbon fiber composite\n- Battery: 3500mAh lithium-ion (12-hour life)\n- Connectivity: Bluetooth 5.0, WiFi 6, NFC\n- Water resistance: IP67\n- Price: $129.99\n\n## Widget Enterprise E1\n- Dimensions: 6\" x 6\" x 3\"\n- Weight: 18 oz\n- Material: Industrial steel housing\n- Power: Wired (no battery)\n- Connectivity: Ethernet, WiFi 6, Bluetooth 5.0\n- Operating temp: -20C to 60C\n- Price: $249.99 (bulk discounts available)\n",
     "response": "The Widget Enterprise E1 is our industrial-grade model at $249.99 (bulk discounts available). It measures 6\" x 6\" x 3\", weighs 18 oz, and has an industrial steel housing. It's wired (no battery), with Ethernet, WiFi 6, and Bluetooth 5.0. Operating temperature range is -20C to 60C, making it ideal for demanding environments.",
-    "latency_ms": 1694,
+    "latency_ms": 2070,
     "tokens": {
-      "prompt": 570,
+      "prompt": 544,
       "completion": 58
     },
     "sources": [
@@ -621,6 +1821,106 @@
         "span_start": null,
         "span_end": null
       }
+    ],
+    "spans": [
+      {
+        "span_id": "v3-trace-013-span-1",
+        "name": "Query Embedding",
+        "span_type": "embedding",
+        "start_time": 0,
+        "duration_ms": 49,
+        "input": {
+          "text": "What is the Widget Enterprise E1?"
+        },
+        "output": {
+          "dimensions": 384,
+          "preview": "[0.123, -0.456, 0.789, ...]"
+        },
+        "metadata": {
+          "model": "all-MiniLM-L6-v2"
+        }
+      },
+      {
+        "span_id": "v3-trace-013-span-2",
+        "name": "ChromaDB Retrieval",
+        "span_type": "retrieval",
+        "start_time": 49,
+        "duration_ms": 115,
+        "input": {
+          "embedding_dim": 384,
+          "n_results": 3
+        },
+        "output": {
+          "documents": [
+            {
+              "id": "product_specs",
+              "title": "Acme Widget Product Specifications",
+              "distance": 0.212,
+              "content_preview": "Product Specs..."
+            }
+          ]
+        },
+        "metadata": {
+          "collection": "acme_knowledge_base"
+        }
+      },
+      {
+        "span_id": "v3-trace-013-span-3",
+        "name": "Context Building",
+        "span_type": "context",
+        "start_time": 164,
+        "duration_ms": 14,
+        "input": {
+          "doc_count": 1
+        },
+        "output": {
+          "context_length": 716,
+          "preview": "[Acme Widget Product Specifications]\n# Acme Widget Product Specifications\n\n## Widget Pro X1\n- Dimensions: 4\" x 4\" x 2\"\n- Weight: 8 oz\n- M..."
+        },
+        "metadata": {
+          "separator": "\\n\\n---\\n\\n"
+        }
+      },
+      {
+        "span_id": "v3-trace-013-span-4",
+        "name": "Prompt Construction",
+        "span_type": "prompt",
+        "start_time": 178,
+        "duration_ms": 5,
+        "input": {
+          "template": "V3_SYSTEM_PROMPT"
+        },
+        "output": {
+          "prompt_length": 1128,
+          "preview": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approxima..."
+        },
+        "metadata": {
+          "template_version": "v3"
+        }
+      },
+      {
+        "span_id": "v3-trace-013-span-5",
+        "name": "Claude API Call",
+        "span_type": "llm",
+        "start_time": 183,
+        "duration_ms": 1887,
+        "input": {
+          "model": "claude-sonnet-4-20250514",
+          "max_tokens": 512,
+          "message_preview": "What is the Widget Enterprise E1?"
+        },
+        "output": {
+          "response_preview": "The Widget Enterprise E1 is our industrial-grade model at $249.99 (bulk discounts available). It mea...",
+          "usage": {
+            "input_tokens": 629,
+            "output_tokens": 57
+          },
+          "stop_reason": "end_turn"
+        },
+        "metadata": {
+          "api_version": "2023-06-01"
+        }
+      }
     ]
   },
   {
@@ -629,10 +1929,10 @@
     "question": "How do the Widget Pro X1 and X2 compare?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widget Product Specifications]\n# Acme Widget Product Specifications\n\n## Widget Pro X1\n- Dimensions: 4\" x 4\" x 2\"\n- Weight: 8 oz\n- Material: Aircraft-grade aluminum\n- Battery: 2000mAh lithium-ion (8-hour life)\n- Connectivity: Bluetooth 5.0, WiFi 6\n- Price: $79.99\n\n## Widget Pro X2\n- Dimensions: 5\" x 5\" x 2.5\"\n- Weight: 12 oz\n- Material: Carbon fiber composite\n- Battery: 3500mAh lithium-ion (12-hour life)\n- Connectivity: Bluetooth 5.0, WiFi 6, NFC\n- Water resistance: IP67\n- Price: $129.99\n\n## Widget Enterprise E1\n- Dimensions: 6\" x 6\" x 3\"\n- Weight: 18 oz\n- Material: Industrial steel housing\n- Power: Wired (no battery)\n- Connectivity: Ethernet, WiFi 6, Bluetooth 5.0\n- Operating temp: -20C to 60C\n- Price: $249.99 (bulk discounts available)\n",
     "response": "The X1 ($79.99) offers 4\"x4\"x2\", 8 oz, aircraft-grade aluminum, 2000mAh/8hr battery, Bluetooth 5.0 + WiFi 6. The X2 ($129.99) upgrades to 5\"x5\"x2.5\", 12 oz, carbon fiber composite, 3500mAh/12hr battery, adds NFC and IP67 water resistance. The X2 adds significantly more battery life, water resistance, and NFC connectivity.",
-    "latency_ms": 1617,
+    "latency_ms": 2205,
     "tokens": {
-      "prompt": 540,
-      "completion": 49
+      "prompt": 627,
+      "completion": 48
     },
     "sources": [
       {
@@ -669,6 +1969,106 @@
         "span_start": null,
         "span_end": null
       }
+    ],
+    "spans": [
+      {
+        "span_id": "v3-trace-014-span-1",
+        "name": "Query Embedding",
+        "span_type": "embedding",
+        "start_time": 0,
+        "duration_ms": 57,
+        "input": {
+          "text": "How do the Widget Pro X1 and X2 compare?"
+        },
+        "output": {
+          "dimensions": 384,
+          "preview": "[0.123, -0.456, 0.789, ...]"
+        },
+        "metadata": {
+          "model": "all-MiniLM-L6-v2"
+        }
+      },
+      {
+        "span_id": "v3-trace-014-span-2",
+        "name": "ChromaDB Retrieval",
+        "span_type": "retrieval",
+        "start_time": 57,
+        "duration_ms": 110,
+        "input": {
+          "embedding_dim": 384,
+          "n_results": 3
+        },
+        "output": {
+          "documents": [
+            {
+              "id": "product_specs",
+              "title": "Acme Widget Product Specifications",
+              "distance": 0.253,
+              "content_preview": "Product Specs..."
+            }
+          ]
+        },
+        "metadata": {
+          "collection": "acme_knowledge_base"
+        }
+      },
+      {
+        "span_id": "v3-trace-014-span-3",
+        "name": "Context Building",
+        "span_type": "context",
+        "start_time": 167,
+        "duration_ms": 14,
+        "input": {
+          "doc_count": 1
+        },
+        "output": {
+          "context_length": 716,
+          "preview": "[Acme Widget Product Specifications]\n# Acme Widget Product Specifications\n\n## Widget Pro X1\n- Dimensions: 4\" x 4\" x 2\"\n- Weight: 8 oz\n- M..."
+        },
+        "metadata": {
+          "separator": "\\n\\n---\\n\\n"
+        }
+      },
+      {
+        "span_id": "v3-trace-014-span-4",
+        "name": "Prompt Construction",
+        "span_type": "prompt",
+        "start_time": 181,
+        "duration_ms": 8,
+        "input": {
+          "template": "V3_SYSTEM_PROMPT"
+        },
+        "output": {
+          "prompt_length": 1128,
+          "preview": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approxima..."
+        },
+        "metadata": {
+          "template_version": "v3"
+        }
+      },
+      {
+        "span_id": "v3-trace-014-span-5",
+        "name": "Claude API Call",
+        "span_type": "llm",
+        "start_time": 189,
+        "duration_ms": 2016,
+        "input": {
+          "model": "claude-sonnet-4-20250514",
+          "max_tokens": 512,
+          "message_preview": "How do the Widget Pro X1 and X2 compare?"
+        },
+        "output": {
+          "response_preview": "The X1 ($79.99) offers 4\"x4\"x2\", 8 oz, aircraft-grade aluminum, 2000mAh/8hr battery, Bluetooth 5.0 +...",
+          "usage": {
+            "input_tokens": 605,
+            "output_tokens": 47
+          },
+          "stop_reason": "end_turn"
+        },
+        "metadata": {
+          "api_version": "2023-06-01"
+        }
+      }
     ]
   },
   {
@@ -677,10 +2077,10 @@
     "question": "Is the Widget Pro X2 waterproof?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widget Product Specifications]\n# Acme Widget Product Specifications\n\n## Widget Pro X1\n- Dimensions: 4\" x 4\" x 2\"\n- Weight: 8 oz\n- Material: Aircraft-grade aluminum\n- Battery: 2000mAh lithium-ion (8-hour life)\n- Connectivity: Bluetooth 5.0, WiFi 6\n- Price: $79.99\n\n## Widget Pro X2\n- Dimensions: 5\" x 5\" x 2.5\"\n- Weight: 12 oz\n- Material: Carbon fiber composite\n- Battery: 3500mAh lithium-ion (12-hour life)\n- Connectivity: Bluetooth 5.0, WiFi 6, NFC\n- Water resistance: IP67\n- Price: $129.99\n\n## Widget Enterprise E1\n- Dimensions: 6\" x 6\" x 3\"\n- Weight: 18 oz\n- Material: Industrial steel housing\n- Power: Wired (no battery)\n- Connectivity: Ethernet, WiFi 6, Bluetooth 5.0\n- Operating temp: -20C to 60C\n- Price: $249.99 (bulk discounts available)\n",
     "response": "The Widget Pro X2 has an IP67 water resistance rating, meaning it's fully dust-proof and can withstand temporary submersion in up to 1 meter of water for 30 minutes. It handles rain, splashes, and accidental drops in water. Note that neither the X1 nor the Enterprise E1 has a water resistance rating. Priced at $129.99.",
-    "latency_ms": 1967,
+    "latency_ms": 2343,
     "tokens": {
-      "prompt": 608,
-      "completion": 57
+      "prompt": 565,
+      "completion": 55
     },
     "sources": [
       {
@@ -710,6 +2110,106 @@
         "span_start": null,
         "span_end": null
       }
+    ],
+    "spans": [
+      {
+        "span_id": "v3-trace-015-span-1",
+        "name": "Query Embedding",
+        "span_type": "embedding",
+        "start_time": 0,
+        "duration_ms": 56,
+        "input": {
+          "text": "Is the Widget Pro X2 waterproof?"
+        },
+        "output": {
+          "dimensions": 384,
+          "preview": "[0.123, -0.456, 0.789, ...]"
+        },
+        "metadata": {
+          "model": "all-MiniLM-L6-v2"
+        }
+      },
+      {
+        "span_id": "v3-trace-015-span-2",
+        "name": "ChromaDB Retrieval",
+        "span_type": "retrieval",
+        "start_time": 56,
+        "duration_ms": 128,
+        "input": {
+          "embedding_dim": 384,
+          "n_results": 3
+        },
+        "output": {
+          "documents": [
+            {
+              "id": "product_specs",
+              "title": "Acme Widget Product Specifications",
+              "distance": 0.224,
+              "content_preview": "Product Specs..."
+            }
+          ]
+        },
+        "metadata": {
+          "collection": "acme_knowledge_base"
+        }
+      },
+      {
+        "span_id": "v3-trace-015-span-3",
+        "name": "Context Building",
+        "span_type": "context",
+        "start_time": 184,
+        "duration_ms": 8,
+        "input": {
+          "doc_count": 1
+        },
+        "output": {
+          "context_length": 716,
+          "preview": "[Acme Widget Product Specifications]\n# Acme Widget Product Specifications\n\n## Widget Pro X1\n- Dimensions: 4\" x 4\" x 2\"\n- Weight: 8 oz\n- M..."
+        },
+        "metadata": {
+          "separator": "\\n\\n---\\n\\n"
+        }
+      },
+      {
+        "span_id": "v3-trace-015-span-4",
+        "name": "Prompt Construction",
+        "span_type": "prompt",
+        "start_time": 192,
+        "duration_ms": 5,
+        "input": {
+          "template": "V3_SYSTEM_PROMPT"
+        },
+        "output": {
+          "prompt_length": 1128,
+          "preview": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approxima..."
+        },
+        "metadata": {
+          "template_version": "v3"
+        }
+      },
+      {
+        "span_id": "v3-trace-015-span-5",
+        "name": "Claude API Call",
+        "span_type": "llm",
+        "start_time": 197,
+        "duration_ms": 2146,
+        "input": {
+          "model": "claude-sonnet-4-20250514",
+          "max_tokens": 512,
+          "message_preview": "Is the Widget Pro X2 waterproof?"
+        },
+        "output": {
+          "response_preview": "The Widget Pro X2 has an IP67 water resistance rating, meaning it's fully dust-proof and can withsta...",
+          "usage": {
+            "input_tokens": 538,
+            "output_tokens": 60
+          },
+          "stop_reason": "end_turn"
+        },
+        "metadata": {
+          "api_version": "2023-06-01"
+        }
+      }
     ]
   },
   {
@@ -718,9 +2218,9 @@
     "question": "What shipping options do you offer?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Shipping Information]\n# Acme Widgets Shipping Information\n\n## Domestic Shipping (United States)\n\n### Standard Shipping\n- Delivery: 5-7 business days\n- Cost: $5.95 (free on orders over $50)\n\n### Express Shipping\n- Delivery: 2-3 business days\n- Cost: $12.95\n\n### Overnight Shipping\n- Delivery: Next business day (order by 2 PM EST)\n- Cost: $24.95\n\n## International Shipping\n- Available to 50+ countries\n- Delivery: 7-14 business days\n- Cost: Calculated at checkout based on destination\n- Customs/duties are buyer's responsibility\n\n## Order Processing\n- Orders placed before 2 PM EST ship same day\n- Tracking number provided via email within 24 hours\n- Signature required for orders over $200\n",
     "response": "We offer three domestic options: Standard (5-7 days, $5.95, free over $50), Express (2-3 days, $12.95), and Overnight (next business day, $24.95, order by 2 PM EST). International shipping to 50+ countries takes 7-14 days with costs calculated at checkout. Orders before 2 PM EST ship same day. Tracking provided within 24 hours.",
-    "latency_ms": 1952,
+    "latency_ms": 2492,
     "tokens": {
-      "prompt": 603,
+      "prompt": 606,
       "completion": 57
     },
     "sources": [
@@ -758,6 +2258,106 @@
         "span_start": null,
         "span_end": null
       }
+    ],
+    "spans": [
+      {
+        "span_id": "v3-trace-016-span-1",
+        "name": "Query Embedding",
+        "span_type": "embedding",
+        "start_time": 0,
+        "duration_ms": 47,
+        "input": {
+          "text": "What shipping options do you offer?"
+        },
+        "output": {
+          "dimensions": 384,
+          "preview": "[0.123, -0.456, 0.789, ...]"
+        },
+        "metadata": {
+          "model": "all-MiniLM-L6-v2"
+        }
+      },
+      {
+        "span_id": "v3-trace-016-span-2",
+        "name": "ChromaDB Retrieval",
+        "span_type": "retrieval",
+        "start_time": 47,
+        "duration_ms": 104,
+        "input": {
+          "embedding_dim": 384,
+          "n_results": 3
+        },
+        "output": {
+          "documents": [
+            {
+              "id": "shipping_info",
+              "title": "Acme Widgets Shipping Information",
+              "distance": 0.381,
+              "content_preview": "Shipping Information..."
+            }
+          ]
+        },
+        "metadata": {
+          "collection": "acme_knowledge_base"
+        }
+      },
+      {
+        "span_id": "v3-trace-016-span-3",
+        "name": "Context Building",
+        "span_type": "context",
+        "start_time": 151,
+        "duration_ms": 10,
+        "input": {
+          "doc_count": 1
+        },
+        "output": {
+          "context_length": 668,
+          "preview": "[Acme Widgets Shipping Information]\n# Acme Widgets Shipping Information\n\n## Domestic Shipping (United States)\n\n### Standard Shipping\n- D..."
+        },
+        "metadata": {
+          "separator": "\\n\\n---\\n\\n"
+        }
+      },
+      {
+        "span_id": "v3-trace-016-span-4",
+        "name": "Prompt Construction",
+        "span_type": "prompt",
+        "start_time": 161,
+        "duration_ms": 5,
+        "input": {
+          "template": "V3_SYSTEM_PROMPT"
+        },
+        "output": {
+          "prompt_length": 1079,
+          "preview": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approxima..."
+        },
+        "metadata": {
+          "template_version": "v3"
+        }
+      },
+      {
+        "span_id": "v3-trace-016-span-5",
+        "name": "Claude API Call",
+        "span_type": "llm",
+        "start_time": 166,
+        "duration_ms": 2326,
+        "input": {
+          "model": "claude-sonnet-4-20250514",
+          "max_tokens": 512,
+          "message_preview": "What shipping options do you offer?"
+        },
+        "output": {
+          "response_preview": "We offer three domestic options: Standard (5-7 days, $5.95, free over $50), Express (2-3 days, $12.9...",
+          "usage": {
+            "input_tokens": 551,
+            "output_tokens": 54
+          },
+          "stop_reason": "end_turn"
+        },
+        "metadata": {
+          "api_version": "2023-06-01"
+        }
+      }
     ]
   },
   {
@@ -766,10 +2366,10 @@
     "question": "How much is express shipping?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Shipping Information]\n# Acme Widgets Shipping Information\n\n## Domestic Shipping (United States)\n\n### Standard Shipping\n- Delivery: 5-7 business days\n- Cost: $5.95 (free on orders over $50)\n\n### Express Shipping\n- Delivery: 2-3 business days\n- Cost: $12.95\n\n### Overnight Shipping\n- Delivery: Next business day (order by 2 PM EST)\n- Cost: $24.95\n\n## International Shipping\n- Available to 50+ countries\n- Delivery: 7-14 business days\n- Cost: Calculated at checkout based on destination\n- Customs/duties are buyer's responsibility\n\n## Order Processing\n- Orders placed before 2 PM EST ship same day\n- Tracking number provided via email within 24 hours\n- Signature required for orders over $200\n",
     "response": "Express shipping costs $12.95 and delivers within 2-3 business days. Orders placed before 2 PM EST ship the same day. You'll receive a tracking number via email within 24 hours. For comparison, Standard is $5.95 (5-7 days, free over $50) and Overnight is $24.95 (next business day).",
-    "latency_ms": 1881,
+    "latency_ms": 2110,
     "tokens": {
-      "prompt": 592,
-      "completion": 52
+      "prompt": 566,
+      "completion": 50
     },
     "sources": [
       {
@@ -806,6 +2406,106 @@
         "span_start": null,
         "span_end": null
       }
+    ],
+    "spans": [
+      {
+        "span_id": "v3-trace-017-span-1",
+        "name": "Query Embedding",
+        "span_type": "embedding",
+        "start_time": 0,
+        "duration_ms": 47,
+        "input": {
+          "text": "How much is express shipping?"
+        },
+        "output": {
+          "dimensions": 384,
+          "preview": "[0.123, -0.456, 0.789, ...]"
+        },
+        "metadata": {
+          "model": "all-MiniLM-L6-v2"
+        }
+      },
+      {
+        "span_id": "v3-trace-017-span-2",
+        "name": "ChromaDB Retrieval",
+        "span_type": "retrieval",
+        "start_time": 47,
+        "duration_ms": 150,
+        "input": {
+          "embedding_dim": 384,
+          "n_results": 3
+        },
+        "output": {
+          "documents": [
+            {
+              "id": "shipping_info",
+              "title": "Acme Widgets Shipping Information",
+              "distance": 0.295,
+              "content_preview": "Shipping Information..."
+            }
+          ]
+        },
+        "metadata": {
+          "collection": "acme_knowledge_base"
+        }
+      },
+      {
+        "span_id": "v3-trace-017-span-3",
+        "name": "Context Building",
+        "span_type": "context",
+        "start_time": 197,
+        "duration_ms": 11,
+        "input": {
+          "doc_count": 1
+        },
+        "output": {
+          "context_length": 668,
+          "preview": "[Acme Widgets Shipping Information]\n# Acme Widgets Shipping Information\n\n## Domestic Shipping (United States)\n\n### Standard Shipping\n- D..."
+        },
+        "metadata": {
+          "separator": "\\n\\n---\\n\\n"
+        }
+      },
+      {
+        "span_id": "v3-trace-017-span-4",
+        "name": "Prompt Construction",
+        "span_type": "prompt",
+        "start_time": 208,
+        "duration_ms": 6,
+        "input": {
+          "template": "V3_SYSTEM_PROMPT"
+        },
+        "output": {
+          "prompt_length": 1079,
+          "preview": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approxima..."
+        },
+        "metadata": {
+          "template_version": "v3"
+        }
+      },
+      {
+        "span_id": "v3-trace-017-span-5",
+        "name": "Claude API Call",
+        "span_type": "llm",
+        "start_time": 214,
+        "duration_ms": 1896,
+        "input": {
+          "model": "claude-sonnet-4-20250514",
+          "max_tokens": 512,
+          "message_preview": "How much is express shipping?"
+        },
+        "output": {
+          "response_preview": "Express shipping costs $12.95 and delivers within 2-3 business days. Orders placed before 2 PM EST s...",
+          "usage": {
+            "input_tokens": 533,
+            "output_tokens": 50
+          },
+          "stop_reason": "end_turn"
+        },
+        "metadata": {
+          "api_version": "2023-06-01"
+        }
+      }
     ]
   },
   {
@@ -814,10 +2514,10 @@
     "question": "Do you ship internationally?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Shipping Information]\n# Acme Widgets Shipping Information\n\n## Domestic Shipping (United States)\n\n### Standard Shipping\n- Delivery: 5-7 business days\n- Cost: $5.95 (free on orders over $50)\n\n### Express Shipping\n- Delivery: 2-3 business days\n- Cost: $12.95\n\n### Overnight Shipping\n- Delivery: Next business day (order by 2 PM EST)\n- Cost: $24.95\n\n## International Shipping\n- Available to 50+ countries\n- Delivery: 7-14 business days\n- Cost: Calculated at checkout based on destination\n- Customs/duties are buyer's responsibility\n\n## Order Processing\n- Orders placed before 2 PM EST ship same day\n- Tracking number provided via email within 24 hours\n- Signature required for orders over $200\n",
     "response": "Yes! We ship to 50+ countries internationally. Delivery takes 7-14 business days, with shipping costs calculated at checkout based on destination. Important: customs duties and import taxes are the buyer's responsibility. Like domestic orders, international orders placed before 2 PM EST ship the same day with tracking provided within 24 hours.",
-    "latency_ms": 1685,
+    "latency_ms": 2369,
     "tokens": {
-      "prompt": 549,
-      "completion": 50
+      "prompt": 545,
+      "completion": 51
     },
     "sources": [
       {
@@ -854,6 +2554,106 @@
         "span_start": null,
         "span_end": null
       }
+    ],
+    "spans": [
+      {
+        "span_id": "v3-trace-018-span-1",
+        "name": "Query Embedding",
+        "span_type": "embedding",
+        "start_time": 0,
+        "duration_ms": 60,
+        "input": {
+          "text": "Do you ship internationally?"
+        },
+        "output": {
+          "dimensions": 384,
+          "preview": "[0.123, -0.456, 0.789, ...]"
+        },
+        "metadata": {
+          "model": "all-MiniLM-L6-v2"
+        }
+      },
+      {
+        "span_id": "v3-trace-018-span-2",
+        "name": "ChromaDB Retrieval",
+        "span_type": "retrieval",
+        "start_time": 60,
+        "duration_ms": 141,
+        "input": {
+          "embedding_dim": 384,
+          "n_results": 3
+        },
+        "output": {
+          "documents": [
+            {
+              "id": "shipping_info",
+              "title": "Acme Widgets Shipping Information",
+              "distance": 0.22,
+              "content_preview": "Shipping Information..."
+            }
+          ]
+        },
+        "metadata": {
+          "collection": "acme_knowledge_base"
+        }
+      },
+      {
+        "span_id": "v3-trace-018-span-3",
+        "name": "Context Building",
+        "span_type": "context",
+        "start_time": 201,
+        "duration_ms": 11,
+        "input": {
+          "doc_count": 1
+        },
+        "output": {
+          "context_length": 668,
+          "preview": "[Acme Widgets Shipping Information]\n# Acme Widgets Shipping Information\n\n## Domestic Shipping (United States)\n\n### Standard Shipping\n- D..."
+        },
+        "metadata": {
+          "separator": "\\n\\n---\\n\\n"
+        }
+      },
+      {
+        "span_id": "v3-trace-018-span-4",
+        "name": "Prompt Construction",
+        "span_type": "prompt",
+        "start_time": 212,
+        "duration_ms": 10,
+        "input": {
+          "template": "V3_SYSTEM_PROMPT"
+        },
+        "output": {
+          "prompt_length": 1079,
+          "preview": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approxima..."
+        },
+        "metadata": {
+          "template_version": "v3"
+        }
+      },
+      {
+        "span_id": "v3-trace-018-span-5",
+        "name": "Claude API Call",
+        "span_type": "llm",
+        "start_time": 222,
+        "duration_ms": 2147,
+        "input": {
+          "model": "claude-sonnet-4-20250514",
+          "max_tokens": 512,
+          "message_preview": "Do you ship internationally?"
+        },
+        "output": {
+          "response_preview": "Yes! We ship to 50+ countries internationally. Delivery takes 7-14 business days, with shipping cost...",
+          "usage": {
+            "input_tokens": 534,
+            "output_tokens": 51
+          },
+          "stop_reason": "end_turn"
+        },
+        "metadata": {
+          "api_version": "2023-06-01"
+        }
+      }
     ]
   },
   {
@@ -862,10 +2662,10 @@
     "question": "Is there free shipping?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Shipping Information]\n# Acme Widgets Shipping Information\n\n## Domestic Shipping (United States)\n\n### Standard Shipping\n- Delivery: 5-7 business days\n- Cost: $5.95 (free on orders over $50)\n\n### Express Shipping\n- Delivery: 2-3 business days\n- Cost: $12.95\n\n### Overnight Shipping\n- Delivery: Next business day (order by 2 PM EST)\n- Cost: $24.95\n\n## International Shipping\n- Available to 50+ countries\n- Delivery: 7-14 business days\n- Cost: Calculated at checkout based on destination\n- Customs/duties are buyer's responsibility\n\n## Order Processing\n- Orders placed before 2 PM EST ship same day\n- Tracking number provided via email within 24 hours\n- Signature required for orders over $200\n",
     "response": "Yes! Standard shipping is free on domestic orders over $50. Below that threshold, standard shipping costs $5.95 and delivers in 5-7 business days. Express ($12.95, 2-3 days) and overnight ($24.95, next day) options are also available. International shipping costs are calculated at checkout.",
-    "latency_ms": 1940,
+    "latency_ms": 2539,
     "tokens": {
-      "prompt": 535,
-      "completion": 42
+      "prompt": 604,
+      "completion": 48
     },
     "sources": [
       {
@@ -895,6 +2695,106 @@
         "span_start": null,
         "span_end": null
       }
+    ],
+    "spans": [
+      {
+        "span_id": "v3-trace-019-span-1",
+        "name": "Query Embedding",
+        "span_type": "embedding",
+        "start_time": 0,
+        "duration_ms": 45,
+        "input": {
+          "text": "Is there free shipping?"
+        },
+        "output": {
+          "dimensions": 384,
+          "preview": "[0.123, -0.456, 0.789, ...]"
+        },
+        "metadata": {
+          "model": "all-MiniLM-L6-v2"
+        }
+      },
+      {
+        "span_id": "v3-trace-019-span-2",
+        "name": "ChromaDB Retrieval",
+        "span_type": "retrieval",
+        "start_time": 45,
+        "duration_ms": 117,
+        "input": {
+          "embedding_dim": 384,
+          "n_results": 3
+        },
+        "output": {
+          "documents": [
+            {
+              "id": "shipping_info",
+              "title": "Acme Widgets Shipping Information",
+              "distance": 0.293,
+              "content_preview": "Shipping Information..."
+            }
+          ]
+        },
+        "metadata": {
+          "collection": "acme_knowledge_base"
+        }
+      },
+      {
+        "span_id": "v3-trace-019-span-3",
+        "name": "Context Building",
+        "span_type": "context",
+        "start_time": 162,
+        "duration_ms": 6,
+        "input": {
+          "doc_count": 1
+        },
+        "output": {
+          "context_length": 668,
+          "preview": "[Acme Widgets Shipping Information]\n# Acme Widgets Shipping Information\n\n## Domestic Shipping (United States)\n\n### Standard Shipping\n- D..."
+        },
+        "metadata": {
+          "separator": "\\n\\n---\\n\\n"
+        }
+      },
+      {
+        "span_id": "v3-trace-019-span-4",
+        "name": "Prompt Construction",
+        "span_type": "prompt",
+        "start_time": 168,
+        "duration_ms": 8,
+        "input": {
+          "template": "V3_SYSTEM_PROMPT"
+        },
+        "output": {
+          "prompt_length": 1079,
+          "preview": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approxima..."
+        },
+        "metadata": {
+          "template_version": "v3"
+        }
+      },
+      {
+        "span_id": "v3-trace-019-span-5",
+        "name": "Claude API Call",
+        "span_type": "llm",
+        "start_time": 176,
+        "duration_ms": 2363,
+        "input": {
+          "model": "claude-sonnet-4-20250514",
+          "max_tokens": 512,
+          "message_preview": "Is there free shipping?"
+        },
+        "output": {
+          "response_preview": "Yes! Standard shipping is free on domestic orders over $50. Below that threshold, standard shipping ...",
+          "usage": {
+            "input_tokens": 533,
+            "output_tokens": 40
+          },
+          "stop_reason": "end_turn"
+        },
+        "metadata": {
+          "api_version": "2023-06-01"
+        }
+      }
     ]
   },
   {
@@ -903,9 +2803,9 @@
     "question": "When will my order ship?",
     "prompt": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approximately 80 words. Be direct and helpful.\n\nUse ONLY the information provided in the context below to answer questions. If the context doesn't contain relevant information, say \"I don't have specific information about that, but I can help you contact our support team.\"\n\nContext:\n[Acme Widgets Shipping Information]\n# Acme Widgets Shipping Information\n\n## Domestic Shipping (United States)\n\n### Standard Shipping\n- Delivery: 5-7 business days\n- Cost: $5.95 (free on orders over $50)\n\n### Express Shipping\n- Delivery: 2-3 business days\n- Cost: $12.95\n\n### Overnight Shipping\n- Delivery: Next business day (order by 2 PM EST)\n- Cost: $24.95\n\n## International Shipping\n- Available to 50+ countries\n- Delivery: 7-14 business days\n- Cost: Calculated at checkout based on destination\n- Customs/duties are buyer's responsibility\n\n## Order Processing\n- Orders placed before 2 PM EST ship same day\n- Tracking number provided via email within 24 hours\n- Signature required for orders over $200\n",
     "response": "Orders placed before 2 PM EST ship the same business day. After that, they ship the next business day. You'll receive a tracking number via email within 24 hours of shipment. Delivery depends on your chosen method: Standard (5-7 days), Express (2-3 days), or Overnight (next day). Signature is required for orders over $200.",
-    "latency_ms": 1805,
+    "latency_ms": 2047,
     "tokens": {
-      "prompt": 529,
+      "prompt": 521,
       "completion": 57
     },
     "sources": [
@@ -942,6 +2842,106 @@
         "text": "Retrieved relevant shipping_info document for the query.",
         "span_start": null,
         "span_end": null
+      }
+    ],
+    "spans": [
+      {
+        "span_id": "v3-trace-020-span-1",
+        "name": "Query Embedding",
+        "span_type": "embedding",
+        "start_time": 0,
+        "duration_ms": 45,
+        "input": {
+          "text": "When will my order ship?"
+        },
+        "output": {
+          "dimensions": 384,
+          "preview": "[0.123, -0.456, 0.789, ...]"
+        },
+        "metadata": {
+          "model": "all-MiniLM-L6-v2"
+        }
+      },
+      {
+        "span_id": "v3-trace-020-span-2",
+        "name": "ChromaDB Retrieval",
+        "span_type": "retrieval",
+        "start_time": 45,
+        "duration_ms": 126,
+        "input": {
+          "embedding_dim": 384,
+          "n_results": 3
+        },
+        "output": {
+          "documents": [
+            {
+              "id": "shipping_info",
+              "title": "Acme Widgets Shipping Information",
+              "distance": 0.297,
+              "content_preview": "Shipping Information..."
+            }
+          ]
+        },
+        "metadata": {
+          "collection": "acme_knowledge_base"
+        }
+      },
+      {
+        "span_id": "v3-trace-020-span-3",
+        "name": "Context Building",
+        "span_type": "context",
+        "start_time": 171,
+        "duration_ms": 8,
+        "input": {
+          "doc_count": 1
+        },
+        "output": {
+          "context_length": 668,
+          "preview": "[Acme Widgets Shipping Information]\n# Acme Widgets Shipping Information\n\n## Domestic Shipping (United States)\n\n### Standard Shipping\n- D..."
+        },
+        "metadata": {
+          "separator": "\\n\\n---\\n\\n"
+        }
+      },
+      {
+        "span_id": "v3-trace-020-span-4",
+        "name": "Prompt Construction",
+        "span_type": "prompt",
+        "start_time": 179,
+        "duration_ms": 8,
+        "input": {
+          "template": "V3_SYSTEM_PROMPT"
+        },
+        "output": {
+          "prompt_length": 1079,
+          "preview": "You are a helpful customer support agent for Acme Widgets Inc.\n\nProvide concise answers of approxima..."
+        },
+        "metadata": {
+          "template_version": "v3"
+        }
+      },
+      {
+        "span_id": "v3-trace-020-span-5",
+        "name": "Claude API Call",
+        "span_type": "llm",
+        "start_time": 187,
+        "duration_ms": 1860,
+        "input": {
+          "model": "claude-sonnet-4-20250514",
+          "max_tokens": 512,
+          "message_preview": "When will my order ship?"
+        },
+        "output": {
+          "response_preview": "Orders placed before 2 PM EST ship the same business day. After that, they ship the next business da...",
+          "usage": {
+            "input_tokens": 542,
+            "output_tokens": 57
+          },
+          "stop_reason": "end_turn"
+        },
+        "metadata": {
+          "api_version": "2023-06-01"
+        }
       }
     ]
   }

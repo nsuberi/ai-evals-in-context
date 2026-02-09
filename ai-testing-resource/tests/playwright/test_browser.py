@@ -55,33 +55,6 @@ def test_ask_page_form_interaction(page: Page, base_url: str):
     expect(page.locator("#demo-response")).to_be_attached()
 
 
-def test_viewer_tests_loads(page: Page, base_url: str):
-    """Test that the test viewer page loads."""
-    page.goto(f"{base_url}/viewer/tests")
-
-    # Verify the page loaded successfully by checking URL
-    assert page.url.endswith("/viewer/tests")
-
-    # Page should have some content
-    assert len(page.content()) > 0
-
-
-def test_viewer_traces_loads(page: Page, base_url: str):
-    """Test that the trace viewer page loads."""
-    page.goto(f"{base_url}/viewer/traces")
-
-    # Verify the page loaded successfully
-    assert page.url.endswith("/viewer/traces")
-
-
-def test_viewer_timeline_loads(page: Page, base_url: str):
-    """Test that the timeline viewer page loads."""
-    page.goto(f"{base_url}/viewer/timeline")
-
-    # Verify the page loaded successfully
-    assert page.url.endswith("/viewer/timeline")
-
-
 def test_governance_dashboard_loads(page: Page, base_url: str):
     """Test that the governance dashboard loads."""
     page.goto(f"{base_url}/governance/dashboard")

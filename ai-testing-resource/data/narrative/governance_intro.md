@@ -1,10 +1,7 @@
-## Maintaining Trust
+## The Test Summary Report
 
-Governance provides the audit trail that proves our AI system meets requirements and operates safely. It ties together:
+The TSR is the central governance artifact. It captures what changed in a release, what was tested, and whether the results meet the acceptance criteria agreed upon during discovery.
 
-- **Requirements** from Phase 1 (what we promised to build)
-- **Test Results** from Phase 3 (proof the code works)
-- **Evaluation Results** from Phase 4 (proof the AI behaves correctly)
-- **Production Traces** from Phase 5 (ongoing evidence of compliance)
+Each TSR is scoped to a specific release, not a re-test of the entire application. This keeps the artifact lightweight and focused. The TSRs below were created through the development process you've just followed&mdash;from discovery through iteration to deployment.
 
-The TSR (Test Summary Report) system formalizes go/no-go decisions for deployments based on test results and business risk assessment.
+The rituals that produce these artifacts&mdash;acceptance criteria agreement, test review sessions, and TSR checkpoints&mdash;are what build confidence between builders and the teams who approve their work.

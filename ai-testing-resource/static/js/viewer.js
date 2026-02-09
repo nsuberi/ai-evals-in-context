@@ -61,17 +61,16 @@ async function runTest(testId) {
   }
 }
 
-// Version tab switching
+// Version tab switching (now handled by narrative phases)
+// Legacy viewer routes removed - keeping function signature for compatibility
 function switchVersion(version) {
-  // Update URL
-  const url = new URL(window.location);
-  url.pathname = appUrl(`/viewer/traces/${version}`);
-  window.location.href = url.toString();
+  console.warn('switchVersion() called but viewer routes are removed');
 }
 
-// Test type switching
+// Test type switching (now handled by narrative phases)
+// Legacy viewer routes removed - keeping function signature for compatibility
 function switchTestType(testType) {
-  window.location.href = appUrl(`/viewer/tests/${testType}`);
+  console.warn('switchTestType() called but viewer routes are removed');
 }
 
 // Test selection
@@ -254,6 +253,248 @@ function renderTracePanel(trace) {
     </div>
   `;
 }
+
+// ──────────────────────────────────────────────────────────────────
+// Dynamic Trace Switching (Phase 4)
+// ──────────────────────────────────────────────────────────────────
+
+/**
+ * Switch to a different trace without page reload
+ */
+async function switchTrace(version, traceId) {
+  const mainContent = document.querySelector('.content-primary');
+  const sidebarItems = document.querySelectorAll('.sidebar__item');
+
+  if (!mainContent) return;
+
+  // Update sidebar active state (optimistic UI)
+  sidebarItems.forEach(item => {
+    if (item.dataset.traceId === traceId) {
+      item.classList.add('sidebar__item--active');
+    } else {
+      item.classList.remove('sidebar__item--active');
+    }
+  });
+
+  // Show loading state
+  mainContent.innerHTML = '<div class="loading-spinner">Loading trace...</div>';
+
+  try {
+    const response = await fetch(appUrl(`/api/phase4/trace/${version}/${traceId}`));
+    const data = await response.json();
+
+    if (!response.ok) throw new Error(data.error || 'Failed to load trace');
+
+    // Render trace detail
+    renderTraceDetail(data);
+
+    // Update URL without reload (for back button support)
+    const url = new URL(window.location);
+    url.searchParams.set('trace', traceId);
+    window.history.pushState({version, traceId}, '', url.toString());
+
+  } catch (error) {
+    mainContent.innerHTML = `<div class="error-message">Error: ${escapeHtml(error.message)}</div>`;
+  }
+}
+
+/**
+ * Render complete trace detail (response + spans + metadata)
+ */
+function renderTraceDetail(data) {
+  const mainContent = document.querySelector('.content-primary');
+  if (!mainContent) return;
+
+  const versionColor = getVersionColor(data.version);
+
+  const html = `
+    <!-- Question -->
+    <div class="explanation">
+      <h3 class="explanation__title">Question</h3>
+      <div class="explanation__content">${escapeHtml(data.trace_detail.question)}</div>
+    </div>
+
+    <!-- Annotated Response -->
+    <div class="code-canvas">
+      <div class="code-canvas__header">
+        <span class="code-canvas__filename">Response</span>
+        <span class="code-canvas__badge" style="background: var(--color-${versionColor});">
+          ${data.version.toUpperCase()}
+        </span>
+      </div>
+      <div class="code-canvas__code" style="font-family: var(--font-prose); white-space: pre-wrap;">
+        ${data.annotated_response}
+      </div>
+      ${renderAnnotationFootnotes(data.trace_detail.annotations)}
+    </div>
+
+    <!-- RAG Pipeline Span Tree (if spans exist) -->
+    ${data.has_spans ? renderSpanTree(data.trace_detail.spans, data.trace_detail.latency_ms) : ''}
+
+    <!-- Secondary Content: Prompt + Metadata -->
+    <div class="content-secondary">
+      ${renderPromptCollapsible(data.trace_detail.prompt)}
+      ${renderMetadata(data.trace_detail)}
+    </div>
+  `;
+
+  mainContent.innerHTML = html;
+}
+
+/**
+ * Render LangSmith-style span tree visualization
+ */
+function renderSpanTree(spans, totalLatency) {
+  if (!spans || spans.length === 0) return '';
+
+  const sortedSpans = [...spans].sort((a, b) => a.start_time - b.start_time);
+
+  const spanHtml = sortedSpans.map(span => {
+    const percentDuration = (span.duration_ms / totalLatency) * 100;
+    const spanColor = getSpanColor(span.span_type);
+
+    return `
+      <div class="span-item span-item--${span.span_type}" data-span-id="${span.span_id}">
+        <div class="span-item__header" onclick="toggleSpan(this.parentElement)">
+          <span class="span-item__icon">▶</span>
+          <span class="span-item__name">${escapeHtml(span.name)}</span>
+          <span class="span-item__duration">${span.duration_ms}ms</span>
+          <div class="span-item__bar" style="width: ${percentDuration}%; background: ${spanColor};"></div>
+        </div>
+        <div class="span-item__body">
+          <div class="span-item__section">
+            <div class="span-item__label">Input</div>
+            <pre class="span-item__code">${escapeHtml(JSON.stringify(span.input, null, 2))}</pre>
+          </div>
+          <div class="span-item__section">
+            <div class="span-item__label">Output</div>
+            <pre class="span-item__code">${escapeHtml(JSON.stringify(span.output, null, 2))}</pre>
+          </div>
+          ${span.metadata ? `
+            <div class="span-item__section">
+              <div class="span-item__label">Metadata</div>
+              <pre class="span-item__code">${escapeHtml(JSON.stringify(span.metadata, null, 2))}</pre>
+            </div>
+          ` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  return `
+    <div class="span-tree">
+      <div class="span-tree__header">
+        <h3>RAG Pipeline Trace</h3>
+        <span class="span-tree__total">Total: ${totalLatency}ms</span>
+      </div>
+      <div class="span-tree__timeline">${spanHtml}</div>
+    </div>
+  `;
+}
+
+/**
+ * Color mapping for span types
+ */
+function getSpanColor(spanType) {
+  const colors = {
+    embedding: '#4A9EFF',    // Blue
+    retrieval: '#9B59B6',    // Purple
+    context: '#F39C12',      // Orange
+    prompt: '#E74C3C',       // Red
+    llm: '#2ECC71'           // Green
+  };
+  return colors[spanType] || '#95a5a6';
+}
+
+/**
+ * Toggle span expansion
+ */
+function toggleSpan(spanElement) {
+  spanElement.classList.toggle('span-item--expanded');
+}
+
+/**
+ * Get version color for badges
+ */
+function getVersionColor(version) {
+  const colors = {
+    v1: 'error',
+    v2: 'warning',
+    v3: 'success'
+  };
+  return colors[version] || 'chrome-text';
+}
+
+/**
+ * Render annotation footnotes
+ */
+function renderAnnotationFootnotes(annotations) {
+  if (!annotations || annotations.length === 0) return '';
+
+  const footnotes = annotations.map((ann, idx) => {
+    let severityClass = 'ann--info';
+    if (ann.severity === 'error') severityClass = 'ann--error';
+    if (ann.severity === 'warning') severityClass = 'ann--warning';
+    if (ann.severity === 'success') severityClass = 'ann--success';
+
+    return `
+      <div class="ann ${severityClass}">
+        <strong>${idx + 1}.</strong> ${escapeHtml(ann.text)}
+      </div>
+    `;
+  }).join('');
+
+  return `<div class="code-canvas__annotations">${footnotes}</div>`;
+}
+
+/**
+ * Render prompt collapsible
+ */
+function renderPromptCollapsible(prompt) {
+  if (!prompt) return '';
+  return `
+    <div class="collapsible">
+      <div class="collapsible__header" onclick="toggleCollapsible(this.parentElement)">
+        <span class="collapsible__title">System Prompt</span>
+        <span class="collapsible__icon">▼</span>
+      </div>
+      <div class="collapsible__body">
+        <pre class="collapsible__code">${escapeHtml(prompt)}</pre>
+      </div>
+    </div>
+  `;
+}
+
+/**
+ * Render metadata section
+ */
+function renderMetadata(trace) {
+  return `
+    <div class="trace-metadata">
+      <div class="trace-metadata__item">
+        <span class="trace-metadata__label">Latency</span>
+        <span class="trace-metadata__value">${trace.latency_ms}ms</span>
+      </div>
+      <div class="trace-metadata__item">
+        <span class="trace-metadata__label">Tokens</span>
+        <span class="trace-metadata__value">${trace.tokens.prompt + trace.tokens.completion}</span>
+      </div>
+      ${trace.sources && trace.sources.length > 0 ? `
+        <div class="trace-metadata__item">
+          <span class="trace-metadata__label">Sources</span>
+          <span class="trace-metadata__value">${trace.sources.map(s => escapeHtml(s.title)).join(', ')}</span>
+        </div>
+      ` : ''}
+    </div>
+  `;
+}
+
+// Browser history support
+window.addEventListener('popstate', (event) => {
+  if (event.state && event.state.traceId) {
+    switchTrace(event.state.version, event.state.traceId);
+  }
+});
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {

@@ -28,5 +28,8 @@ EXPOSE 5000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
     CMD curl -f http://localhost:5000/api/tsr/stats || exit 1
 
-# Default command (can be overridden in docker-compose)
-CMD ["python", "run.py"]
+# Use entrypoint script for runtime initialization
+COPY scripts/entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
+ENTRYPOINT ["/app/entrypoint.sh"]

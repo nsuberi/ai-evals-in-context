@@ -1,9 +1,209 @@
 /* Governance Portal Styles */
 
+/* ============================================
+   TSR CARDS (shared between dashboard & narrative)
+   ============================================ */
+.tsr-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: var(--space-lg);
+}
+
+.tsr-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: var(--space-lg);
+  transition: all 0.2s ease;
+}
+
+.tsr-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-2px);
+}
+
+.tsr-card--go {
+  border-left: 4px solid var(--color-success);
+}
+
+.tsr-card--no_go {
+  border-left: 4px solid var(--color-error);
+}
+
+.tsr-card--pending_review {
+  border-left: 4px solid var(--color-warning);
+}
+
+.tsr-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+}
+
+.tsr-card__id {
+  font-family: var(--font-code);
+  font-size: 0.8125rem;
+  color: var(--color-chrome-text);
+}
+
+.tsr-card__decision {
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 4px;
+}
+
+.tsr-card--go .tsr-card__decision {
+  background: var(--color-ann-success-bg);
+  color: var(--color-success);
+}
+
+.tsr-card--no_go .tsr-card__decision {
+  background: var(--color-ann-error-bg);
+  color: var(--color-error);
+}
+
+.tsr-card--pending_review .tsr-card__decision {
+  background: var(--color-ann-warning-bg);
+  color: var(--color-warning);
+}
+
+.tsr-card__meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-md);
+  font-size: 0.8125rem;
+  color: var(--color-chrome-text);
+}
+
+.tsr-card__versions {
+  font-family: var(--font-code);
+  font-size: 0.75rem;
+  color: var(--color-chrome-text);
+  padding: var(--space-sm);
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  margin-bottom: var(--space-sm);
+}
+
+.tsr-card__link {
+  display: inline-block;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-accent);
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  transition: background 0.15s ease;
+}
+
+.tsr-card__link:hover {
+  background: var(--color-accent-hover);
+}
+
+/* ============================================
+   GOVERNANCE PORTAL LAYOUT
+   ============================================ */
 .governance-portal {
   max-width: 1400px;
   margin: 0 auto;
   padding: var(--space-xl);
+}
+
+.gov-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+  padding-bottom: var(--space-lg);
+  border-bottom: 2px solid var(--color-accent);
+}
+
+.gov-header__icon {
+  font-size: 2rem;
+}
+
+.gov-header h1 {
+  color: var(--color-chrome-text-bright);
+  margin: 0;
+  font-size: 1.75rem;
+}
+
+.gov-filters {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+  flex-wrap: wrap;
+}
+
+.gov-filters select {
+  padding: var(--space-sm) var(--space-md);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: var(--color-chrome-text-bright);
+  font-family: var(--font-prose);
+  font-size: 0.875rem;
+}
+
+.stats-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: var(--space-lg);
+  text-align: center;
+}
+
+.stat-card__value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-chrome-text-bright);
+  margin-bottom: var(--space-xs);
+}
+
+.stat-card__label {
+  font-size: 0.875rem;
+  color: var(--color-chrome-text);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ============================================
+   RELEASE SCOPING CALLOUT
+   ============================================ */
+.release-scoping-callout {
+  border-left: 3px solid var(--color-accent);
+  background: rgba(15, 155, 142, 0.05);
+  border-radius: 0 8px 8px 0;
+  padding: var(--space-md) var(--space-lg);
+  margin-bottom: var(--space-xl);
+  font-size: 0.875rem;
+  color: var(--color-chrome-text);
+  line-height: 1.6;
+}
+
+.tsr-empty-state {
+  text-align: center;
+  padding: var(--space-2xl) var(--space-xl);
+  color: var(--color-chrome-text);
+}
+
+.tsr-empty-state code {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: var(--font-code);
+  font-size: 0.875em;
 }
 
 .tsr-header {

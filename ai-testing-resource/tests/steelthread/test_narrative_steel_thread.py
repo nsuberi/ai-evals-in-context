@@ -111,9 +111,6 @@ class TestDeployedNarrativeJourney:
     def test_deployed_backward_compatibility(self, page: Page):
         """Legacy routes should still work on deployed app."""
         legacy_routes = [
-            "/viewer/tests",
-            "/viewer/traces",
-            "/viewer/timeline",
             "/ask",
             "/governance/dashboard"
         ]
