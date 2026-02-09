@@ -133,12 +133,12 @@ open http://localhost:5001
 
 | Route | Description |
 |-------|-------------|
-| `/` | Redirects to ask page |
+| `/` | Landing page / narrative flow |
 | `/ask` | Demo support bot |
 | `/viewer/tests` | Test Navigator |
 | `/viewer/traces` | Trace Inspector |
 | `/viewer/timeline` | Iteration Timeline |
-| `/governance/dashboard` | TSR Dashboard |
+| `/governance` | TSR Evidence page |
 | `/monitoring/traces` | Live Monitoring |
 
 ## The Three Versions
@@ -348,7 +348,7 @@ This checks:
 - Health endpoint: `GET /health`
 - Root page: `GET /`
 - Ask page: `GET /ask`
-- Governance dashboard: `GET /governance/dashboard`
+- Governance page: `GET /governance`
 
 **Manual verification**:
 ```bash

@@ -164,12 +164,12 @@ class TestLandingPageContent:
     """Test suite for landing page governance-first framing"""
 
     def test_landing_governance_framework(self, client):
-        """Landing page should have three-part governance framework"""
+        """Landing page should have two-part governance framework"""
         response = client.get("/")
         assert response.status_code == 200
-        assert b"Governance" in response.data
-        assert b"Approvals" in response.data
-        assert b"Business Value" in response.data
+        assert b"Stakeholder Alignment" in response.data
+        assert b"Document the Journey" in response.data
+        assert b"cycle-card" in response.data
 
     def test_landing_guiding_principle(self, client):
         """Landing page should have guiding principle quote"""
@@ -266,10 +266,18 @@ class TestBackwardCompatibility:
         response = client.get("/ask")
         assert response.status_code == 200
 
-    def test_governance_dashboard_still_works(self, client):
-        """Legacy /governance/dashboard route should still work"""
-        response = client.get("/governance/dashboard")
+    def test_governance_dashboard_redirects(self, client):
+        """Legacy /governance/dashboard route should redirect to /governance"""
+        response = client.get("/governance/dashboard", follow_redirects=False)
+        assert response.status_code in [301, 302]  # Redirect
+
+        # Following redirects should land on /governance
+        response = client.get("/governance/dashboard", follow_redirects=True)
         assert response.status_code == 200
+        assert (
+            b"/governance" in response.request.path.encode()
+            or b"TSR Evidence" in response.data
+        )
 
 
 class TestNavigationConsistency:
