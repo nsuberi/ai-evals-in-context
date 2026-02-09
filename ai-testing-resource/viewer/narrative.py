@@ -351,9 +351,9 @@ PHASES = {
     "governance": {
         "id": "governance",
         "number": 6,
-        "title": "Governance",
+        "title": "TSR Evidence",
         "subtitle": "Compliance & Audit Trail",
-        "short_title": "Governance",
+        "short_title": "TSR Evidence",
         "url": "/governance",
         "next": None,
         "prev": "phase_5",
@@ -370,6 +370,34 @@ PHASE_ORDER = [
     "phase_4",
     "phase_5",
     "governance",
+]
+
+# Narrative documents available for download
+NARRATIVE_DOCUMENTS = [
+    {
+        "filename": "ai_evaluation_sdlc.docx",
+        "title": "AI Evaluation SDLC Overview",
+        "description": "Complete guide to integrating AI evaluations into the software development lifecycle",
+        "path": "/static/documents/ai_evaluation_sdlc.docx",
+    },
+    {
+        "filename": "sdlc_what_it_is.docx",
+        "title": "SDLC: What It Is and What It Isn't",
+        "description": "Clarifying the purpose and misconceptions about the SDLC for AI systems",
+        "path": "/static/documents/sdlc_what_it_is.docx",
+    },
+    {
+        "filename": "appendix_trace_capture.docx",
+        "title": "Appendix: Trace Capture Implementation",
+        "description": "Technical appendix on implementing trace capture for AI system monitoring",
+        "path": "/static/documents/appendix_trace_capture.docx",
+    },
+    {
+        "filename": "appendix_b_unified_monitoring.docx",
+        "title": "Appendix B: Unified Monitoring",
+        "description": "Comprehensive monitoring strategy for AI applications in production",
+        "path": "/static/documents/appendix_b_unified_monitoring.docx",
+    },
 ]
 
 
@@ -414,7 +442,12 @@ def landing():
     """Landing page - introduces the 3-part cycle and 5 phases"""
     context = get_phase_context("landing")
     content = load_narrative_content("landing.md")
-    return render_template("narrative/landing.html", content=content, **context)
+    return render_template(
+        "narrative/landing.html",
+        content=content,
+        documents=NARRATIVE_DOCUMENTS,
+        **context,
+    )
 
 
 @narrative_bp.route("/problem")
