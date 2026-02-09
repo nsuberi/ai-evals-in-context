@@ -46,10 +46,10 @@ class TestPhaseContent:
     """Test suite for phase-specific content"""
 
     def test_phase3_includes_test_type_cards(self, client):
-        """Phase 3 should include test type card grid"""
+        """Phase 3 should include SDLC test type card grid"""
         response = client.get("/phase/3")
         assert response.status_code == 200
-        assert b"test-type-card" in response.data
+        assert b"sdlc-card" in response.data
 
     def test_phase3_ai_acceptance_card(self, client):
         """Phase 3 should have AI Acceptance test type card"""
@@ -57,17 +57,17 @@ class TestPhaseContent:
         assert response.status_code == 200
         assert b"AI Acceptance" in response.data or b"ai_acceptance" in response.data
 
-    def test_phase3_business_facing_badge(self, client):
-        """Phase 3 should show Business-Facing badges on appropriate cards"""
+    def test_phase3_category_badges(self, client):
+        """Phase 3 should show category badges on SDLC cards"""
         response = client.get("/phase/3")
         assert response.status_code == 200
-        assert b"Business-Facing" in response.data
+        assert b"TRADITIONAL" in response.data or b"EVOLVED FOR AI" in response.data
 
-    def test_phase3_responsibility_note(self, client):
-        """Phase 3 should show the test responsibility note"""
+    def test_phase3_sdlc_statement(self, client):
+        """Phase 3 should show the SDLC leadership statement"""
         response = client.get("/phase/3")
         assert response.status_code == 200
-        assert b"test-responsibility-note" in response.data
+        assert b"sdlc-statement" in response.data
 
     def test_phase3_no_code_section(self, client):
         """Phase 3 should not have code viewing section"""

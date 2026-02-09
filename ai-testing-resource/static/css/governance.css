@@ -606,3 +606,233 @@
   background: #0d9467;
   transform: translateY(-1px);
 }
+
+/* ============================================
+   TSR MODAL
+   ============================================ */
+.tsr-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl);
+}
+
+.tsr-modal {
+  background: var(--color-bg, #1a1a2e);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+}
+
+.tsr-modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-lg) var(--space-xl);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+  gap: var(--space-md);
+}
+
+.tsr-modal__title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.tsr-modal__title {
+  margin: 0;
+  font-size: 1.125rem;
+  color: var(--color-chrome-text-bright);
+  white-space: nowrap;
+}
+
+.tsr-modal__id {
+  font-family: var(--font-code);
+  font-size: 0.8125rem;
+  color: var(--color-chrome-text);
+}
+
+.tsr-modal__decision {
+  font-weight: 600;
+  font-size: 0.75rem;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 4px;
+}
+
+.tsr-modal__decision--go {
+  background: var(--color-ann-success-bg);
+  color: var(--color-success);
+}
+
+.tsr-modal__decision--no_go,
+.tsr-modal__decision--NO-GO {
+  background: var(--color-ann-error-bg);
+  color: var(--color-error);
+}
+
+.tsr-modal__decision--pending_review {
+  background: var(--color-ann-warning-bg);
+  color: var(--color-warning);
+}
+
+.tsr-modal__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-shrink: 0;
+}
+
+.tsr-modal__download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-accent);
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  transition: background 0.15s ease;
+  white-space: nowrap;
+}
+
+.tsr-modal__download-btn:hover {
+  background: var(--color-accent-hover);
+}
+
+.tsr-modal__close-btn {
+  background: none;
+  border: none;
+  color: var(--color-chrome-text);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 4px;
+  line-height: 1;
+  transition: all 0.15s ease;
+}
+
+.tsr-modal__close-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-chrome-text-bright);
+}
+
+.tsr-modal__body {
+  overflow-y: auto;
+  padding: var(--space-xl);
+  flex: 1;
+  min-height: 0;
+}
+
+.tsr-modal__loading {
+  text-align: center;
+  padding: var(--space-2xl);
+  color: var(--color-chrome-text);
+  font-size: 0.875rem;
+}
+
+.tsr-modal__error {
+  text-align: center;
+  padding: var(--space-2xl);
+  color: var(--color-error);
+  font-size: 0.875rem;
+}
+
+.tsr-modal__error a {
+  color: var(--color-accent);
+}
+
+/* ============================================
+   ENHANCED FAILURE MODE CARDS (modal)
+   ============================================ */
+.failure-mode-card {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  padding: var(--space-md);
+  margin-top: var(--space-sm);
+}
+
+.failure-mode-card--critical {
+  border-left: 3px solid var(--color-error);
+}
+
+.failure-mode-card--major {
+  border-left: 3px solid var(--color-warning);
+}
+
+.failure-mode-card--minor {
+  border-left: 3px solid var(--color-info);
+}
+
+.failure-mode-card__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.failure-mode-card__name {
+  font-weight: 600;
+  color: var(--color-chrome-text-bright);
+  font-size: 0.875rem;
+}
+
+.failure-mode-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-sm);
+}
+
+.failure-mode-card__tag {
+  font-size: 0.6875rem;
+  padding: 2px 8px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--color-chrome-text);
+  text-transform: capitalize;
+}
+
+.failure-mode-card__tag--fixed {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--color-success);
+}
+
+.failure-mode-card__tag--open {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--color-error);
+}
+
+.failure-mode-card__tag--accepted_risk {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--color-warning);
+}
+
+.failure-mode-card__desc {
+  font-size: 0.8125rem;
+  color: var(--color-chrome-text);
+  line-height: 1.5;
+}
+
+/* ============================================
+   TSR CARD LINK AS BUTTON (for modal trigger)
+   ============================================ */
+button.tsr-card__link {
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}

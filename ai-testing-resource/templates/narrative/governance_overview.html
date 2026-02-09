@@ -83,9 +83,9 @@
           {% endif %}
         </div>
         {% endif %}
-        <a href="{{ url_for('governance.tsr_detail', tsr_id=tsr.id) }}" class="tsr-card__link">
+        <button class="tsr-card__link" onclick="openTSRModal('{{ tsr.id }}', '{{ tsr.go_no_go_decision.value }}', '{{ tsr.id[:12] }}')">
           View Details &rarr;
-        </a>
+        </button>
       </div>
       {% endfor %}
     </div>
@@ -104,6 +104,8 @@
     <p>Run <code>python3 scripts/seed_test_data.py</code> to create sample TSR data.</p>
   </div>
   {% endif %}
+
+  {% include "components/tsr_modal.html" %}
 
   <!-- Journey Complete -->
   <section class="content-section content-section--open" style="border-color: var(--color-success); border-width: 2px; margin-top: var(--space-2xl);">

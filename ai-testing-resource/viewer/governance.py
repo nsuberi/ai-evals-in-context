@@ -1,9 +1,9 @@
 """Governance portal routes"""
 
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
 from datetime import datetime
 
-governance = Blueprint('governance', __name__)
+governance = Blueprint("governance", __name__)
 
 # Global repository instance (will be set by app initialization)
 _repository = None
@@ -19,47 +19,41 @@ def init_governance(repository):
     _repository = repository
 
 
-@governance.route('/')
-@governance.route('/dashboard')
+@governance.route("/")
+@governance.route("/dashboard")
 def dashboard():
     """TSR list dashboard with filtering"""
     # Get repository (fallback to Flask g object if global not set)
     repository = _repository
     if not repository:
         from flask import g
-        if hasattr(g, 'tsr_repository'):
+
+        if hasattr(g, "tsr_repository"):
             repository = g.tsr_repository
         else:
             return "TSR repository not initialized", 500
 
-    environment = request.args.get('environment')
-    decision = request.args.get('decision')
-    limit = int(request.args.get('limit', 50))
+    environment = request.args.get("environment")
+    decision = request.args.get("decision")
+    limit = int(request.args.get("limit", 50))
 
-    tsrs = repository.query(
-        environment=environment,
-        decision=decision,
-        limit=limit
-    )
+    tsrs = repository.query(environment=environment, decision=decision, limit=limit)
 
     # Get statistics
     stats = {
-        'total': repository.count(),
-        'go': repository.count(decision='go'),
-        'no_go': repository.count(decision='no_go'),
-        'pending_review': repository.count(decision='pending_review'),
+        "total": repository.count(),
+        "go": repository.count(decision="go"),
+        "no_go": repository.count(decision="no_go"),
+        "pending_review": repository.count(decision="pending_review"),
     }
-    stats['go_rate'] = stats['go'] / stats['total'] if stats['total'] > 0 else 0
+    stats["go_rate"] = stats["go"] / stats["total"] if stats["total"] > 0 else 0
 
     return render_template(
-        'governance/dashboard.html',
-        tsrs=tsrs,
-        stats=stats,
-        active_nav='governance'
+        "governance/dashboard.html", tsrs=tsrs, stats=stats, active_nav="governance"
     )
 
 
-@governance.route('/tsr/<tsr_id>')
+@governance.route("/tsr/<tsr_id>")
 def tsr_detail(tsr_id: str):
     """Detailed view of a single TSR"""
     if not _repository:
@@ -70,13 +64,44 @@ def tsr_detail(tsr_id: str):
         return "TSR not found", 404
 
     return render_template(
-        'governance/tsr_detail.html',
-        tsr=tsr,
-        active_nav='governance'
+        "governance/tsr_detail.html", tsr=tsr, active_nav="governance"
     )
 
 
-@governance.route('/tsr/<tsr_id>/approve', methods=['POST'])
+@governance.route("/tsr/<tsr_id>/detail-fragment")
+def tsr_detail_fragment(tsr_id: str):
+    """Return TSR detail as an HTML fragment for modal injection"""
+    if not _repository:
+        return "TSR repository not initialized", 500
+
+    tsr = _repository.get_by_id(tsr_id)
+    if not tsr:
+        return "TSR not found", 404
+
+    return render_template(
+        "governance/_tsr_modal_content.html",
+        tsr=tsr,
+    )
+
+
+@governance.route("/tsr/<tsr_id>/download")
+def tsr_download(tsr_id: str):
+    """Download TSR as JSON file"""
+    if not _repository:
+        return "TSR repository not initialized", 500
+
+    tsr = _repository.get_by_id(tsr_id)
+    if not tsr:
+        return "TSR not found", 404
+
+    response = jsonify(tsr.to_dict())
+    decision = tsr.go_no_go_decision.value
+    filename = f"tsr-{tsr_id[:8]}-{decision}.json"
+    response.headers["Content-Disposition"] = f"attachment; filename={filename}"
+    return response
+
+
+@governance.route("/tsr/<tsr_id>/approve", methods=["POST"])
 def approve_tsr(tsr_id: str):
     """Approve a TSR for deployment"""
     if not _repository:
@@ -86,10 +111,10 @@ def approve_tsr(tsr_id: str):
     if not tsr:
         return "TSR not found", 404
 
-    approved_by = request.form.get('approved_by')
+    approved_by = request.form.get("approved_by")
     if not approved_by:
-        flash('Approver name/email is required', 'error')
-        return redirect(url_for('governance.tsr_detail', tsr_id=tsr_id))
+        flash("Approver name/email is required", "error")
+        return redirect(url_for("governance.tsr_detail", tsr_id=tsr_id))
 
     from tsr.models import GoNoGoDecision
 
@@ -105,20 +130,20 @@ def approve_tsr(tsr_id: str):
     # Save updated TSR
     _repository.save(tsr)
 
-    flash(f'TSR approved successfully by {approved_by}', 'success')
-    return redirect(url_for('governance.tsr_detail', tsr_id=tsr_id))
+    flash(f"TSR approved successfully by {approved_by}", "success")
+    return redirect(url_for("governance.tsr_detail", tsr_id=tsr_id))
 
 
-@governance.route('/compare')
+@governance.route("/compare")
 def compare_tsrs():
     """Compare two or more TSRs side-by-side"""
     if not _repository:
         return "TSR repository not initialized", 500
 
-    tsr_ids = request.args.getlist('id')
+    tsr_ids = request.args.getlist("id")
     if len(tsr_ids) < 2:
-        flash('Please select at least 2 TSRs to compare', 'error')
-        return redirect(url_for('governance.dashboard'))
+        flash("Please select at least 2 TSRs to compare", "error")
+        return redirect(url_for("governance.dashboard"))
 
     tsrs = []
     for tsr_id in tsr_ids:
@@ -127,11 +152,9 @@ def compare_tsrs():
             tsrs.append(tsr)
 
     if len(tsrs) < 2:
-        flash('One or more TSRs not found', 'error')
-        return redirect(url_for('governance.dashboard'))
+        flash("One or more TSRs not found", "error")
+        return redirect(url_for("governance.dashboard"))
 
     return render_template(
-        'governance/comparison.html',
-        tsrs=tsrs,
-        active_nav='governance'
+        "governance/comparison.html", tsrs=tsrs, active_nav="governance"
     )
