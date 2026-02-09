@@ -1,7 +1,7 @@
 {% extends "narrative/base_narrative.html" %}
 {% from "components/collapsible.html" import collapsible %}
 
-{% block title %}Phase 4: Building AI Features - AI Testing Resource{% endblock %}
+{% block title %}Phase 4: Iterate &amp; Approve - AI Testing Resource{% endblock %}
 
 {% block phase_intro %}
 {% if intro_content %}
@@ -154,6 +154,62 @@
   </div>
 </div>
 {% endif %}
+
+<!-- Trace Review to TSR Mapping -->
+<div class="narrative-content">
+  <div class="collapsible">
+    <button class="collapsible__trigger" onclick="toggleCollapsible(this.parentElement)">
+      <span class="collapsible__icon">&#9654;</span>
+      <span>Trace Review to TSR Mapping</span>
+    </button>
+    <div class="collapsible__content">
+      <p style="color: var(--color-chrome-text); font-size: 0.875rem; margin: 0 0 var(--space-md) 0;">
+        The trace review outputs you see below flow directly into TSR sections. This table shows the mapping:
+      </p>
+      <table class="metrics-table">
+        <thead>
+          <tr>
+            <th>Trace Review Output</th>
+            <th>TSR Section</th>
+            <th>How It's Used</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Pass/fail annotations per trace</td>
+            <td>Section 2: Test Results</td>
+            <td>Aggregate pass rate across test scenarios</td>
+          </tr>
+          <tr>
+            <td>Open codes (free-text observations)</td>
+            <td>Section 3: Error Analysis</td>
+            <td>Specific examples illustrating each failure type</td>
+          </tr>
+          <tr>
+            <td>Axial code counts per version</td>
+            <td>Section 3: Error Analysis (the "money table")</td>
+            <td>Quantified failure counts showing improvement trends</td>
+          </tr>
+          <tr>
+            <td>Failure taxonomy</td>
+            <td>Section 4: Changes Made</td>
+            <td>Maps each failure type to the fix applied</td>
+          </tr>
+          <tr>
+            <td>Remaining failure patterns</td>
+            <td>Section 5: Remaining Risks</td>
+            <td>Known issues and mitigation strategies</td>
+          </tr>
+          <tr>
+            <td>Version comparison (v1 &rarr; v2 &rarr; v3)</td>
+            <td>Section 3 + Section 4</td>
+            <td>Shows the iteration journey and cumulative improvement</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
 <!-- Trace Inspector Section -->
 <div class="layout layout--sidebar">

@@ -122,5 +122,65 @@
     </div>
   </section>
   {% endif %}
+
+  <!-- Your Role in the SDLC -->
+  <section class="content-section">
+    <div class="content-section__header" onclick="this.parentElement.classList.toggle('content-section--open')">
+      <span class="content-section__icon">&#x1f465;</span>
+      <h3 class="content-section__title">Your Role in the SDLC</h3>
+      <span class="content-section__toggle">&#9660;</span>
+    </div>
+    <div class="content-section__body">
+      <p>This table shows who does what at each stage. If you're a PM or BA, this is where you fit in the process:</p>
+      <table class="collab-table">
+        <thead>
+          <tr>
+            <th>Stage</th>
+            <th>PM / BA</th>
+            <th>Engineering</th>
+            <th>Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Define the job</strong></td>
+            <td>Owns requirements, writes acceptance criteria, defines success metrics</td>
+            <td>Advises on feasibility, identifies technical constraints</td>
+            <td>Requirements doc + acceptance criteria</td>
+          </tr>
+          <tr>
+            <td><strong>Error analysis</strong></td>
+            <td>Reviews AI outputs for business accuracy, flags domain-specific issues</td>
+            <td>Categorizes failures into axial codes, traces root causes</td>
+            <td>Failure taxonomy + annotated traces</td>
+          </tr>
+          <tr>
+            <td><strong>Changes</strong></td>
+            <td>Validates that fixes address business requirements, adjusts criteria if needed</td>
+            <td>Implements fixes (prompt changes, architecture updates, guardrails)</td>
+            <td>Updated version + re-run evals</td>
+          </tr>
+          <tr>
+            <td><strong>TSR creation</strong></td>
+            <td>Reviews TSR for business accuracy, confirms requirements are verified</td>
+            <td>Compiles test results, writes error analysis, documents changes</td>
+            <td>Test Summary Report</td>
+          </tr>
+          <tr>
+            <td><strong>Monitoring</strong></td>
+            <td>Defines business KPIs, reviews engagement metrics, escalates quality concerns</td>
+            <td>Sets up dashboards, configures alerts, responds to incidents</td>
+            <td>Production dashboards + alert rules</td>
+          </tr>
+          <tr>
+            <td><strong>Communicate</strong></td>
+            <td>Presents results to stakeholders, translates technical findings to business impact</td>
+            <td>Presents technical findings, recommends next iteration priorities</td>
+            <td>Go/no-go decision + next sprint priorities</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
 </div>
 {% endblock %}

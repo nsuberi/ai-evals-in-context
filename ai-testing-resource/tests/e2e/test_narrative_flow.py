@@ -76,6 +76,24 @@ class TestPhaseContent:
         assert b"code-canvas" not in response.data
         assert b"show_code" not in response.data
 
+    def test_phase3_sdlc_filter_buttons(self, client):
+        """Phase 3 should have SDLC filter buttons"""
+        response = client.get("/phase/3")
+        assert response.status_code == 200
+        assert b"sdlc-filter" in response.data
+
+    def test_phase3_sdlc_role_tags(self, client):
+        """Phase 3 should have SDLC role tags on cards"""
+        response = client.get("/phase/3")
+        assert response.status_code == 200
+        assert b"sdlc-role-tag" in response.data
+
+    def test_phase3_failure_taxonomy(self, client):
+        """Phase 3 should have failure mode taxonomy table"""
+        response = client.get("/phase/3")
+        assert response.status_code == 200
+        assert b"failure-taxonomy" in response.data
+
     def test_phase4_includes_trace_content(self, client):
         """Phase 4 should include trace/evaluation content"""
         response = client.get("/phase/4")
@@ -116,6 +134,30 @@ class TestPhaseContent:
         response = client.get("/phase/5")
         assert response.status_code == 200
         assert b"feedback-loop" in response.data
+
+    def test_phase5_quadrant_framework(self, client):
+        """Phase 5 should have four-quadrant diagnostic framework"""
+        response = client.get("/phase/5")
+        assert response.status_code == 200
+        assert b"quadrant-grid" in response.data or b"quadrant-card" in response.data
+
+    def test_phase5_metrics_tables(self, client):
+        """Phase 5 should have metrics tables for engagement and quality"""
+        response = client.get("/phase/5")
+        assert response.status_code == 200
+        assert b"metrics-table" in response.data
+
+    def test_phase1_collaboration_table(self, client):
+        """Phase 1 should have collaboration table showing roles"""
+        response = client.get("/phase/1")
+        assert response.status_code == 200
+        assert b"collab-table" in response.data
+
+    def test_phase4_trace_tsr_mapping(self, client):
+        """Phase 4 should have trace-to-TSR mapping collapsible"""
+        response = client.get("/phase/4")
+        assert response.status_code == 200
+        assert b"Trace Review to TSR Mapping" in response.data
 
 
 class TestLandingPageContent:
@@ -172,6 +214,18 @@ class TestLandingPageContent:
         assert response.status_code == 200
         assert b"SDLC with AI" in response.data
 
+    def test_landing_sdlc_pillars(self, client):
+        """Landing page should have SDLC pillar cards"""
+        response = client.get("/")
+        assert response.status_code == 200
+        assert b"sdlc-pillar" in response.data
+
+    def test_landing_is_not_table(self, client):
+        """Landing page should have IS/IS NOT comparison table"""
+        response = client.get("/")
+        assert response.status_code == 200
+        assert b"sdlc-is-not" in response.data
+
 
 class TestGovernanceContent:
     """Test suite for governance tab content"""
@@ -190,6 +244,18 @@ class TestGovernanceContent:
         response = client.get("/governance")
         assert response.status_code == 200
         assert b"Journey Complete" in response.data
+
+    def test_governance_example_tsr(self, client):
+        """Governance page should have Example TSR collapsible"""
+        response = client.get("/governance")
+        assert response.status_code == 200
+        assert b"Example TSR" in response.data
+
+    def test_governance_journey_build_and_test(self, client):
+        """Governance Journey Complete should use Build & Test naming"""
+        response = client.get("/governance")
+        assert response.status_code == 200
+        assert b"Build &amp; Test" in response.data
 
 
 class TestBackwardCompatibility:

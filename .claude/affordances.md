@@ -1,7 +1,7 @@
 # Project Affordances Reference
 
 > Living bill of materials for the AI Testing Resource project.
-> Last updated: 2026-02-07
+> Last updated: 2026-02-09
 
 ## Places
 
@@ -11,10 +11,10 @@
 | Problem | existing | `/problem` | `narrative/problem.html` | Acme Widget Co business challenge |
 | Phase 1: Discovery | existing | `/phase/1` | `narrative/phase1_interview.html` | Stakeholder interviews, requirements, acceptance criteria |
 | Phase 2: Design | existing | `/phase/2` | `narrative/phase2_design.html` | Architecture, technology, testing strategy |
-| Phase 3: Build | existing | `/phase/3` | `narrative/phase3_implementation.html` | Test type card grid, code canvas, test navigator |
-| Phase 4: Iterate | existing | `/phase/4` | `narrative/phase4_evaluation.html` | Trace inspector, timeline, failure modes, architecture context |
-| Phase 5: Monitor | existing | `/phase/5` | `narrative/phase5_monitoring.html` | Production demo, feedback loop to Phase 1 |
-| Governance | existing | `/governance` | `narrative/governance_overview.html` | Cross-phase compliance and audit trail |
+| Phase 3: Build & Test | existing | `/phase/3` | `narrative/phase3_implementation.html` | SDLC test type cards with filter, role tags, failure taxonomy |
+| Phase 4: Iterate & Approve | existing | `/phase/4` | `narrative/phase4_evaluation.html` | Trace inspector, timeline, failure modes, architecture context, trace-TSR mapping |
+| Phase 5: Deploy & Monitor | existing | `/phase/5` | `narrative/phase5_monitoring.html` | Production demo, quadrant framework, metrics tables, feedback loop |
+| Governance | existing | `/governance` | `narrative/governance_overview.html` | TSR cards with modal, example TSR, journey complete |
 | Ask (Demo) | existing | `/ask` | `ask.html` | Live support bot demo with version selector |
 | Test Navigator | existing | `/viewer/tests` | `test_navigator.html` | Browse/run tests by type with code viewer |
 | Trace Inspector | existing | `/viewer/traces` | `trace_inspector.html` | View AI interaction traces with annotations |
@@ -48,6 +48,23 @@
 | U18 | Artifact card | Various | Reusable card component for displaying artifacts |
 | U19 | Narrative content sections | All phases | Markdown-rendered content blocks loaded from `data/narrative/` |
 | U20 | Prev/Next navigation | All narrative pages | Phase-to-phase navigation links |
+| U21 | SDLC test cards | Phase 3 | Expandable cards with icon, badge, role tags, AI considerations, audit value |
+| U22 | SDLC filter buttons | Phase 3 | Filter cards by category: All, Traditional, Evolved, New |
+| U23 | SDLC role tags | Phase 3 | Colored dot + role name tags showing who creates/validates each test type |
+| U24 | SDLC statement | Phase 3 | Leadership framing statement about testing pyramid not being new |
+| U25 | Failure taxonomy table | Phase 3 | 8-row table of AI failure modes with descriptions and root causes |
+| U26 | SDLC pillars | Landing | 4 pillar cards: Security, Trust, Reliability, Solving Real Problems |
+| U27 | IS/IS NOT table | Landing | Comparison table reframing SDLC as enabler not gate |
+| U28 | Builder bridge | Landing | Connecting statement between pillars and phase overview |
+| U29 | TSR preview mock | Landing | Visual mock of a completed TSR with requirements, test bars, approval |
+| U30 | Quadrant framework | Phase 5 | 4 diagnostic quadrants: Thriving, Product Problem, Hidden Debt, Crisis |
+| U31 | Metrics tables | Phase 5 | Product engagement and AI quality metric tables with healthy thresholds |
+| U32 | Review cadence table | Phase 5 | Daily-to-quarterly review rhythm with audience and decisions |
+| U33 | Collaboration table | Phase 1 | PM/BA vs Engineering role breakdown across 6 SDLC stages |
+| U34 | Trace-TSR mapping | Phase 4 | Collapsible table mapping trace review observations to TSR sections |
+| U35 | Example TSR | Governance | Collapsible worked Tier 2 TSR example with all 7 sections |
+| U36 | TSR modal | Governance | Modal popup for viewing TSR details with JSON download |
+| U37 | Scenario box | Phase 5 | Hidden Debt scenario narrative with resolution |
 
 ## Code Affordances
 
@@ -110,6 +127,8 @@
 | N55 | `get_line_content()` | `viewer/code_selection.py` | Extracts specific lines from a file |
 | N56 | `add_line_numbers()` | `viewer/code_selection.py` | Adds line number gutter HTML to code |
 | N57 | `TSRGenerator` class | `tsr/generator.py` | Generates TSRs from JUnit XML + eval JSON + git info |
+| N58 | `SDLC_TESTS` list | `viewer/narrative.py` | 7 test type dicts with name, category, description, roles, AI considerations, audit value |
+| N59 | `SDLC_ROLES` dict | `viewer/narrative.py` | 4 role definitions (engineer, qa, pm, governance) with name and color |
 
 ## Data Affordances
 
@@ -173,7 +192,7 @@ Key connections between affordances:
 | N5/N6/N7 | calls | N15 `convert_markdown_to_html()`, N13 `format_response()` | Formats output |
 | N47 phase routes | calls | N18 `load_narrative_content()` | Loads markdown from `data/narrative/` |
 | N47 phase routes | calls | N19 `get_phase_context()` | Builds navigation context from N16 `PHASES` |
-| N47 `phase_3()` | calls | N20, N21, N22, N24, N34 | Test navigator + syntax highlighting |
+| N47 `phase_3()` | passes | N58 `SDLC_TESTS`, N59 `SDLC_ROLES` | SDLC test type data + role definitions to template |
 | N47 `phase_4()` | calls | N25, N26, N27, N32, N33, N30, N31 | Trace inspector + timeline + failure modes |
 | N49 `test_navigator()` | calls | N20, N21, N22, N24, N34 | Same test navigator functions as Phase 3 |
 | N49 `trace_inspector()` | calls | N25, N26, N27 | Same trace functions as Phase 4 |
@@ -181,7 +200,7 @@ Key connections between affordances:
 | N46 `dashboard()` | calls | N37 `.query()`, `.count()` | Fetches TSR list and statistics |
 | N45 `create_tsr()` | calls | N38 `GoNoGoEvaluator.apply_decision()` → N37 `.save()` | Evaluates rules then persists |
 | U1 phase_nav | reads | N16 `PHASES`, N17 `PHASE_ORDER` | Renders navigation from phase config |
-| U3 card grid | reads | N23 `TEST_TYPES`, N22 explanations | Displays test type cards with descriptions |
+| U21 SDLC cards | reads | N58 `SDLC_TESTS`, N59 `SDLC_ROLES` | Renders test type cards with role tags and categories |
 | U4 code_canvas | reads | N34 `syntax_highlight()` output | Renders highlighted code |
 | U6 trace sidebar | reads | N25 `get_traces_by_version()` | Lists traces for selected version |
 | U7 annotation markers | reads | N27 `render_annotated_response()` | Injects annotation spans into response text |
@@ -202,7 +221,7 @@ Key connections between affordances:
 |-----------|------|-----------|
 | `tests/unit/` | Unit | `test_sanitize`, `test_tokens`, `test_format` |
 | `tests/integration/` | Integration | `test_chroma`, `test_ai_service`, `test_rag_pipeline` |
-| `tests/e2e/` | E2E | `test_ask_flow`, `test_versions` |
+| `tests/e2e/` | E2E | `test_ask_flow`, `test_versions`, `test_narrative_flow` |
 | `tests/acceptance/` | Acceptance | `test_user_ask`, `test_response` |
 | `tests/evals/` | AI Evals | `eval_v1_length`, `eval_v2_accuracy`, `eval_v3_grounding` |
 | `tests/security/` | Security | `test_validation`, `test_injection` |

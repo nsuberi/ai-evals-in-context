@@ -1,5 +1,7 @@
-## Building with AI
+## The Test Types You Need to Know
 
-In this phase, we build the chatbot and understand the test types that validate its quality. Each test type plays a specific role - from verifying individual functions to evaluating AI behavior against business requirements.
+This is the vocabulary of quality assurance. Senior engineers have used these test types for decades to ship reliable software. The testing pyramid is not new&mdash;what's new is extending it to cover AI behavior.
 
-**AI evaluation is acceptance testing linked to business value.** The cards below explain what each test type does and why it matters for AI features. Click "View Code" on any card to see the actual tests and run them.
+**Each test type below has a specific job.** Some catch bugs in individual functions. Others verify that the full system works end-to-end. And the newest ones&mdash;AI acceptance tests and evals&mdash;assess whether the AI behaves the way stakeholders agreed it should.
+
+You don't need to write these tests yourself. But you need to understand what each one does, who creates it, and what role it plays in the TSR. This is the shared language that builders, reviewers, and governance teams use to communicate about quality.

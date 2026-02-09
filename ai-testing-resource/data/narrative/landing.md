@@ -1,16 +1,14 @@
 ## The Rituals That Build Confidence
 
-Governance isn't a gate at the end of a project. It's a set of rituals that run throughout the lifecycle:
+The SDLC is not bureaucracy. It is the set of rituals that experienced engineering teams have always followed to ship quality software. What's different now is that agentic coding tools are enabling new participants&mdash;product managers, business analysts, and domain experts&mdash;to build alongside experienced engineers.
+
+**What we ask of you:** Bring your domain expertise. You understand the customer, the business rules, and what "good" looks like. The SDLC is not the obstacle between your code and production. It is the bridge.
 
 **Discovery Ritual** &mdash; Builders and business stakeholders agree on acceptance criteria *before* work begins. This is where "done" gets defined.
 
 **Test Review Ritual** &mdash; As the test suite grows, teams review what's being tested and what isn't. This surfaces gaps early, not at the last minute.
 
 **TSR Checkpoint** &mdash; Before each release, the Test Summary Report captures what changed, what was tested, and whether results meet the agreed criteria. It's lightweight and scoped to the specific changes in that release.
-
-## New Builders in the SDLC
-
-Agentic coding tools are changing who participates in the software development lifecycle. Product managers, business analysts, and domain experts who haven't coded before are now building features alongside experienced engineers.
 
 The structured approach described here helps everyone know:
 

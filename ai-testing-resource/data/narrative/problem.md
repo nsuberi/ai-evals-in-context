@@ -1,6 +1,6 @@
-## Acme Widget Co. is losing customers.
+## This is a scenario your team will recognize.
 
-Their support team is overwhelmed with repetitive questions:
+Acme Widget Co. is losing customers. Their support team is overwhelmed with repetitive questions:
 - "What's your return policy?"
 - "How much does Enterprise cost?"
 - "When will my order arrive?"
@@ -31,3 +31,5 @@ An AI-powered support chatbot that:
 | Accuracy | > 95% on product questions |
 | Deflection rate | > 80% of FAQ questions handled |
 | Customer satisfaction | No decrease from current baseline |
+
+The challenge is not just building the chatbot. It's building it in a way that gives the business confidence it works correctly, handles edge cases, and won't introduce new problems. That's where the SDLC comes in.

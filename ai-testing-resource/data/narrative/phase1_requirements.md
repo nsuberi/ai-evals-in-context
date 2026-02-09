@@ -1,5 +1,7 @@
 # Requirements Extraction
 
+These requirements are an SDLC artifact&mdash;the output of the discovery phase that every subsequent phase builds upon. Clear requirements are the difference between "we think it works" and "we can prove it meets the agreed criteria."
+
 ## Functional Requirements
 
 1. **Instant Response**: System must respond within 5 seconds

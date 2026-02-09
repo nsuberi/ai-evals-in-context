@@ -107,6 +107,92 @@
 
   {% include "components/tsr_modal.html" %}
 
+  <!-- Example TSR -->
+  <section class="content-section" style="margin-top: var(--space-2xl);">
+    <div class="content-section__header" onclick="this.parentElement.classList.toggle('content-section--open')">
+      <span class="content-section__icon">T</span>
+      <h3 class="content-section__title">Example TSR: Tier 2 &mdash; Document Summarization Feature</h3>
+      <span class="content-section__toggle">&#9660;</span>
+    </div>
+    <div class="content-section__body">
+      <p style="margin-bottom: var(--space-lg);">
+        Below is a worked example of a Tier 2 TSR for a document summarization feature. This shows
+        what a complete TSR looks like when all seven sections are filled in. Use this as a model
+        when creating your own.
+      </p>
+
+      <div class="example-tsr">
+        <div class="example-tsr__section">
+          <h4 class="example-tsr__heading">1. Release Scope</h4>
+          <p><strong>Feature:</strong> Document summarization for internal knowledge base articles</p>
+          <p><strong>Risk Tier:</strong> Tier 2 (Medium) &mdash; Internal-facing, productivity impact, no customer-facing risk</p>
+          <p><strong>Change Type:</strong> New AI feature (prompt + RAG pipeline)</p>
+          <p><strong>Codebase SHA:</strong> <code>a3f8c21</code> &nbsp; <strong>Prompt Version:</strong> <code>summarize-v2.1</code></p>
+        </div>
+
+        <div class="example-tsr__section">
+          <h4 class="example-tsr__heading">2. Requirements Verified</h4>
+          <ul>
+            <li>Summaries are &le; 150 words (acceptance criterion: conciseness)</li>
+            <li>Key facts preserved: dates, names, action items (acceptance criterion: accuracy)</li>
+            <li>No information added beyond source document (acceptance criterion: grounding)</li>
+            <li>Latency P95 &lt; 3s for documents up to 5,000 words</li>
+          </ul>
+        </div>
+
+        <div class="example-tsr__section">
+          <h4 class="example-tsr__heading">3. Test Results</h4>
+          <table class="example-tsr__results-table">
+            <thead>
+              <tr><th>Test Type</th><th>Cases</th><th>Pass Rate</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Unit</td><td>42</td><td>100%</td><td style="color: var(--color-success);">PASS</td></tr>
+              <tr><td>Integration</td><td>18</td><td>100%</td><td style="color: var(--color-success);">PASS</td></tr>
+              <tr><td>AI Eval &mdash; Accuracy</td><td>50</td><td>94%</td><td style="color: var(--color-success);">PASS (&ge;90%)</td></tr>
+              <tr><td>AI Eval &mdash; Conciseness</td><td>50</td><td>98%</td><td style="color: var(--color-success);">PASS (&ge;95%)</td></tr>
+              <tr><td>AI Eval &mdash; Grounding</td><td>50</td><td>96%</td><td style="color: var(--color-success);">PASS (&ge;95%)</td></tr>
+              <tr><td>Security (prompt injection)</td><td>25</td><td>100%</td><td style="color: var(--color-success);">PASS</td></tr>
+              <tr><td>Performance (P95 latency)</td><td>100</td><td>2.1s</td><td style="color: var(--color-success);">PASS (&lt;3s)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="example-tsr__section">
+          <h4 class="example-tsr__heading">4. Error Analysis</h4>
+          <p>3 of 50 accuracy eval cases failed. Root causes:</p>
+          <ul>
+            <li><strong>2 cases:</strong> Long documents (&gt;4,000 words) with multiple action items &mdash; summary omitted later items. <em>Axial code: information_loss.</em></li>
+            <li><strong>1 case:</strong> Document contained a table &mdash; summary missed numeric values in table cells. <em>Axial code: format_handling.</em></li>
+          </ul>
+          <p>Both failure modes are low-severity for Tier 2 internal use. Tracked for v2.2 improvement.</p>
+        </div>
+
+        <div class="example-tsr__section">
+          <h4 class="example-tsr__heading">5. Remaining Risks</h4>
+          <ul>
+            <li>Table-heavy documents may lose numeric precision (mitigated: added warning banner for table-rich docs)</li>
+            <li>Documents &gt; 5,000 words untested (mitigated: input length validation with user-facing message)</li>
+          </ul>
+        </div>
+
+        <div class="example-tsr__section">
+          <h4 class="example-tsr__heading">6. Monitoring Plan</h4>
+          <ul>
+            <li>Daily: error rate dashboard, latency P95 alert (&gt;3s)</li>
+            <li>Weekly: sample 10 summaries for manual quality review</li>
+            <li>Threshold: if accuracy eval drops below 90% on weekly re-run, trigger Tier 2 review</li>
+          </ul>
+        </div>
+
+        <div class="example-tsr__section">
+          <h4 class="example-tsr__heading">7. Decision</h4>
+          <p><strong style="color: var(--color-success);">GO</strong> &mdash; All acceptance criteria met. Known edge cases documented with mitigations in place. Approved by J. Chen (Engineering Lead) and M. Patel (Product Owner), 2026-02-05.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Journey Complete -->
   <section class="content-section content-section--open" style="border-color: var(--color-success); border-width: 2px; margin-top: var(--space-2xl);">
     <div class="content-section__header">
@@ -114,18 +200,17 @@
       <h3 class="content-section__title" style="color: var(--color-success);">Journey Complete</h3>
     </div>
     <div class="content-section__body">
-      <p>You've followed Acme Widget Co through the complete AI development lifecycle:</p>
+      <p>You've followed Acme Widget Co through the complete SDLC&mdash;the same lifecycle that experienced engineering teams have used for decades:</p>
 
       <ol>
-        <li><strong>Problem Definition:</strong> Identified business needs and success criteria</li>
-        <li><strong>Requirements:</strong> Extracted functional requirements from stakeholders</li>
-        <li><strong>Design:</strong> Architected a RAG-based solution with testing strategy</li>
-        <li><strong>Implementation:</strong> Built code with traditional tests + AI evals</li>
-        <li><strong>Evaluation:</strong> Iterated through v1&rarr;v2&rarr;v3 based on eval results</li>
-        <li><strong>Production:</strong> Deployed with monitoring and governance</li>
+        <li><strong>Discovery:</strong> Interviewed stakeholders, extracted requirements, defined acceptance criteria</li>
+        <li><strong>Design:</strong> Architected a RAG-based solution with a testing strategy mapped to risk tiers</li>
+        <li><strong>Build &amp; Test:</strong> Wrote code with traditional tests (unit, integration, security) plus AI evals</li>
+        <li><strong>Iterate &amp; Approve:</strong> Iterated through v1&rarr;v2&rarr;v3, used qualitative coding to turn subjective observations into countable evidence, then compiled the TSR</li>
+        <li><strong>Deploy &amp; Monitor:</strong> Deployed to production with monitoring that feeds back into discovery</li>
       </ol>
 
-      <p style="margin-top: var(--space-lg);"><strong>Key Takeaway:</strong> AI evals are acceptance tests for AI behavior. They sit alongside traditional tests in the test pyramid, validating that AI systems meet requirements for accuracy, grounding, and appropriate behavior. The TSR captures this evidence in a lightweight artifact scoped to each release.</p>
+      <p style="margin-top: var(--space-lg);"><strong>Key Takeaway:</strong> None of this is new. Test Summary Reports, acceptance criteria, risk tiering, and structured iteration have existed in regulated industries for decades. What's new is extending these practices to cover AI behavior&mdash;and making them accessible to everyone on the team, not just senior engineers. The TSR is a lightweight, release-scoped artifact that captures evidence from the entire test pyramid so that governance reviewers can make confident go/no-go decisions.</p>
 
       <div style="margin-top: var(--space-xl); text-align: center;">
         <a href="{{ url_for('narrative.landing') }}" class="phase-nav-btn phase-nav-btn--prev" style="display: inline-flex;">

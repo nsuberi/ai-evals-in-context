@@ -8,10 +8,10 @@
 <section class="landing-hero">
   <h1 class="landing-hero__title">AI in Production: A Governance-First Approach</h1>
   <p class="landing-hero__subtitle">
-    Teams adopting AI need governance guidance&mdash;how work gets governed, approved, and tied to business value.
-    At the same time, agentic coding tools are enabling new participants in the SDLC: product managers, business analysts,
-    and others writing code for the first time. The structured approach here helps everyone&mdash;from seasoned engineers
-    to new builders&mdash;know what "done" looks like and how to get there.
+    Welcome to the SDLC. This structure is not new&mdash;it is how the best engineering teams have always
+    shipped reliable software. What's new is that agentic coding tools are enabling PMs, BAs, and domain
+    experts to build alongside experienced engineers. The structured approach here helps everyone know
+    what "done" looks like and how to get there.
   </p>
   <a href="{{ url_for('narrative.problem') }}" class="landing-cta">
     Start the Journey
@@ -25,14 +25,14 @@
 {% block phase_content %}
 <!-- 3-Part Framework Section -->
 <section class="cycle-section">
-  <h2 class="cycle-section__title">The Three-Part Framework</h2>
+  <h2 class="cycle-section__title">Design with the End in Mind</h2>
   <div class="cycle-cards">
     <div class="cycle-card">
       <span class="cycle-card__number">1</span>
-      <h3 class="cycle-card__title">Governance</h3>
+      <h3 class="cycle-card__title">Governance Process &amp; Requirements</h3>
       <p class="cycle-card__description">
-        AI governance is a people challenge as much as a technical one. Repeatable rituals build
-        confidence between builders and the teams who approve their work.
+        Establish the rituals: acceptance criteria agreement, test review sessions, TSR checkpoints.
+        These are how builders and approvers develop shared confidence.
       </p>
       <ul class="cycle-card__rituals">
         <li>Acceptance criteria agreement</li>
@@ -42,18 +42,18 @@
     </div>
     <div class="cycle-card">
       <span class="cycle-card__number">2</span>
-      <h3 class="cycle-card__title">Approvals</h3>
+      <h3 class="cycle-card__title">Approval Stakeholders &amp; Rituals</h3>
       <p class="cycle-card__description">
-        Design with the End in Mind. When teams know what "done" looks like from Day 1,
-        the path to go/no-go is predictable. Approvals accelerate delivery, they don't block it.
+        Know who approves and when. When teams know what "done" looks like from Day 1,
+        the path to go/no-go is predictable. Approvals accelerate delivery&mdash;they don't block it.
       </p>
     </div>
     <div class="cycle-card">
       <span class="cycle-card__number">3</span>
-      <h3 class="cycle-card__title">Business Value</h3>
+      <h3 class="cycle-card__title">Business Value of Your Work</h3>
       <p class="cycle-card__description">
-        The Test Summary Report ties test results back to requirements so stakeholders
-        always know where things stand. Is the juice worth the squeeze?
+        The TSR ties test results back to requirements so stakeholders always know where things stand.
+        Is the juice worth the squeeze?
       </p>
     </div>
   </div>
@@ -62,9 +62,9 @@
 <!-- Guiding Principle -->
 <section class="guiding-principle">
   <blockquote class="guiding-principle__quote">
-    "The rituals matter more than the tools. Acceptance criteria agreement, test review sessions,
-    and TSR checkpoints are how builders and risk bodies develop shared confidence&mdash;whether
-    you've shipped a hundred features or you're writing your first line of code."
+    "The SDLC is not bureaucracy. It is the structure that lets organizations move fast without
+    breaking things. Having clear process for how to create a TSR and how it fits into the rituals
+    of the company is how we unlock fast experimentation and risk control&mdash;simultaneously."
   </blockquote>
 </section>
 
@@ -125,14 +125,82 @@
   </div>
 </section>
 
+<!-- What the SDLC Protects (4 Pillars) -->
+<section class="narrative-content" style="padding-bottom: 0;">
+  <h2 style="text-align: center; color: var(--color-chrome-text-bright); font-size: 1.25rem; margin: 0 0 var(--space-xl) 0;">
+    What the SDLC Protects
+  </h2>
+  <div class="sdlc-pillars">
+    <div class="sdlc-pillar">
+      <div class="sdlc-pillar__icon">&#x1f512;</div>
+      <h3 class="sdlc-pillar__title">Security</h3>
+      <p class="sdlc-pillar__desc">Your code doesn't introduce vulnerabilities. Prompt injection, data leakage, and unauthorized access are caught before production.</p>
+    </div>
+    <div class="sdlc-pillar">
+      <div class="sdlc-pillar__icon">&#x1f91d;</div>
+      <h3 class="sdlc-pillar__title">Trust</h3>
+      <p class="sdlc-pillar__desc">Users and stakeholders can rely on AI outputs. Grounding, source attribution, and accuracy testing build warranted trust.</p>
+    </div>
+    <div class="sdlc-pillar">
+      <div class="sdlc-pillar__icon">&#x2699;</div>
+      <h3 class="sdlc-pillar__title">Reliability</h3>
+      <p class="sdlc-pillar__desc">The system works consistently under real-world conditions. Performance tests, integration tests, and monitoring catch problems early.</p>
+    </div>
+    <div class="sdlc-pillar">
+      <div class="sdlc-pillar__icon">&#x1f3af;</div>
+      <h3 class="sdlc-pillar__title">Solving Real Problems</h3>
+      <p class="sdlc-pillar__desc">You ship features that actually solve customer needs&mdash;without introducing new problems along the way.</p>
+    </div>
+  </div>
+</section>
+
 <!-- Builder Bridge -->
 <section class="builder-bridge">
   <p class="builder-bridge__text">
-    The framework above establishes the rituals and expectations. <strong>The SDLC is the shared language</strong>
-    that both experienced engineers and new builders&mdash;PMs, BAs, and others using agentic coding tools&mdash;follow.
-    The five phases below show this familiar lifecycle adapted for AI features:
-    how to build the right things, build them correctly, and not introduce new problems along the way.
+    These are not new requirements invented for AI. They are the same protections that experienced
+    engineering teams have always built into their process. <strong>The SDLC is the shared language</strong>
+    that both experienced engineers and new builders follow. The five phases below show this familiar
+    lifecycle adapted for AI features.
   </p>
+</section>
+
+<!-- IS vs IS NOT Table -->
+<section class="narrative-content" style="padding-top: 0;">
+  <div class="sdlc-is-not">
+    <h3 style="text-align: center; color: var(--color-chrome-text-bright); font-size: 1.125rem; margin: 0 0 var(--space-lg) 0;">
+      The SDLC: What It Is and What It Isn't
+    </h3>
+    <table class="sdlc-is-not__table">
+      <thead>
+        <tr>
+          <th>The SDLC IS</th>
+          <th>The SDLC IS NOT</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>A path to production that builds confidence</td>
+          <td>A gate designed to slow you down</td>
+        </tr>
+        <tr>
+          <td>How the best engineers have always shipped reliably</td>
+          <td>Invented for AI or invented to constrain new builders</td>
+        </tr>
+        <tr>
+          <td>A shared language for quality between builders and reviewers</td>
+          <td>A set of hoops to jump through for compliance</td>
+        </tr>
+        <tr>
+          <td>Lightweight and scoped to each release</td>
+          <td>A massive document nobody reads</td>
+        </tr>
+        <tr>
+          <td>How organizations unlock fast experimentation AND risk control</td>
+          <td>A choice between speed and safety</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </section>
 
 <!-- Rainbow Arc Phase Visual -->
@@ -160,9 +228,9 @@
     </a>
     <a href="{{ url_for('narrative.phase_3') }}" class="phase-card">
       <span class="phase-card__number">3</span>
-      <h3 class="phase-card__title">Build</h3>
+      <h3 class="phase-card__title">Build &amp; Test</h3>
       <p class="phase-card__description">
-        Build with AI, explore test types, and understand how each validates quality.
+        Learn the test types that senior engineers already use, and understand how each validates quality for AI features.
       </p>
     </a>
     <a href="{{ url_for('narrative.phase_4') }}" class="phase-card">

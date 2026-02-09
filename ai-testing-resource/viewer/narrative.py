@@ -9,7 +9,6 @@ from flask import Blueprint, render_template, request, jsonify
 from pathlib import Path
 import markdown
 
-from .test_navigator import get_explanation, TEST_TYPES
 from .trace_inspector import (
     get_traces_by_version,
     get_trace_detail,
@@ -25,6 +24,257 @@ from .iteration_timeline import (
 )
 
 narrative_bp = Blueprint("narrative", __name__)
+
+# SDLC Role definitions (who creates / who validates)
+SDLC_ROLES = {
+    "DEV": {"name": "Developer", "color": "#3b82f6"},
+    "TL": {"name": "Tech Lead", "color": "#8b5cf6"},
+    "QA": {"name": "QA Engineer", "color": "#f59e0b"},
+    "PO": {"name": "Product Owner", "color": "#10b981"},
+    "SRE": {"name": "Site Reliability", "color": "#ef4444"},
+    "GOV": {"name": "Governance / Risk", "color": "#6366f1"},
+    "BIZ": {"name": "Business Stakeholder", "color": "#ec4899"},
+}
+
+# SDLC Test Types - adapted for PM/BA audience
+SDLC_TESTS = [
+    {
+        "id": "unit",
+        "name": "Unit Tests",
+        "icon": "U",
+        "color": "#3b82f6",
+        "category": "traditional",
+        "description": (
+            "Unit tests verify that individual functions work correctly in isolation. "
+            "Think of them as checking that each ingredient is fresh before cooking. "
+            "They run in milliseconds and catch bugs immediately when code changes."
+        ),
+        "sdlc_role": (
+            "Unit tests are the foundation of the testing pyramid. They give developers "
+            "instant feedback during development and prevent regressions when code changes. "
+            "A strong unit test suite means the team can move fast with confidence."
+        ),
+        "who_creates": ["DEV"],
+        "who_validates": ["TL"],
+        "ai_considerations": (
+            "For AI features, unit tests verify the scaffolding: input sanitization, "
+            "token counting, response formatting. They don't test AI behavior directly, "
+            "but they ensure the plumbing works before you turn on the water."
+        ),
+        "audit_value": (
+            "Unit test pass rates appear in TSR Section 2. A 100% pass rate signals "
+            "that basic code quality is maintained across releases."
+        ),
+    },
+    {
+        "id": "integration",
+        "name": "Integration Tests",
+        "icon": "I",
+        "color": "#8b5cf6",
+        "category": "traditional",
+        "description": (
+            "Integration tests verify that components work together correctly. "
+            "For an AI chatbot, this means testing that the retrieval pipeline connects "
+            "to the vector database, fetches the right documents, and passes them to the LLM."
+        ),
+        "sdlc_role": (
+            "Integration tests catch issues that unit tests miss\u2014problems that emerge "
+            "when components interact. They're especially critical for AI systems where "
+            "the pipeline has multiple stages (embed \u2192 retrieve \u2192 construct prompt \u2192 generate)."
+        ),
+        "who_creates": ["DEV", "TL"],
+        "who_validates": ["QA", "TL"],
+        "ai_considerations": (
+            "RAG pipelines have many integration points: embedding models, vector stores, "
+            "context window assembly, LLM APIs. Integration tests verify each handoff. "
+            "When a retrieval model changes, these tests catch downstream impact."
+        ),
+        "audit_value": (
+            "Integration test results in the TSR show that the system's components "
+            "work together reliably. Governance reviewers look for coverage of "
+            "critical data paths."
+        ),
+    },
+    {
+        "id": "e2e",
+        "name": "End-to-End Tests",
+        "icon": "E",
+        "color": "#10b981",
+        "category": "traditional",
+        "description": (
+            "End-to-end tests simulate a real user interacting with the full system. "
+            "They verify the complete journey: user asks a question \u2192 system retrieves "
+            "context \u2192 AI generates response \u2192 user sees answer with source citations."
+        ),
+        "sdlc_role": (
+            "E2E tests are the closest thing to having a real user test your system. "
+            "They catch problems that only appear when all layers work together, "
+            "like a response that's technically correct but displayed incorrectly."
+        ),
+        "who_creates": ["QA", "DEV"],
+        "who_validates": ["PO", "QA"],
+        "ai_considerations": (
+            "AI E2E tests must account for non-determinism. The same question might "
+            "produce slightly different wording each time. Tests focus on structural "
+            "properties (response contains source, stays under length limit) rather "
+            "than exact text matches."
+        ),
+        "audit_value": (
+            "E2E test results demonstrate that the system works from the user's "
+            "perspective. Product owners can validate that the user experience "
+            "matches requirements."
+        ),
+    },
+    {
+        "id": "performance",
+        "name": "Performance Tests",
+        "icon": "P",
+        "color": "#f59e0b",
+        "category": "traditional",
+        "description": (
+            "Performance tests measure response time, throughput, and resource usage "
+            "under realistic load. For AI features, latency is critical\u2014users expect "
+            "sub-5-second responses even when the system is busy."
+        ),
+        "sdlc_role": (
+            "Performance tests prevent surprises in production. They establish baselines "
+            "and catch regressions before deployment. A prompt change that increases "
+            "token count can double latency\u2014performance tests catch this."
+        ),
+        "who_creates": ["DEV", "SRE"],
+        "who_validates": ["SRE", "TL"],
+        "ai_considerations": (
+            "LLM inference latency is often the bottleneck. Performance tests should "
+            "measure P50, P95, and P99 latencies separately for retrieval and generation "
+            "steps. Monitor token usage to control cost per request."
+        ),
+        "audit_value": (
+            "Performance benchmarks in the TSR show that the system meets SLAs. "
+            "Governance teams use these to assess production readiness and "
+            "capacity planning."
+        ),
+    },
+    {
+        "id": "acceptance",
+        "name": "Acceptance Tests",
+        "icon": "A",
+        "color": "#ec4899",
+        "category": "evolved",
+        "description": (
+            "Acceptance tests verify that the system meets the requirements agreed upon "
+            "during discovery. They are the bridge between what stakeholders asked for "
+            "and what was actually built. Business users own these criteria."
+        ),
+        "sdlc_role": (
+            "Acceptance tests are the contract between builders and the business. "
+            "They translate requirements like 'accurate pricing responses' into "
+            "verifiable checks. When acceptance tests pass, the team has evidence "
+            "that the feature is ready."
+        ),
+        "who_creates": ["PO", "QA"],
+        "who_validates": ["BIZ", "GOV"],
+        "ai_considerations": (
+            "For AI features, acceptance criteria must account for probabilistic behavior. "
+            "Instead of 'response equals X', criteria become 'response is accurate 95% "
+            "of the time across N test cases'. This is where AI evals begin."
+        ),
+        "audit_value": (
+            "Acceptance test results are the most important section of the TSR for "
+            "governance reviewers. They directly map to business requirements and "
+            "provide the evidence for go/no-go decisions."
+        ),
+    },
+    {
+        "id": "steel_thread",
+        "name": "Steel Thread Tests",
+        "icon": "S",
+        "color": "#6366f1",
+        "category": "evolved",
+        "description": (
+            "A steel thread test traces one complete path through the entire system, "
+            "from user input to final output, verifying every integration point along "
+            "the way. It's the thinnest possible end-to-end proof that the system works."
+        ),
+        "sdlc_role": (
+            "Steel threads prove architectural viability early. Before building out "
+            "all features, a steel thread confirms that the chosen architecture "
+            "actually works. This reduces risk by validating assumptions."
+        ),
+        "who_creates": ["TL", "DEV"],
+        "who_validates": ["TL", "SRE"],
+        "ai_considerations": (
+            "For RAG systems, the steel thread traces: user question \u2192 embedding \u2192 "
+            "vector search \u2192 context assembly \u2192 prompt construction \u2192 LLM call \u2192 "
+            "response formatting \u2192 source attribution. If any link breaks, "
+            "the steel thread fails."
+        ),
+        "audit_value": (
+            "Steel thread results in the TSR demonstrate that the full pipeline "
+            "is operational. They're particularly valuable for initial deployments "
+            "and major architecture changes."
+        ),
+    },
+    {
+        "id": "ai_acceptance",
+        "name": "AI Acceptance Tests",
+        "icon": "AI",
+        "color": "#0f9b8e",
+        "category": "new",
+        "description": (
+            "AI acceptance tests evaluate whether the AI's behavior meets business "
+            "requirements. Unlike traditional tests with binary pass/fail, these assess "
+            "qualities like accuracy, grounding, tone, and safety across many test cases."
+        ),
+        "sdlc_role": (
+            "AI acceptance tests are the evolved form of acceptance testing for "
+            "probabilistic systems. They run a suite of representative questions "
+            "and measure aggregate pass rates against thresholds defined during discovery."
+        ),
+        "who_creates": ["DEV", "PO"],
+        "who_validates": ["BIZ", "GOV"],
+        "ai_considerations": (
+            "These tests define 'what good looks like' for AI behavior. They evaluate "
+            "grounding (does the response use the knowledge base?), accuracy (are facts "
+            "correct?), format compliance (length, tone, structure), and safety (no "
+            "harmful or off-topic content)."
+        ),
+        "audit_value": (
+            "AI acceptance test results are the heart of the TSR for AI features. "
+            "They provide quantified evidence that the AI meets the bar set by "
+            "business stakeholders. Pass rates map directly to go/no-go criteria."
+        ),
+    },
+    {
+        "id": "evals",
+        "name": "AI Evals",
+        "icon": "EV",
+        "color": "#0f9b8e",
+        "category": "new",
+        "description": (
+            "AI evals are the systematic, ongoing evaluation of AI system behavior using "
+            "trace data and human review. They go beyond automated tests to include "
+            "qualitative assessment of response quality by domain experts."
+        ),
+        "sdlc_role": (
+            "Evals provide the feedback loop that drives iteration. By reviewing actual "
+            "traces and annotating failures, teams build a quantified picture of system "
+            "quality that informs both improvement priorities and go/no-go decisions."
+        ),
+        "who_creates": ["PO", "DEV", "BIZ"],
+        "who_validates": ["GOV", "BIZ"],
+        "ai_considerations": (
+            "Evals use qualitative coding methodology: each trace gets open codes "
+            "(free-text observations) categorized into axial codes (standardized labels). "
+            "This turns subjective quality assessment into countable evidence. "
+            "Phase 4 demonstrates this methodology in action."
+        ),
+        "audit_value": (
+            "Eval results populate TSR Section 3 (the 'money table'). Axial code "
+            "counts across versions show improvement trends and remaining risks. "
+            "Governance reviewers use these to assess whether the AI is production-ready."
+        ),
+    },
+]
 
 # Phase configuration for navigation and content
 PHASES = {
@@ -71,9 +321,9 @@ PHASES = {
     "phase_3": {
         "id": "phase_3",
         "number": 3,
-        "title": "Building with AI",
-        "subtitle": "Test Types as the Path to Quality",
-        "short_title": "Build",
+        "title": "Building and Testing with AI",
+        "subtitle": "The SDLC Test Types That Senior Engineers Already Use",
+        "short_title": "Build & Test",
         "url": "/phase/3",
         "next": "phase_4",
         "prev": "phase_2",
@@ -81,7 +331,7 @@ PHASES = {
     "phase_4": {
         "id": "phase_4",
         "number": 4,
-        "title": "Building AI Features",
+        "title": "Iterate & Approve",
         "subtitle": "Iterating Through Failure Modes",
         "short_title": "Iterate & Approve",
         "url": "/phase/4",
@@ -220,25 +470,15 @@ def phase_2():
 
 @narrative_bp.route("/phase/3")
 def phase_3():
-    """Phase 3: Building with AI - test types as a common language"""
+    """Phase 3: Build & Test - SDLC test types as a common language"""
     context = get_phase_context("phase_3")
     intro_content = load_narrative_content("phase3_intro.md")
-
-    # Load explanations for ALL test types (for card grid display)
-    all_type_explanations = {}
-    for t in TEST_TYPES:
-        all_type_explanations[t["id"]] = get_explanation(t["id"])
-    all_type_explanations["ai_acceptance"] = get_explanation("ai_acceptance")
-
-    # Business-facing test types get a special badge
-    business_facing_types = {"acceptance", "ai_acceptance", "evals"}
 
     return render_template(
         "narrative/phase3_implementation.html",
         intro_content=intro_content,
-        test_types=TEST_TYPES,
-        all_type_explanations=all_type_explanations,
-        business_facing_types=business_facing_types,
+        sdlc_tests=SDLC_TESTS,
+        sdlc_roles=SDLC_ROLES,
         **context,
     )
 
