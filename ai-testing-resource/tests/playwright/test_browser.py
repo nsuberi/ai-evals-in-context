@@ -55,12 +55,15 @@ def test_ask_page_form_interaction(page: Page, base_url: str):
     expect(page.locator("#demo-response")).to_be_attached()
 
 
-def test_governance_dashboard_loads(page: Page, base_url: str):
-    """Test that the governance dashboard loads."""
-    page.goto(f"{base_url}/governance/dashboard")
+def test_governance_page_loads(page: Page, base_url: str):
+    """Test that the governance page loads."""
+    page.goto(f"{base_url}/governance")
 
     # Verify the page loaded successfully
-    assert page.url.endswith("/governance/dashboard")
+    assert page.url.endswith("/governance")
+
+    # Check for TSR Evidence content
+    expect(page.locator("text=TSR")).to_be_visible()
 
 
 def test_monitoring_traces_loads(page: Page, base_url: str):

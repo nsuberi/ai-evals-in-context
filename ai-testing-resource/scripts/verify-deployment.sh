@@ -37,13 +37,13 @@ else
     exit 1
 fi
 
-# Check governance dashboard
-echo "Checking /governance/dashboard..."
-STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$APP_URL/governance/dashboard")
+# Check governance page
+echo "Checking /governance..."
+STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$APP_URL/governance")
 if [ "$STATUS" == "200" ]; then
-    echo "Governance dashboard: PASS (HTTP $STATUS)"
+    echo "Governance page: PASS (HTTP $STATUS)"
 else
-    echo "Governance dashboard: FAIL (HTTP $STATUS)"
+    echo "Governance page: FAIL (HTTP $STATUS)"
     exit 1
 fi
 

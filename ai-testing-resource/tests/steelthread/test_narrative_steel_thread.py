@@ -112,7 +112,6 @@ class TestDeployedNarrativeJourney:
         """Legacy routes should still work on deployed app."""
         legacy_routes = [
             "/ask",
-            "/governance/dashboard"
         ]
 
         for route in legacy_routes:
