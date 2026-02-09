@@ -69,96 +69,153 @@
   border-radius: 4px;
 }
 
-/* Modal Overlay - Fixed positioning for centered modal */
+/* ====================================
+   Modal Overlay
+   ==================================== */
 
 .modal-overlay {
   position: fixed;
   inset: 0;
   z-index: 1000;
   background: rgba(0, 0, 0, 0.7);
-  display: none;  /* Hidden by default, shown via JS */
+  display: none;
   align-items: center;
   justify-content: center;
   padding: var(--space-xl);
 }
 
-/* Document Modal Styles */
+/* ====================================
+   Document Modal (PDF Viewer)
+   ==================================== */
 
 .document-modal {
-  max-width: 600px;
-  width: 90%;
-}
-
-.document-modal__meta {
+  background: var(--color-charcoal);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 900px;  /* Wider than TSR (800px) for PDF readability */
+  max-height: 85vh;
   display: flex;
   flex-direction: column;
-  gap: var(--space-lg);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);  /* Same as TSR modal */
+  overflow: hidden;
 }
 
-.document-modal__description {
-  font-size: 1rem;
-  color: var(--color-chrome-text-medium);
-  line-height: 1.6;
-  margin: 0;
-}
-
-.document-modal__details {
+/* Header - Fixed at top */
+.document-modal__header {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-  padding: var(--space-md);
-  background: var(--color-chrome-bg-dark);
-  border-radius: 6px;
-  border: 1px solid var(--color-chrome-border);
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-lg) var(--space-xl);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+  gap: var(--space-md);
+  background: var(--color-slate);
 }
 
-.document-modal__detail {
+.document-modal__title-row {
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
+  gap: var(--space-md);
+  flex: 1;
+  min-width: 0;
 }
 
-.document-modal__detail-label {
-  font-size: 0.875rem;
+.document-modal__title {
+  margin: 0;
+  font-size: 1.125rem;
   font-weight: 600;
-  color: var(--color-chrome-text-dim);
-  min-width: 80px;
+  color: var(--color-chrome-text-bright);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.document-modal__detail-value {
-  font-size: 0.875rem;
+/* Header Actions */
+.document-modal__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-shrink: 0;
+}
+
+.document-modal__download-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-accent);
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  transition: background 0.15s ease;
+  white-space: nowrap;
+}
+
+.document-modal__download-btn:hover {
+  background: var(--color-accent-hover);
+}
+
+.document-modal__close-btn {
+  background: none;
+  border: none;
+  color: var(--color-chrome-text);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 4px;
+  line-height: 1;
+  transition: all 0.15s ease;
+}
+
+.document-modal__close-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
   color: var(--color-chrome-text-bright);
 }
 
-.document-modal__actions {
-  display: flex;
-  justify-content: center;
-  padding-top: var(--space-md);
+/* Description Section */
+.document-modal__description-section {
+  padding: var(--space-md) var(--space-xl);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--color-slate);
+  flex-shrink: 0;
 }
 
-.document-modal__download {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-md) var(--space-xl);
-  background: var(--color-chrome-text-bright);
-  color: var(--color-chrome-bg-dark);
+.document-modal__description {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--color-chrome-text);
+  line-height: 1.5;
+}
+
+/* PDF Viewer Container */
+.document-modal__viewer {
+  flex: 1;
+  min-height: 0;  /* Critical for flex scrolling */
+  display: flex;
+  background: var(--color-charcoal);
+  padding: var(--space-md);
+}
+
+.document-modal__pdf-frame {
+  width: 100%;
+  height: 100%;
   border: none;
   border-radius: 6px;
-  font-size: 1rem;
-  font-weight: 600;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  background: white;  /* PDF.js renders on white background */
 }
 
-.document-modal__download:hover {
-  background: var(--color-chrome-text-medium);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+/* ====================================
+   Responsive Adjustments
+   ==================================== */
+
+@media (max-width: 1024px) {
+  .document-modal {
+    max-width: 85vw;
+  }
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .document-grid {
     grid-template-columns: 1fr;
@@ -170,7 +227,30 @@
   }
 
   .document-modal {
-    width: 95%;
-    max-width: none;
+    max-width: 95vw;
+    max-height: 90vh;
+  }
+
+  .document-modal__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+
+  .document-modal__actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .document-modal__description-section {
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .document-modal__viewer {
+    padding: var(--space-sm);
+  }
+
+  .document-modal__title {
+    font-size: 1rem;
   }
 }

@@ -1,66 +1,86 @@
-{# Document Modal Component - displays document metadata and download link #}
+{# Document Modal Component - displays PDF preview and download link #}
 
 <div id="documentModal" class="modal-overlay" onclick="closeDocumentModal(event)">
-  <div class="modal-body document-modal" onclick="event.stopPropagation()">
-    <div class="modal-header">
-      <h3 id="documentModalTitle" class="modal-title">Document Title</h3>
-      <button class="modal-close" onclick="closeDocumentModal(event)" aria-label="Close">&times;</button>
-    </div>
+  <div class="document-modal" onclick="event.stopPropagation()">
 
-    <div class="modal-content">
-      <div class="document-modal__meta">
-        <p id="documentModalDescription" class="document-modal__description">
-          Document description will appear here.
-        </p>
-
-        <div class="document-modal__details">
-          <div class="document-modal__detail">
-            <span class="document-modal__detail-label">File Type:</span>
-            <span class="document-modal__detail-value">Microsoft Word (.docx)</span>
-          </div>
-          <div class="document-modal__detail">
-            <span class="document-modal__detail-label">Format:</span>
-            <span class="document-modal__detail-value">Downloadable Document</span>
-          </div>
-        </div>
+    {# Header with title and actions #}
+    <div class="document-modal__header">
+      <div class="document-modal__title-row">
+        <h2 class="document-modal__title" id="documentModalTitle">Document Title</h2>
       </div>
-
       <div class="document-modal__actions">
-        <a id="documentDownloadLink" href="#" download class="btn-primary document-modal__download">
+        <a id="documentDownloadLink" href="#" download class="document-modal__download-btn">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-right: 0.5rem;">
             <path d="M8 12L3 7h3V0h4v7h3L8 12z"/>
             <path d="M0 14h16v2H0z"/>
           </svg>
-          Download Document
+          Download PDF
         </a>
+        <button class="document-modal__close-btn" onclick="closeDocumentModal(event)" aria-label="Close">&times;</button>
       </div>
     </div>
+
+    {# Description section #}
+    <div class="document-modal__description-section">
+      <p id="documentModalDescription" class="document-modal__description">
+        Document description will appear here.
+      </p>
+    </div>
+
+    {# PDF Viewer #}
+    <div class="document-modal__viewer">
+      <iframe
+        id="documentPdfViewer"
+        class="document-modal__pdf-frame"
+        title="PDF Document Preview"
+        src="">
+      </iframe>
+    </div>
+
   </div>
 </div>
 
 <script>
-function openDocumentModal(title, description, downloadPath) {
-  const root = window.APP_ROOT || '';  // Get APPLICATION_ROOT prefix
+function openDocumentModal(title, description, documentPath) {
+  const root = window.APP_ROOT || '';
   const modal = document.getElementById('documentModal');
   const titleEl = document.getElementById('documentModalTitle');
   const descEl = document.getElementById('documentModalDescription');
   const downloadLink = document.getElementById('documentDownloadLink');
+  const pdfViewer = document.getElementById('documentPdfViewer');
 
+  // Set header and description
   titleEl.textContent = title;
   descEl.textContent = description;
-  downloadLink.href = root + downloadPath;  // Prepend prefix
-  downloadLink.download = downloadPath.split('/').pop();
 
+  // Set download link
+  const fullPath = root + documentPath;
+  downloadLink.href = fullPath;
+  downloadLink.download = documentPath.split('/').pop();
+
+  // Load PDF in iframe using PDF.js viewer
+  const pdfViewerPath = root + '/static/vendor/pdfjs/web/viewer.html?file=' + encodeURIComponent(fullPath);
+  pdfViewer.src = pdfViewerPath;
+
+  // Show modal
   modal.style.display = 'flex';
   document.body.style.overflow = 'hidden';
 }
 
 function closeDocumentModal(event) {
-  // Only close if overlay itself was clicked (not modal content)
-  if (event && event.target !== document.getElementById('documentModal')) return;
+  // Only close if overlay or close button was clicked
+  if (event && event.target !== document.getElementById('documentModal') && !event.target.classList.contains('document-modal__close-btn')) {
+    return;
+  }
+
   const modal = document.getElementById('documentModal');
+  const pdfViewer = document.getElementById('documentPdfViewer');
+
+  // Clear iframe src to stop rendering
+  pdfViewer.src = '';
+
   modal.style.display = 'none';
-  document.body.style.overflow = '';  // Use empty string (not 'auto')
+  document.body.style.overflow = '';
 }
 
 // Close on escape key
@@ -68,7 +88,7 @@ document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
     const modal = document.getElementById('documentModal');
     if (modal.style.display === 'flex') {
-      closeDocumentModal();
+      closeDocumentModal(new Event('keydown'));
     }
   }
 });

@@ -27,38 +27,38 @@
 {% block phase_intro %}{% endblock %}
 
 {% block phase_content %}
-<!-- 3-Part Framework Section -->
+<!-- 2-Part Framework Section -->
 <section class="cycle-section">
   <h2 class="cycle-section__title">Design with the End in Mind</h2>
   <div class="cycle-cards">
     <div class="cycle-card">
       <span class="cycle-card__number">1</span>
-      <h3 class="cycle-card__title">Governance Process &amp; Requirements</h3>
+      <h3 class="cycle-card__title">Start with Stakeholder Alignment</h3>
       <p class="cycle-card__description">
-        Establish the rituals: acceptance criteria agreement, test review sessions, TSR checkpoints.
-        These are how builders and approvers develop shared confidence.
+        Before you write code, align on what success looks like, who needs to approve, and when approvals happen.
+        When everyone knows what "done" looks like from Day 1, the path from commit to production is predictable&mdash;and
+        approvals accelerate delivery instead of blocking it.
       </p>
       <ul class="cycle-card__rituals">
-        <li>Acceptance criteria agreement</li>
-        <li>Test review sessions</li>
-        <li>TSR checkpoint before deploy</li>
+        <li>Define acceptance criteria upfront</li>
+        <li>Identify approval stakeholders and checkpoints</li>
+        <li>Establish the governance rhythm</li>
       </ul>
     </div>
     <div class="cycle-card">
       <span class="cycle-card__number">2</span>
-      <h3 class="cycle-card__title">Approval Stakeholders &amp; Rituals</h3>
+      <h3 class="cycle-card__title">Document the Journey for Confidence</h3>
       <p class="cycle-card__description">
-        Know who approves and when. When teams know what "done" looks like from Day 1,
-        the path to go/no-go is predictable. Approvals accelerate delivery&mdash;they don't block it.
+        The SDLC rituals&mdash;discovery sessions, test reviews, and TSR checkpoints&mdash;are how builders
+        and approvers stay aligned as the work progresses. The Test Summary Report (TSR) captures what changed,
+        what was tested, and whether results meet criteria. This documentation is what makes fast, confident
+        deployment possible.
       </p>
-    </div>
-    <div class="cycle-card">
-      <span class="cycle-card__number">3</span>
-      <h3 class="cycle-card__title">Business Value of Your Work</h3>
-      <p class="cycle-card__description">
-        The TSR ties test results back to requirements so stakeholders always know where things stand.
-        Is the juice worth the squeeze?
-      </p>
+      <ul class="cycle-card__rituals">
+        <li>Discovery ritual: Agree on requirements with stakeholders</li>
+        <li>Test review ritual: Review coverage as test suite grows</li>
+        <li>TSR checkpoint: Capture results before release</li>
+      </ul>
     </div>
   </div>
 </section>
@@ -67,8 +67,8 @@
 <section class="guiding-principle">
   <blockquote class="guiding-principle__quote">
     "The SDLC is not bureaucracy. It is the structure that lets organizations move fast without
-    breaking things. Having clear process for how to create a TSR and how it fits into the rituals
-    of the company is how we unlock fast experimentation and risk control&mdash;simultaneously."
+    breaking things. Starting with alignment and documenting the journey through rituals&mdash;that's
+    how we unlock fast experimentation and risk control, simultaneously."
   </blockquote>
 </section>
 
@@ -283,7 +283,7 @@
       <h3 class="document-card__title">{{ doc.title }}</h3>
       <p class="document-card__description">{{ doc.description }}</p>
       <div class="document-card__meta">
-        <span class="document-card__type">.docx</span>
+        <span class="document-card__type">.pdf</span>
       </div>
     </div>
     {% endfor %}
