@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{{ phase.title }} - AI Testing Resource{% endblock %}</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/design-system.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/syntax-themes.css') }}">
+
+  {% block head %}{% endblock %}
+</head>
+<body class="narrative-body">
+  <!-- Phase Navigation -->
+  {% include "components/phase_nav.html" %}
+
+  <main class="narrative-main">
+    {% block phase_header %}
+    <header class="phase-header">
+      <div class="phase-header__content">
+        {% if phase.number > 0 %}
+        <span class="phase-header__number">Phase {{ phase.number }}</span>
+        {% endif %}
+        <h1 class="phase-header__title">{{ phase.title }}</h1>
+        <p class="phase-header__subtitle">{{ phase.subtitle }}</p>
+      </div>
+    </header>
+    {% endblock %}
+
+    {% block phase_intro %}{% endblock %}
+
+    {% block phase_content %}{% endblock %}
+
+    <!-- Phase Navigation (bottom) -->
+    {% block phase_navigation %}
+    <nav class="phase-nav-bottom">
+      {% if prev_phase %}
+      <a href="{{ url_for('narrative.' ~ prev_phase.id) }}" class="phase-nav-btn phase-nav-btn--prev">
+        <span class="phase-nav-btn__arrow">&larr;</span>
+        <span class="phase-nav-btn__text">
+          <span class="phase-nav-btn__label">Previous</span>
+          <span class="phase-nav-btn__title">{{ prev_phase.short_title }}</span>
+        </span>
+      </a>
+      {% else %}
+      <div></div>
+      {% endif %}
+
+      {% if next_phase %}
+      <a href="{{ url_for('narrative.' ~ next_phase.id) }}" class="phase-nav-btn phase-nav-btn--next">
+        <span class="phase-nav-btn__text">
+          <span class="phase-nav-btn__label">Next</span>
+          <span class="phase-nav-btn__title">{{ next_phase.short_title }}</span>
+        </span>
+        <span class="phase-nav-btn__arrow">&rarr;</span>
+      </a>
+      {% endif %}
+    </nav>
+    {% endblock %}
+  </main>
+
+  <script>
+    window.APP_ROOT = "{{ config.get('APPLICATION_ROOT', '') }}";
+  </script>
+  <script src="{{ url_for('static', filename='js/viewer.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/line_selection.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

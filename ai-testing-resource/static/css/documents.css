@@ -1,0 +1,280 @@
+/* Document Library Styles */
+
+.document-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-lg);
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+.document-card {
+  background: var(--color-chrome-bg-medium);
+  border: 1px solid var(--color-chrome-border);
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.document-card:hover {
+  border-color: var(--color-chrome-text-bright);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Thumbnail section */
+.document-card__thumbnail {
+  width: 100%;
+  height: 200px;
+  background: var(--color-chrome-bg-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-bottom: 1px solid var(--color-chrome-border);
+}
+
+.document-card__thumbnail-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+/* Content section */
+.document-card__content {
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  flex-grow: 1;
+}
+
+.document-card__title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-chrome-text-bright);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.document-card__description {
+  font-size: 0.875rem;
+  color: var(--color-chrome-text-medium);
+  line-height: 1.5;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.document-card__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--color-chrome-border);
+}
+
+.document-card__type {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--color-chrome-text-dim);
+  background: var(--color-chrome-bg-dark);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+/* ====================================
+   Modal Overlay
+   ==================================== */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl);
+}
+
+/* ====================================
+   Document Modal (PDF Viewer)
+   ==================================== */
+
+.document-modal {
+  background: var(--color-charcoal);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 1000px;  /* Increased from 900px for better PDF readability */
+  height: 90vh;       /* Explicit height for flexbox expansion */
+  max-height: 90vh;   /* Safety limit matches height */
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);  /* Same as TSR modal */
+  overflow: hidden;
+}
+
+/* Header - Fixed at top */
+.document-modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-lg) var(--space-xl);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+  gap: var(--space-md);
+  background: var(--color-slate);
+}
+
+.document-modal__title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex: 1;
+  min-width: 0;
+}
+
+.document-modal__title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-chrome-text-bright);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Header Actions */
+.document-modal__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-shrink: 0;
+}
+
+.document-modal__download-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-accent);
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  transition: background 0.15s ease;
+  white-space: nowrap;
+}
+
+.document-modal__download-btn:hover {
+  background: var(--color-accent-hover);
+}
+
+.document-modal__close-btn {
+  background: none;
+  border: none;
+  color: var(--color-chrome-text);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 4px;
+  line-height: 1;
+  transition: all 0.15s ease;
+}
+
+.document-modal__close-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-chrome-text-bright);
+}
+
+/* Description Section */
+.document-modal__description-section {
+  padding: var(--space-sm) var(--space-xl);  /* Reduced from var(--space-md) */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--color-slate);
+  flex-shrink: 0;
+}
+
+.document-modal__description {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--color-chrome-text);
+  line-height: 1.5;
+}
+
+/* PDF Viewer Container */
+.document-modal__viewer {
+  flex: 1;
+  min-height: 0;  /* Critical for flex scrolling */
+  display: flex;
+  background: var(--color-charcoal);
+  padding: var(--space-sm);  /* Reduced from var(--space-md) for more viewer space */
+}
+
+.document-modal__pdf-frame {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 6px;
+  background: white;  /* PDF.js renders on white background */
+}
+
+/* ====================================
+   Responsive Adjustments
+   ==================================== */
+
+@media (max-width: 1024px) {
+  .document-modal {
+    max-width: 85vw;
+  }
+}
+
+@media (max-width: 768px) {
+  .document-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  .document-card__content {
+    padding: var(--space-md);
+  }
+
+  .document-card__thumbnail {
+    height: 180px;
+  }
+
+  .document-modal {
+    max-width: 95vw;
+    height: 90vh;       /* Explicit height for flexbox expansion */
+    max-height: 90vh;   /* Increased to match desktop */
+  }
+
+  .document-modal__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+
+  .document-modal__actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .document-modal__description-section {
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .document-modal__viewer {
+    padding: var(--space-sm);
+  }
+
+  .document-modal__title {
+    font-size: 1rem;
+  }
+}

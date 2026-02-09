@@ -1,0 +1,93 @@
+{% extends "narrative/base_narrative.html" %}
+
+{% block phase_content %}
+<div class="narrative-content narrative-content--narrow">
+  {% if content %}
+  <section class="content-section content-section--open">
+    <div class="content-section__header">
+      <span class="content-section__icon">!</span>
+      <h3 class="content-section__title">The Business Challenge</h3>
+    </div>
+    <div class="content-section__body">
+      {{ content | safe }}
+    </div>
+  </section>
+  {% else %}
+  <!-- Default content if markdown not loaded -->
+  <section class="content-section content-section--open">
+    <div class="content-section__header">
+      <span class="content-section__icon">!</span>
+      <h3 class="content-section__title">The Business Challenge</h3>
+    </div>
+    <div class="content-section__body">
+      <h2>Acme Widget Co. is losing customers.</h2>
+
+      <p>Their support team is overwhelmed with repetitive questions:</p>
+      <ul>
+        <li>"What's your return policy?"</li>
+        <li>"How much does Enterprise cost?"</li>
+        <li>"When will my order arrive?"</li>
+      </ul>
+
+      <p>These questions all have answers in their documentation, but customers don't want to search. They want instant answers.</p>
+
+      <h3>Current Metrics</h3>
+      <table>
+        <tr>
+          <th>Metric</th>
+          <th>Current State</th>
+        </tr>
+        <tr>
+          <td>Customer churn rate</td>
+          <td><strong>40%</strong></td>
+        </tr>
+        <tr>
+          <td>Average response time</td>
+          <td><strong>24 hours</strong></td>
+        </tr>
+        <tr>
+          <td>Annual support cost</td>
+          <td><strong>$500K</strong></td>
+        </tr>
+        <tr>
+          <td>FAQ questions (% of tickets)</td>
+          <td><strong>60%</strong></td>
+        </tr>
+      </table>
+
+      <h3>Proposed Solution</h3>
+      <p>An AI-powered support chatbot that:</p>
+      <ul>
+        <li>Answers questions instantly</li>
+        <li>Uses the company knowledge base</li>
+        <li>Escalates complex issues to humans</li>
+      </ul>
+
+      <h3>Success Criteria</h3>
+      <table>
+        <tr>
+          <th>Metric</th>
+          <th>Target</th>
+        </tr>
+        <tr>
+          <td>Response time</td>
+          <td>&lt; 5 seconds</td>
+        </tr>
+        <tr>
+          <td>Accuracy</td>
+          <td>&gt; 95% on product questions</td>
+        </tr>
+        <tr>
+          <td>Deflection rate</td>
+          <td>&gt; 80% of FAQ questions handled</td>
+        </tr>
+        <tr>
+          <td>Customer satisfaction</td>
+          <td>No decrease from current baseline</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+  {% endif %}
+</div>
+{% endblock %}

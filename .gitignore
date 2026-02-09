@@ -3,6 +3,8 @@
 __pycache__/
 *.pyc
 chroma_db/
+chroma/
+*.db
 .env
 .env.docker
 

@@ -1,0 +1,307 @@
+{% extends "narrative/base_narrative.html" %}
+{% from "components/rainbow_arc.html" import rainbow_arc %}
+
+{% block title %}AI Testing Resource - Governance-First AI Development{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/documents.css') }}">
+{% endblock %}
+
+{% block phase_header %}
+<!-- Custom hero instead of standard phase header -->
+<section class="landing-hero">
+  <h1 class="landing-hero__title">AI in Production: A Governance-First Approach</h1>
+  <p class="landing-hero__subtitle">
+    Welcome to the SDLC (Software Development Lifecycle). This structure is not new&mdash;it is how the best engineering teams have always
+    shipped reliable software. What's new is that agentic coding tools are enabling PMs, BAs, and domain
+    experts to build alongside experienced engineers. The structured approach here helps everyone know
+    what "done" looks like and how to get there.
+  </p>
+  <a href="{{ url_for('narrative.problem') }}" class="landing-cta">
+    Start the Journey
+    <span>&rarr;</span>
+  </a>
+</section>
+{% endblock %}
+
+{% block phase_intro %}{% endblock %}
+
+{% block phase_content %}
+<!-- 2-Part Framework Section -->
+<section class="cycle-section">
+  <h2 class="cycle-section__title">Design with the End in Mind</h2>
+  <div class="cycle-cards">
+    <div class="cycle-card">
+      <span class="cycle-card__number">1</span>
+      <h3 class="cycle-card__title">Start with Stakeholder Alignment</h3>
+      <p class="cycle-card__description">
+        Before you write code, align on what success looks like, who needs to approve, and when approvals happen.
+        When everyone knows what "done" looks like from Day 1, the path from commit to production is predictable&mdash;and
+        approvals accelerate delivery instead of blocking it.
+      </p>
+      <ul class="cycle-card__rituals">
+        <li>Define acceptance criteria upfront</li>
+        <li>Identify approval stakeholders and checkpoints</li>
+        <li>Establish the governance rhythm</li>
+      </ul>
+    </div>
+    <div class="cycle-card">
+      <span class="cycle-card__number">2</span>
+      <h3 class="cycle-card__title">Document the Journey for Confidence</h3>
+      <p class="cycle-card__description">
+        The SDLC rituals&mdash;discovery sessions, test reviews, and TSR checkpoints&mdash;are how builders
+        and approvers stay aligned as the work progresses. The Test Summary Report (TSR) captures what changed,
+        what was tested, and whether results meet criteria. This documentation is what makes fast, confident
+        deployment possible.
+      </p>
+      <ul class="cycle-card__rituals">
+        <li>Discovery ritual: Agree on requirements with stakeholders</li>
+        <li>Test review ritual: Review coverage as test suite grows</li>
+        <li>TSR checkpoint: Capture results before release</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Guiding Principle -->
+<section class="guiding-principle">
+  <blockquote class="guiding-principle__quote">
+    "The SDLC is not bureaucracy. It is the structure that lets organizations move fast without
+    breaking things. Starting with alignment and documenting the journey through rituals&mdash;that's
+    how we unlock fast experimentation and risk control, simultaneously."
+  </blockquote>
+</section>
+
+<!-- TSR Preview Mock -->
+<section class="tsr-preview">
+  <div class="tsr-preview__card">
+    <div class="tsr-preview__header">
+      <div>
+        <h3 class="tsr-preview__title">Test Summary Report</h3>
+        <span class="tsr-preview__id">TSR-2026-0208-A1</span>
+      </div>
+      <span class="tsr-preview__badge">GO</span>
+    </div>
+    <div class="tsr-preview__body">
+      <p class="tsr-preview__section-label">Requirements Verified</p>
+      <ul class="tsr-preview__checklist">
+        <li><span class="tsr-preview__check">&#10003;</span> Instant response (&lt;5s)</li>
+        <li><span class="tsr-preview__check">&#10003;</span> Grounded in knowledge base</li>
+        <li><span class="tsr-preview__check">&#10003;</span> 95% accuracy on product questions</li>
+        <li><span class="tsr-preview__check">&#10003;</span> Source attribution on every response</li>
+      </ul>
+
+      <p class="tsr-preview__section-label">Test Results</p>
+      <div class="tsr-preview__bars">
+        <div class="tsr-preview__bar">
+          <span class="tsr-preview__bar-label">Unit</span>
+          <div class="tsr-preview__bar-track"><div class="tsr-preview__bar-fill" style="width:100%"></div></div>
+          <span class="tsr-preview__bar-value">100%</span>
+        </div>
+        <div class="tsr-preview__bar">
+          <span class="tsr-preview__bar-label">Integration</span>
+          <div class="tsr-preview__bar-track"><div class="tsr-preview__bar-fill" style="width:100%"></div></div>
+          <span class="tsr-preview__bar-value">100%</span>
+        </div>
+        <div class="tsr-preview__bar">
+          <span class="tsr-preview__bar-label">Security</span>
+          <div class="tsr-preview__bar-track"><div class="tsr-preview__bar-fill" style="width:100%"></div></div>
+          <span class="tsr-preview__bar-value">100%</span>
+        </div>
+        <div class="tsr-preview__bar">
+          <span class="tsr-preview__bar-label">AI Evals</span>
+          <div class="tsr-preview__bar-track"><div class="tsr-preview__bar-fill tsr-preview__bar-fill--95" style="width:95%"></div></div>
+          <span class="tsr-preview__bar-value">95%</span>
+        </div>
+      </div>
+
+      <div class="tsr-preview__approval">
+        <span class="tsr-preview__check">&#10003;</span>
+        Approved by J. Martinez &middot; 2026-02-08 14:32 UTC
+      </div>
+    </div>
+    <div class="tsr-preview__footer">
+      <p class="tsr-preview__progress-text">This is where you're headed&mdash;a clear go/no-go artifact scoped to each release.</p>
+      <div class="tsr-preview__progress-bar">
+        <div class="tsr-preview__progress-fill"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- What the SDLC Protects (4 Pillars) -->
+<section class="narrative-content" style="padding-bottom: 0;">
+  <h2 style="text-align: center; color: var(--color-chrome-text-bright); font-size: 1.25rem; margin: 0 0 var(--space-xl) 0;">
+    What the SDLC Protects
+  </h2>
+  <div class="sdlc-pillars">
+    <div class="sdlc-pillar">
+      <div class="sdlc-pillar__icon">&#x1f512;</div>
+      <h3 class="sdlc-pillar__title">Security</h3>
+      <p class="sdlc-pillar__desc">Your code doesn't introduce vulnerabilities. Prompt injection, data leakage, and unauthorized access are caught before production.</p>
+    </div>
+    <div class="sdlc-pillar">
+      <div class="sdlc-pillar__icon">&#x1f91d;</div>
+      <h3 class="sdlc-pillar__title">Trust</h3>
+      <p class="sdlc-pillar__desc">Users and stakeholders can rely on AI outputs. Grounding, source attribution, and accuracy testing build warranted trust.</p>
+    </div>
+    <div class="sdlc-pillar">
+      <div class="sdlc-pillar__icon">&#x2699;</div>
+      <h3 class="sdlc-pillar__title">Reliability</h3>
+      <p class="sdlc-pillar__desc">The system works consistently under real-world conditions. Performance tests, integration tests, and monitoring catch problems early.</p>
+    </div>
+    <div class="sdlc-pillar">
+      <div class="sdlc-pillar__icon">&#x1f3af;</div>
+      <h3 class="sdlc-pillar__title">Solving Real Problems</h3>
+      <p class="sdlc-pillar__desc">You ship features that actually solve customer needs&mdash;without introducing new problems along the way.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Builder Bridge -->
+<section class="builder-bridge">
+  <p class="builder-bridge__text">
+    These are not new requirements invented for AI. They are the same protections that experienced
+    engineering teams have always built into their process. <strong>The SDLC is the shared language</strong>
+    that both experienced engineers and new builders follow. The five phases below show this familiar
+    lifecycle adapted for AI features.
+  </p>
+</section>
+
+<!-- IS vs IS NOT Table -->
+<section class="narrative-content" style="padding-top: var(--space-2xl); margin-top: var(--space-xl);">
+  <div class="sdlc-is-not">
+    <h3 style="text-align: center; color: var(--color-chrome-text-bright); font-size: 1.125rem; margin: 0 0 var(--space-lg) 0;">
+      The SDLC: What It Is and What It Isn't
+    </h3>
+    <table class="sdlc-is-not__table">
+      <thead>
+        <tr>
+          <th>The SDLC IS</th>
+          <th>The SDLC IS NOT</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>A path to production that builds confidence</td>
+          <td>A gate designed to slow you down</td>
+        </tr>
+        <tr>
+          <td>How the best engineers have always shipped reliably</td>
+          <td>Invented for AI or invented to constrain new builders</td>
+        </tr>
+        <tr>
+          <td>A shared language for quality between builders and reviewers</td>
+          <td>A set of hoops to jump through for compliance</td>
+        </tr>
+        <tr>
+          <td>Lightweight and scoped to each release</td>
+          <td>A massive document nobody reads</td>
+        </tr>
+        <tr>
+          <td>How organizations unlock fast experimentation AND risk control</td>
+          <td>A choice between speed and safety</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Rainbow Arc Phase Visual -->
+<section class="narrative-content" style="padding-bottom: 0;">
+  {{ rainbow_arc(phases, url_for) }}
+</section>
+
+<!-- 5 Phases Overview Section -->
+<section class="phases-section">
+  <h2 class="phases-section__title">The SDLC with AI</h2>
+  <div class="phase-cards">
+    <a href="{{ url_for('narrative.phase_1') }}" class="phase-card">
+      <span class="phase-card__number">1</span>
+      <h3 class="phase-card__title">Discovery</h3>
+      <p class="phase-card__description">
+        Interview stakeholders, discover requirements, define acceptance criteria through conversation.
+      </p>
+    </a>
+    <a href="{{ url_for('narrative.phase_2') }}" class="phase-card">
+      <span class="phase-card__number">2</span>
+      <h3 class="phase-card__title">Design</h3>
+      <p class="phase-card__description">
+        Plan architecture, choose technology, establish a testing strategy.
+      </p>
+    </a>
+    <a href="{{ url_for('narrative.phase_3') }}" class="phase-card">
+      <span class="phase-card__number">3</span>
+      <h3 class="phase-card__title">Build &amp; Test</h3>
+      <p class="phase-card__description">
+        Learn the test types that senior engineers already use, and understand how each validates quality for AI features.
+      </p>
+    </a>
+    <a href="{{ url_for('narrative.phase_4') }}" class="phase-card">
+      <span class="phase-card__number">4</span>
+      <h3 class="phase-card__title">Iterate &amp; Approve</h3>
+      <p class="phase-card__description">
+        Iterate on AI behavior, discover failure modes, and build confidence for approval.
+      </p>
+    </a>
+    <a href="{{ url_for('narrative.phase_5') }}" class="phase-card">
+      <span class="phase-card__number">5</span>
+      <h3 class="phase-card__title">Deploy &amp; Monitor</h3>
+      <p class="phase-card__description">
+        Deploy to production, monitor real usage, and feed learnings back into discovery.
+      </p>
+    </a>
+  </div>
+</section>
+
+{% if content %}
+<section class="phase-intro">
+  <div class="phase-intro__content">
+    {{ content | safe }}
+  </div>
+</section>
+{% endif %}
+
+<!-- Document Library Section -->
+{% if documents %}
+<section class="narrative-content" style="margin-top: var(--space-2xl);">
+  <h2 style="text-align: center; color: var(--color-chrome-text-bright); margin-bottom: var(--space-xl);">
+    Example Narrative Documents for Adding AI into the SDLC
+  </h2>
+  <div class="document-grid">
+    {% for doc in documents %}
+    <div class="document-card" onclick="openDocumentModal({{ doc.title|tojson|forceescape }}, {{ doc.description|tojson|forceescape }}, {{ doc.path|tojson|forceescape }})">
+      <div class="document-card__thumbnail">
+        <img src="{{ url_for('static', filename='images/documents/' + doc.filename.replace('.pdf', '.png')) }}"
+             alt="{{ doc.title }} preview"
+             class="document-card__thumbnail-img"
+             loading="lazy">
+      </div>
+      <div class="document-card__content">
+        <h3 class="document-card__title">{{ doc.title }}</h3>
+        <p class="document-card__description">{{ doc.description }}</p>
+        <div class="document-card__meta">
+          <span class="document-card__type">.pdf</span>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% include "components/document_modal.html" %}
+{% endif %}
+{% endblock %}
+
+{% block phase_navigation %}
+<nav class="phase-nav-bottom">
+  <div></div>
+  <a href="{{ url_for('narrative.problem') }}" class="phase-nav-btn phase-nav-btn--next">
+    <span class="phase-nav-btn__text">
+      <span class="phase-nav-btn__label">Start with</span>
+      <span class="phase-nav-btn__title">The Problem</span>
+    </span>
+    <span class="phase-nav-btn__arrow">&rarr;</span>
+  </a>
+</nav>
+{% endblock %}

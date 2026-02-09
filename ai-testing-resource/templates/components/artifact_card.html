@@ -1,0 +1,27 @@
+<!-- Artifact Card Component
+     Usage: {% include "components/artifact_card.html" with context %}
+
+     Variables:
+       artifact_type: 'input' or 'output'
+       artifact_title: Title of the artifact
+       artifact_description: Description text
+       artifact_icon: Optional icon (emoji or character)
+-->
+
+<div class="artifact-card artifact-card--{{ artifact_type | default('output') }}">
+  <div class="artifact-card__header">
+    {% if artifact_icon %}
+    <span class="artifact-card__icon">{{ artifact_icon }}</span>
+    {% endif %}
+    <span class="artifact-card__type">{{ artifact_type | default('Output') | capitalize }}</span>
+  </div>
+  <h4 class="artifact-card__title">{{ artifact_title }}</h4>
+  {% if artifact_description %}
+  <p class="artifact-card__description">{{ artifact_description }}</p>
+  {% endif %}
+  {% if artifact_content %}
+  <div class="artifact-card__content">
+    {{ artifact_content | safe }}
+  </div>
+  {% endif %}
+</div>

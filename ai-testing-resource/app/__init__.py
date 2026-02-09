@@ -74,6 +74,11 @@ def create_app(testing=False):
     from viewer.routes import viewer_bp
     app.register_blueprint(viewer_bp, url_prefix=combine_prefix(url_prefix, '/viewer'))
 
+    # Register narrative blueprint (educational journey)
+    # narrative_bp has no internal prefix (takes over root routes)
+    from viewer.narrative import narrative_bp
+    app.register_blueprint(narrative_bp, url_prefix=url_prefix)
+
     # Simple health check endpoint (no database dependency)
     # Register both with and without prefix for ALB health checks
     health_route = '/health'

@@ -3,186 +3,14 @@
 {% block title %}TSR Governance Portal{% endblock %}
 
 {% block head %}
-<style>
-  .governance-portal {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: var(--space-xl);
-  }
-
-  .gov-header {
-    display: flex;
-    align-items: center;
-    gap: var(--space-md);
-    margin-bottom: var(--space-xl);
-    padding-bottom: var(--space-lg);
-    border-bottom: 2px solid var(--color-accent);
-  }
-
-  .gov-header__icon {
-    font-size: 2rem;
-  }
-
-  .gov-header h1 {
-    color: var(--color-chrome-text-bright);
-    margin: 0;
-    font-size: 1.75rem;
-  }
-
-  .gov-filters {
-    display: flex;
-    gap: var(--space-md);
-    margin-bottom: var(--space-xl);
-    flex-wrap: wrap;
-  }
-
-  .gov-filters select {
-    padding: var(--space-sm) var(--space-md);
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 6px;
-    color: var(--color-chrome-text-bright);
-    font-family: var(--font-prose);
-    font-size: 0.875rem;
-  }
-
-  .tsr-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-    gap: var(--space-lg);
-  }
-
-  .tsr-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-    padding: var(--space-lg);
-    transition: all 0.2s ease;
-  }
-
-  .tsr-card:hover {
-    background: rgba(255, 255, 255, 0.05);
-    transform: translateY(-2px);
-  }
-
-  .tsr-card--go {
-    border-left: 4px solid var(--color-success);
-  }
-
-  .tsr-card--no_go {
-    border-left: 4px solid var(--color-error);
-  }
-
-  .tsr-card--pending_review {
-    border-left: 4px solid var(--color-warning);
-  }
-
-  .tsr-card__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--space-md);
-  }
-
-  .tsr-card__id {
-    font-family: var(--font-code);
-    font-size: 0.8125rem;
-    color: var(--color-chrome-text);
-  }
-
-  .tsr-card__decision {
-    font-weight: 600;
-    font-size: 0.875rem;
-    padding: var(--space-xs) var(--space-sm);
-    border-radius: 4px;
-  }
-
-  .tsr-card--go .tsr-card__decision {
-    background: var(--color-ann-success-bg);
-    color: var(--color-success);
-  }
-
-  .tsr-card--no_go .tsr-card__decision {
-    background: var(--color-ann-error-bg);
-    color: var(--color-error);
-  }
-
-  .tsr-card--pending_review .tsr-card__decision {
-    background: var(--color-ann-warning-bg);
-    color: var(--color-warning);
-  }
-
-  .tsr-card__meta {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
-    margin-bottom: var(--space-md);
-    font-size: 0.8125rem;
-    color: var(--color-chrome-text);
-  }
-
-  .tsr-card__versions {
-    font-family: var(--font-code);
-    font-size: 0.75rem;
-    color: var(--color-chrome-text);
-    padding: var(--space-sm);
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-    margin-bottom: var(--space-sm);
-  }
-
-  .tsr-card__link {
-    display: inline-block;
-    padding: var(--space-sm) var(--space-md);
-    background: var(--color-accent);
-    color: white;
-    text-decoration: none;
-    border-radius: 4px;
-    font-size: 0.8125rem;
-    font-weight: 500;
-    transition: background 0.15s ease;
-  }
-
-  .tsr-card__link:hover {
-    background: var(--color-accent-hover);
-  }
-
-  .stats-summary {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: var(--space-md);
-    margin-bottom: var(--space-xl);
-  }
-
-  .stat-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-    padding: var(--space-lg);
-    text-align: center;
-  }
-
-  .stat-card__value {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--color-chrome-text-bright);
-    margin-bottom: var(--space-xs);
-  }
-
-  .stat-card__label {
-    font-size: 0.875rem;
-    color: var(--color-chrome-text);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/governance.css') }}">
 {% endblock %}
 
 {% block content %}
 <div class="governance-portal">
   <header class="gov-header">
-    <span class="gov-header__icon">🏛️</span>
-    <h1>AI Governance & Compliance Portal</h1>
+    <span class="gov-header__icon">&#127963;</span>
+    <h1>AI Governance &amp; Compliance Portal</h1>
   </header>
 
   {% if stats %}
@@ -229,9 +57,9 @@
       <div class="tsr-card__header">
         <span class="tsr-card__id">{{ tsr.id[:12] }}</span>
         <span class="tsr-card__decision">
-          {% if tsr.go_no_go_decision.value == 'go' %}✅ GO
-          {% elif tsr.go_no_go_decision.value == 'no_go' %}❌ NO-GO
-          {% else %}⏳ PENDING{% endif %}
+          {% if tsr.go_no_go_decision.value == 'go' %}&#10003; GO
+          {% elif tsr.go_no_go_decision.value == 'no_go' %}&#10007; NO-GO
+          {% else %}&#9203; PENDING{% endif %}
         </span>
       </div>
       <div class="tsr-card__meta">
@@ -247,12 +75,14 @@
         {% endif %}
       </div>
       {% endif %}
-      <a href="{{ url_for('governance.tsr_detail', tsr_id=tsr.id) }}" class="tsr-card__link">
-        View Details →
-      </a>
+      <button class="tsr-card__link" onclick="openTSRModal('{{ tsr.id }}', '{{ tsr.go_no_go_decision.value }}', '{{ tsr.id[:12] }}')">
+        View Details &rarr;
+      </button>
     </div>
     {% endfor %}
   </div>
+
+  {% include "components/tsr_modal.html" %}
 </div>
 {% endblock %}
 

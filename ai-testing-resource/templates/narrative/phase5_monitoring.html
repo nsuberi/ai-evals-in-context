@@ -1,0 +1,258 @@
+{% extends "narrative/base_narrative.html" %}
+{% from "components/collapsible.html" import collapsible %}
+
+{% block title %}Phase 5: Deploy &amp; Monitor - AI Testing Resource{% endblock %}
+
+{% block phase_intro %}
+{% if intro_content %}
+<section class="phase-intro">
+  <div class="phase-intro__content">
+    {{ intro_content | safe }}
+  </div>
+</section>
+{% else %}
+<section class="phase-intro">
+  <div class="phase-intro__content">
+    <p>With v3 approved, we deploy to production. Now you can try the live chatbot yourself. Each interaction generates a trace that shows exactly how the AI processes your question.</p>
+  </div>
+</section>
+{% endif %}
+{% endblock %}
+
+{% block phase_content %}
+<div class="narrative-content narrative-content--narrow">
+  <!-- Live Demo Section -->
+  <div class="demo-container" style="padding: 0; max-width: none;">
+    <h2 style="color: var(--color-chrome-text-bright); margin-bottom: var(--space-sm);">
+      Live Demo: Acme Widgets Support Bot
+    </h2>
+    <p style="margin-bottom: var(--space-xl);">
+      Ask a question about Acme Widgets products, pricing, shipping, or returns.
+      Watch the knowledge base pipeline trace to see how RAG works in real-time.
+    </p>
+
+    <form class="demo-form" method="POST" action="{{ url_for('app.ask_route') }}">
+      <textarea
+        name="question"
+        class="demo-form__input"
+        placeholder="What is your return policy?"
+        required
+      ></textarea>
+
+      <div class="demo-form__actions">
+        <select name="version" class="demo-form__version-select">
+          <option value="v1">V1 - Verbose (too long)</option>
+          <option value="v2">V2 - Concise (may hallucinate)</option>
+          <option value="v3" selected>V3 - RAG (accurate)</option>
+        </select>
+
+        <button type="submit" class="demo-form__submit">Ask</button>
+      </div>
+    </form>
+
+    <div id="demo-response" class="demo-response">
+      <!-- Response will be inserted here -->
+    </div>
+
+    <!-- Knowledge Base Pipeline Trace Panel -->
+    <div id="trace-panel" class="trace-panel" style="display: none;">
+      <div class="trace-panel__header" onclick="toggleTracePanel()">
+        <span class="trace-panel__toggle">&#9660;</span>
+        <span class="trace-panel__title">Knowledge Base Pipeline</span>
+      </div>
+      <div id="trace-panel__content" class="trace-panel__content">
+        <!-- Trace content will be inserted here by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Four-Quadrant Diagnostic Framework -->
+  <section class="content-section content-section--open" style="margin-top: var(--space-2xl);">
+    <div class="content-section__header">
+      <span class="content-section__icon">Q</span>
+      <h3 class="content-section__title">Four-Quadrant Diagnostic Framework</h3>
+    </div>
+    <div class="content-section__body">
+      <p>Effective monitoring tracks product engagement and AI quality together. When you look at them side by side, you can diagnose four distinct states&mdash;each requiring a different response:</p>
+
+      <div class="quadrant-grid">
+        <div class="quadrant-card quadrant-card--thriving">
+          <h4 class="quadrant-card__title">A: Thriving</h4>
+          <p class="quadrant-card__condition">Healthy engagement + Healthy quality</p>
+          <p class="quadrant-card__action"><strong>Action:</strong> Continue monitoring, invest in optimization. This is the target state.</p>
+          <p class="quadrant-card__example">Example: Usage growing, accuracy at 96%, no new failure modes.</p>
+        </div>
+        <div class="quadrant-card quadrant-card--product-problem">
+          <h4 class="quadrant-card__title">B: Product Problem</h4>
+          <p class="quadrant-card__condition">Declining engagement + Healthy quality</p>
+          <p class="quadrant-card__action"><strong>Action:</strong> Investigate product-market fit. The AI works correctly but users aren't finding it useful.</p>
+          <p class="quadrant-card__example">Example: Accuracy at 95% but DAU declining. Users might prefer human support for complex issues.</p>
+        </div>
+        <div class="quadrant-card quadrant-card--hidden-debt">
+          <h4 class="quadrant-card__title">C: Hidden Debt</h4>
+          <p class="quadrant-card__condition">Healthy engagement + Degrading quality</p>
+          <p class="quadrant-card__action"><strong>Action:</strong> Urgent quality investigation. Users are still using the system but getting worse results.</p>
+          <p class="quadrant-card__example">Example: Usage steady but hallucination rate rising from 2% to 8%. Users haven't noticed yet&mdash;but they will.</p>
+        </div>
+        <div class="quadrant-card quadrant-card--crisis">
+          <h4 class="quadrant-card__title">D: Active Crisis</h4>
+          <p class="quadrant-card__condition">Declining engagement + Declining quality</p>
+          <p class="quadrant-card__action"><strong>Action:</strong> Immediate triage. Consider rollback, incident response, and stakeholder communication.</p>
+          <p class="quadrant-card__example">Example: Usage dropping, error rates spiking. Likely a model change, data pipeline failure, or upstream dependency issue.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hidden Debt Scenario -->
+  <div class="scenario-box">
+    <h4 class="scenario-box__title">Scenario: Hidden Debt at Acme</h4>
+    <p>
+      Two weeks after deploying v3, the monitoring dashboard shows steady engagement (150 daily users, consistent
+      adoption rate) but a creeping rise in hallucination rate: from 2% at launch to 5% now.
+    </p>
+    <p>
+      The root cause? The knowledge base hasn't been updated since launch, but the product team shipped
+      a pricing change last week. The chatbot is now giving outdated pricing from its knowledge base&mdash;technically
+      "grounded" but factually wrong. This is Hidden Debt (Quadrant C).
+    </p>
+    <p>
+      <strong>Resolution:</strong> Update the knowledge base, re-run AI evals to confirm accuracy, create a Tier 1
+      TSR documenting the data refresh, and add a monitoring alert for knowledge base staleness.
+    </p>
+  </div>
+
+  <!-- Product Engagement Metrics -->
+  <section class="content-section content-section--open" style="margin-top: var(--space-xl);">
+    <div class="content-section__header">
+      <span class="content-section__icon">E</span>
+      <h3 class="content-section__title">Product Engagement Metrics</h3>
+    </div>
+    <div class="content-section__body">
+      <table class="metrics-table">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>What It Measures</th>
+            <th>Healthy Signal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>DAU / MAU</strong></td><td>Daily and monthly active users</td><td>Stable or growing</td></tr>
+          <tr><td><strong>Adoption Rate</strong></td><td>% of eligible users who try the feature</td><td>> 30% within first month</td></tr>
+          <tr><td><strong>Task Completion</strong></td><td>% of interactions that resolve the user's need</td><td>> 80%</td></tr>
+          <tr><td><strong>Retention</strong></td><td>Users who return after first use</td><td>> 60% week-over-week</td></tr>
+          <tr><td><strong>Churn</strong></td><td>Users who stop using the feature</td><td>< 10% monthly</td></tr>
+          <tr><td><strong>NPS / CSAT</strong></td><td>Net Promoter Score / Customer Satisfaction</td><td>NPS > 30, CSAT > 4.0</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- AI Quality Metrics -->
+  <section class="content-section content-section--open" style="margin-top: var(--space-xl);">
+    <div class="content-section__header">
+      <span class="content-section__icon">Q</span>
+      <h3 class="content-section__title">AI Quality Metrics</h3>
+    </div>
+    <div class="content-section__body">
+      <table class="metrics-table">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>What It Measures</th>
+            <th>Alert Threshold</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Failure Mode Rate</strong></td><td>% of responses with any axial code failure</td><td>> 5%</td></tr>
+          <tr><td><strong>Pass Rate</strong></td><td>% of eval cases passing all criteria</td><td>&lt; 90%</td></tr>
+          <tr><td><strong>Hallucination Rate</strong></td><td>% of responses with ungrounded claims</td><td>> 2%</td></tr>
+          <tr><td><strong>Guardrail Triggers</strong></td><td>Blocked or redirected responses per day</td><td>> 10/day</td></tr>
+          <tr><td><strong>User-Flagged Errors</strong></td><td>Thumbs-down or escalation requests</td><td>> 5%</td></tr>
+          <tr><td><strong>Latency (P95)</strong></td><td>95th percentile response time</td><td>> 5s</td></tr>
+          <tr><td><strong>Drift Score</strong></td><td>Statistical change in response distribution</td><td>> 2 std deviations</td></tr>
+          <tr><td><strong>Evaluator Agreement</strong></td><td>Inter-rater reliability on trace reviews</td><td>&lt; 80%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Product Review Cadence -->
+  <section class="content-section content-section--open" style="margin-top: var(--space-xl);">
+    <div class="content-section__header">
+      <span class="content-section__icon">C</span>
+      <h3 class="content-section__title">Product Review Cadence</h3>
+    </div>
+    <div class="content-section__body">
+      <p>A structured review rhythm ensures issues are caught early and decisions are made with current data:</p>
+      <table class="metrics-table">
+        <thead>
+          <tr>
+            <th>Frequency</th>
+            <th>Audience</th>
+            <th>What's Reviewed</th>
+            <th>Decisions Made</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Daily</strong></td>
+            <td>Engineering</td>
+            <td>Error rates, latency, alerts</td>
+            <td>Incident response, hotfixes</td>
+          </tr>
+          <tr>
+            <td><strong>Weekly</strong></td>
+            <td>Engineering + PM</td>
+            <td>Quality trends, user feedback, engagement</td>
+            <td>Sprint priorities, quick fixes</td>
+          </tr>
+          <tr>
+            <td><strong>Bi-weekly</strong></td>
+            <td>Cross-functional team</td>
+            <td>Quadrant assessment, trace samples</td>
+            <td>Iteration planning, risk assessment</td>
+          </tr>
+          <tr>
+            <td><strong>Monthly</strong></td>
+            <td>Product + Stakeholders</td>
+            <td>Business metrics, ROI, competitive position</td>
+            <td>Feature roadmap, resource allocation</td>
+          </tr>
+          <tr>
+            <td><strong>Quarterly</strong></td>
+            <td>Leadership + Governance</td>
+            <td>Aggregate TSR trends, compliance, strategic alignment</td>
+            <td>Governance policy updates, budget</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- About the Versions -->
+  <section class="content-section content-section--open" style="margin-top: var(--space-xl);">
+    <div class="content-section__header">
+      <span class="content-section__icon">V</span>
+      <h3 class="content-section__title">About the Versions</h3>
+    </div>
+    <div class="content-section__body">
+      <p><strong>V1 - Verbose:</strong> The prompt asks for 300+ word responses. This fails the length eval because users want concise ~80 word answers.</p>
+      <p><strong>V2 - Concise:</strong> Fixed the length issue, but the model has no access to actual company data. It will confidently make up pricing and policy details.</p>
+      <p><strong>V3 - RAG:</strong> Uses retrieval-augmented generation with Chroma to fetch actual company documents. Responses are both concise AND accurate.</p>
+    </div>
+  </section>
+
+  <!-- Feedback Loop -->
+  <section style="text-align: center;">
+    <div class="feedback-loop">
+      <p>Monitoring feeds back into discovery. Production data surfaces new requirements,
+        reveals edge cases, and drives the next iteration of improvement.</p>
+      <a href="{{ url_for('narrative.phase_1') }}" class="feedback-loop__link">
+        &#x21ba; Back to Phase 1: Discovery
+      </a>
+    </div>
+  </section>
+</div>
+{% endblock %}

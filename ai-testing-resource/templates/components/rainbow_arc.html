@@ -1,0 +1,57 @@
+{% macro rainbow_arc(phases, url_for) %}
+<div class="rainbow-arc">
+  <svg class="rainbow-arc__svg" viewBox="0 0 600 320" xmlns="http://www.w3.org/2000/svg">
+    <!-- Arc path connecting phases -->
+    <path class="rainbow-arc__path" d="M 60 260 Q 120 40 300 40 Q 480 40 540 260" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="3"/>
+
+    <!-- Phase nodes along the arc -->
+    <a href="{{ url_for('narrative.phase_1') }}" class="rainbow-arc__link">
+      <circle cx="90" cy="200" r="24" class="rainbow-arc__node"/>
+      <text x="90" y="205" class="rainbow-arc__label">1</text>
+      <text x="90" y="240" class="rainbow-arc__title">Discovery</text>
+    </a>
+
+    <a href="{{ url_for('narrative.phase_2') }}" class="rainbow-arc__link">
+      <circle cx="185" cy="95" r="24" class="rainbow-arc__node"/>
+      <text x="185" y="100" class="rainbow-arc__label">2</text>
+      <text x="185" y="135" class="rainbow-arc__title">Design</text>
+    </a>
+
+    <a href="{{ url_for('narrative.phase_3') }}" class="rainbow-arc__link">
+      <circle cx="300" cy="55" r="24" class="rainbow-arc__node"/>
+      <text x="300" y="60" class="rainbow-arc__label">3</text>
+      <text x="300" y="88" class="rainbow-arc__title">
+        <tspan x="300" dy="0">Build</tspan>
+        <tspan x="300" dy="14">&amp; Test</tspan>
+      </text>
+    </a>
+
+    <a href="{{ url_for('narrative.phase_4') }}" class="rainbow-arc__link">
+      <circle cx="415" cy="95" r="24" class="rainbow-arc__node"/>
+      <text x="415" y="100" class="rainbow-arc__label">4</text>
+      <text x="415" y="128" class="rainbow-arc__title">
+        <tspan x="415" dy="0">Iterate</tspan>
+        <tspan x="415" dy="14">&amp; Approve</tspan>
+      </text>
+    </a>
+
+    <a href="{{ url_for('narrative.phase_5') }}" class="rainbow-arc__link">
+      <circle cx="510" cy="200" r="24" class="rainbow-arc__node"/>
+      <text x="510" y="205" class="rainbow-arc__label">5</text>
+      <text x="510" y="233" class="rainbow-arc__title">
+        <tspan x="510" dy="0">Deploy</tspan>
+        <tspan x="510" dy="14">&amp; Monitor</tspan>
+      </text>
+    </a>
+
+    <!-- Feedback arrow from Phase 5 back to Phase 1 -->
+    <path class="rainbow-arc__feedback" d="M 490 225 Q 300 310 110 225" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrowhead)"/>
+    <defs>
+      <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="var(--color-accent)"/>
+      </marker>
+    </defs>
+    <text x="300" y="300" class="rainbow-arc__feedback-label">Feedback Loop</text>
+  </svg>
+</div>
+{% endmacro %}

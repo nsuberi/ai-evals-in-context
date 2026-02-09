@@ -1,0 +1,75 @@
+{# Reusable TSR detail modal — include once on any page that shows TSR cards #}
+
+<div class="tsr-modal-overlay" id="tsrModalOverlay" style="display: none;" onclick="closeTSRModal(event)">
+  <div class="tsr-modal" onclick="event.stopPropagation()">
+    <div class="tsr-modal__header">
+      <div class="tsr-modal__title-row">
+        <h2 class="tsr-modal__title">Test Summary Report</h2>
+        <span class="tsr-modal__id" id="tsrModalId"></span>
+        <span class="tsr-modal__decision" id="tsrModalDecision"></span>
+      </div>
+      <div class="tsr-modal__actions">
+        <a class="tsr-modal__download-btn" id="tsrModalDownload" href="#" download>
+          &#11015; Download JSON
+        </a>
+        <button class="tsr-modal__close-btn" onclick="closeTSRModal()" aria-label="Close modal">&times;</button>
+      </div>
+    </div>
+    <div class="tsr-modal__body" id="tsrModalBody">
+      <div class="tsr-modal__loading">Loading...</div>
+    </div>
+  </div>
+</div>
+
+<script>
+function openTSRModal(tsrId, decisionValue, shortId) {
+  var root = window.APP_ROOT || '';
+  var overlay = document.getElementById('tsrModalOverlay');
+  var body = document.getElementById('tsrModalBody');
+  var idEl = document.getElementById('tsrModalId');
+  var decisionEl = document.getElementById('tsrModalDecision');
+  var downloadBtn = document.getElementById('tsrModalDownload');
+
+  // Set header info
+  idEl.textContent = shortId || tsrId.substring(0, 12);
+  decisionEl.textContent = (decisionValue || '').replace('_', '-').toUpperCase();
+  decisionEl.className = 'tsr-modal__decision tsr-modal__decision--' + (decisionValue || '');
+
+  // Set download link
+  downloadBtn.href = root + '/governance/tsr/' + tsrId + '/download';
+
+  // Show modal with loading state
+  body.innerHTML = '<div class="tsr-modal__loading">Loading...</div>';
+  overlay.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+
+  // Fetch fragment
+  fetch(root + '/governance/tsr/' + tsrId + '/detail-fragment')
+    .then(function(resp) {
+      if (!resp.ok) throw new Error('Failed to load TSR details');
+      return resp.text();
+    })
+    .then(function(html) {
+      body.innerHTML = html;
+    })
+    .catch(function(err) {
+      body.innerHTML = '<div class="tsr-modal__error">Could not load TSR details. <a href="' + root + '/governance/tsr/' + tsrId + '">Open full page instead.</a></div>';
+    });
+}
+
+function closeTSRModal(event) {
+  // If called from overlay click, only close if the overlay itself was clicked
+  if (event && event.target !== document.getElementById('tsrModalOverlay')) return;
+  document.getElementById('tsrModalOverlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    var overlay = document.getElementById('tsrModalOverlay');
+    if (overlay && overlay.style.display !== 'none') {
+      closeTSRModal();
+    }
+  }
+});
+</script>

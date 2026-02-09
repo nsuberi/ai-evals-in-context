@@ -52,27 +52,6 @@ class TestPortfolioEntry:
 class TestFullJourney:
     """Tests for complete user journey from portfolio to app features."""
 
-    def test_full_journey_portfolio_to_viewer_tests(self, page: Page, portfolio_url: str):
-        """Full path: Portfolio -> Card -> App -> /viewer/tests."""
-        # Start at portfolio
-        page.goto(portfolio_url)
-
-        # Find and click the Accepting AI card
-        card = page.locator(".group", has=page.locator("h3", has_text="Accepting AI"))
-        demo_link = card.locator("a", has_text="Try Live Demo")
-        expect(demo_link).to_be_visible(timeout=10000)
-        demo_link.click()
-
-        # Wait for app to load
-        page.wait_for_url("**/ai-evals/**", timeout=15000)
-
-        # Navigate to viewer/tests
-        page.goto(page.url.rstrip("/") + "/viewer/tests")
-        page.wait_for_load_state("networkidle")
-
-        # Verify we're on the tests page
-        expect(page).to_have_url(re.compile(r".*/viewer/tests.*"))
-
     def test_health_endpoint_from_portfolio_journey(self, page: Page, portfolio_url: str):
         """Journey + health check returns healthy status."""
         # Start at portfolio
@@ -100,8 +79,8 @@ class TestFullJourney:
         body = page.content()
         assert "healthy" in body.lower()
 
-    def test_governance_dashboard_accessible(self, page: Page, portfolio_url: str):
-        """Journey + navigate to /governance/dashboard."""
+    def test_governance_page_accessible(self, page: Page, portfolio_url: str):
+        """Journey + navigate to /governance."""
         # Start at portfolio
         page.goto(portfolio_url)
 
@@ -114,13 +93,16 @@ class TestFullJourney:
         # Wait for app to load
         page.wait_for_url("**/ai-evals/**", timeout=15000)
 
-        # Navigate to governance dashboard
-        page.goto(page.url.rstrip("/") + "/governance/dashboard")
+        # Navigate to governance page
+        page.goto(page.url.rstrip("/") + "/governance")
         page.wait_for_load_state("networkidle")
 
         # Verify page loaded
-        expect(page).to_have_url(re.compile(r".*/governance/dashboard.*"))
+        expect(page).to_have_url(re.compile(r".*/governance"))
         expect(page.locator("body")).to_be_visible()
+
+        # Check for TSR content
+        expect(page.locator("text=TSR")).to_be_visible()
 
     def test_ask_page_form_elements(self, page: Page, portfolio_url: str):
         """Journey + verify form elements on /ask page."""

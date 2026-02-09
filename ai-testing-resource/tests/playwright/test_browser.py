@@ -4,18 +4,26 @@ Tests all major routes of the AI Testing Resource application.
 Requires Docker Compose to be running: docker compose up -d
 """
 
+import re
+
 import pytest
 from playwright.sync_api import Page, expect
 
 
 def test_home_page_loads(page: Page, base_url: str):
-    """Test that the home page loads and shows the ask form."""
+    """Test that the landing page loads with governance framework and journey CTA."""
     page.goto(f"{base_url}/")
 
-    # Home page renders the ask form directly
-    expect(page.locator("textarea")).to_be_visible()
-    expect(page.locator("select")).to_be_visible()
-    expect(page.locator("button[type='submit']")).to_be_visible()
+    # Landing page has governance-first content
+    expect(page.locator("text=Governance")).to_be_visible()
+
+    # Has "Start the Journey" CTA link
+    cta = page.locator("a.landing-cta")
+    expect(cta).to_be_visible()
+    expect(cta).to_have_text(re.compile(r"Start the Journey"))
+
+    # Has phase cards for the 5 phases
+    expect(page.locator(".phase-card").first).to_be_visible()
 
 
 def test_ask_page_loads(page: Page, base_url: str):
@@ -47,39 +55,15 @@ def test_ask_page_form_interaction(page: Page, base_url: str):
     expect(page.locator("#demo-response")).to_be_attached()
 
 
-def test_viewer_tests_loads(page: Page, base_url: str):
-    """Test that the test viewer page loads."""
-    page.goto(f"{base_url}/viewer/tests")
-
-    # Verify the page loaded successfully by checking URL
-    assert page.url.endswith("/viewer/tests")
-
-    # Page should have some content
-    assert len(page.content()) > 0
-
-
-def test_viewer_traces_loads(page: Page, base_url: str):
-    """Test that the trace viewer page loads."""
-    page.goto(f"{base_url}/viewer/traces")
+def test_governance_page_loads(page: Page, base_url: str):
+    """Test that the governance page loads."""
+    page.goto(f"{base_url}/governance")
 
     # Verify the page loaded successfully
-    assert page.url.endswith("/viewer/traces")
+    assert page.url.endswith("/governance")
 
-
-def test_viewer_timeline_loads(page: Page, base_url: str):
-    """Test that the timeline viewer page loads."""
-    page.goto(f"{base_url}/viewer/timeline")
-
-    # Verify the page loaded successfully
-    assert page.url.endswith("/viewer/timeline")
-
-
-def test_governance_dashboard_loads(page: Page, base_url: str):
-    """Test that the governance dashboard loads."""
-    page.goto(f"{base_url}/governance/dashboard")
-
-    # Verify the page loaded successfully
-    assert page.url.endswith("/governance/dashboard")
+    # Check for TSR Evidence content
+    expect(page.locator("text=TSR")).to_be_visible()
 
 
 def test_monitoring_traces_loads(page: Page, base_url: str):

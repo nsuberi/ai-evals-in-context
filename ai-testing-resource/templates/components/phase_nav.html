@@ -1,0 +1,33 @@
+<!-- Phase Navigation Bar -->
+<nav class="phase-nav">
+  <div class="phase-nav__container">
+    <!-- Logo/Home -->
+    <a href="{{ url_for('narrative.landing') }}" class="phase-nav__logo">
+      <span class="phase-nav__logo-icon">AI</span>
+      <span class="phase-nav__logo-text">Testing Resource</span>
+    </a>
+
+    <!-- Phase Steps -->
+    <div class="phase-nav__steps">
+      {% for phase_id in phase_order %}
+        {% set p = phases[phase_id] %}
+        {% set is_current = phase.id == phase_id %}
+        {% set is_past = phase_order.index(phase.id) > phase_order.index(phase_id) %}
+
+        {% if phase_id not in ['landing'] %}
+        <a href="{{ url_for('narrative.' ~ phase_id) }}"
+           class="phase-nav__step {% if is_current %}phase-nav__step--active{% endif %} {% if is_past %}phase-nav__step--completed{% endif %}">
+          {% if p.number > 0 %}
+          <span class="phase-nav__step-number">{{ p.number }}</span>
+          {% else %}
+          <span class="phase-nav__step-icon">
+            {% if phase_id == 'problem' %}?{% elif phase_id == 'governance' %}G{% endif %}
+          </span>
+          {% endif %}
+          <span class="phase-nav__step-title">{{ p.short_title }}</span>
+        </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</nav>

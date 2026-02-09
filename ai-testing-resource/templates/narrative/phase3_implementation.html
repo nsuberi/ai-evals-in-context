@@ -1,0 +1,222 @@
+{% extends "narrative/base_narrative.html" %}
+
+{% block title %}Phase 3: Build &amp; Test - AI Testing Resource{% endblock %}
+
+{% block phase_intro %}
+{% if intro_content %}
+<section class="phase-intro">
+  <div class="phase-intro__content">
+    {{ intro_content | safe }}
+  </div>
+</section>
+{% else %}
+<section class="phase-intro">
+  <div class="phase-intro__content">
+    <p>In this phase, we establish a common language of test types. Each type plays a distinct role in validating quality for AI features.</p>
+  </div>
+</section>
+{% endif %}
+{% endblock %}
+
+{% block phase_content %}
+<!-- SDLC Leadership Statement -->
+<div class="narrative-content" style="padding-bottom: 0;">
+  <div class="sdlc-statement">
+    <p>
+      <strong>The testing pyramid is not new.</strong> The test types on this page are the same ones
+      that experienced engineering teams have used for decades to ship reliable software. What's new
+      is extending this established discipline to cover AI behavior&mdash;and making sure that everyone
+      on the team, from seasoned engineers to PMs writing their first feature, speaks the same language
+      about quality.
+    </p>
+    <p>
+      Governance teams don't review test implementation details&mdash;that's the builder's professional
+      obligation. The exception is acceptance tests and AI evals: business users who own the risk need
+      to understand and validate the evaluation approach. The TSR captures evidence from all test types,
+      but governance reviewers focus on the tests that map to business requirements.
+    </p>
+  </div>
+</div>
+
+<!-- Filter Buttons -->
+<div class="sdlc-filter">
+  <button class="sdlc-filter__btn sdlc-filter__btn--active" data-filter="all" onclick="filterCards('all', this)">All</button>
+  <button class="sdlc-filter__btn" data-filter="traditional" onclick="filterCards('traditional', this)">Traditional SDLC</button>
+  <button class="sdlc-filter__btn" data-filter="evolved" onclick="filterCards('evolved', this)">Evolved for AI</button>
+  <button class="sdlc-filter__btn" data-filter="new" onclick="filterCards('new', this)">New for AI Era</button>
+</div>
+
+<!-- SDLC Test Type Cards -->
+<div class="sdlc-cards">
+  {% for test in sdlc_tests %}
+  <div class="sdlc-card {% if test.category == 'new' %}sdlc-card--new{% endif %}" data-category="{{ test.category }}" onclick="toggleSdlcCard(this)">
+    <div class="sdlc-card__header">
+      <span class="sdlc-card__icon" style="background: {{ test.color }};">{{ test.icon }}</span>
+      <div class="sdlc-card__info">
+        <h3 class="sdlc-card__name">{{ test.name }}</h3>
+        <span class="sdlc-card__badge sdlc-card__badge--{{ test.category }}">
+          {% if test.category == 'traditional' %}TRADITIONAL{% elif test.category == 'evolved' %}EVOLVED FOR AI{% else %}NEW FOR AI ERA{% endif %}
+        </span>
+      </div>
+      <span class="sdlc-card__chevron">&#9654;</span>
+    </div>
+
+    <div class="sdlc-card__summary">
+      {{ test.description }}
+    </div>
+
+    <div class="sdlc-card__roles-preview">
+      {% for role_id in test.who_creates %}
+      <span class="sdlc-role-tag">
+        <span class="sdlc-role-tag__dot" style="background: {{ sdlc_roles[role_id].color }};"></span>
+        {{ sdlc_roles[role_id].name }}
+      </span>
+      {% endfor %}
+      <span class="sdlc-role-tag--flow">&rarr;</span>
+      {% for role_id in test.who_validates %}
+      <span class="sdlc-role-tag">
+        <span class="sdlc-role-tag__dot" style="background: {{ sdlc_roles[role_id].color }};"></span>
+        {{ sdlc_roles[role_id].name }}
+      </span>
+      {% endfor %}
+    </div>
+
+    <!-- Expanded Body -->
+    <div class="sdlc-card__body">
+      <div class="sdlc-card__grid">
+        <div>
+          <div class="sdlc-card__section">
+            <h4 class="sdlc-card__section-title">Role in the SDLC</h4>
+            <p class="sdlc-card__section-text">{{ test.sdlc_role }}</p>
+          </div>
+          <div class="sdlc-card__ai-box">
+            <h4 class="sdlc-card__section-title">AI-Era Considerations</h4>
+            <p class="sdlc-card__section-text">{{ test.ai_considerations }}</p>
+          </div>
+        </div>
+        <div>
+          <div class="sdlc-card__section">
+            <h4 class="sdlc-card__section-title">Audit &amp; Standardization Value</h4>
+            <p class="sdlc-card__section-text">{{ test.audit_value }}</p>
+          </div>
+          <div class="sdlc-card__section">
+            <h4 class="sdlc-card__section-title">Who Creates</h4>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              {% for role_id in test.who_creates %}
+              <span class="sdlc-role-tag">
+                <span class="sdlc-role-tag__dot" style="background: {{ sdlc_roles[role_id].color }};"></span>
+                {{ sdlc_roles[role_id].name }}
+              </span>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="sdlc-card__section" style="margin-top: var(--space-sm);">
+            <h4 class="sdlc-card__section-title">Who Validates</h4>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              {% for role_id in test.who_validates %}
+              <span class="sdlc-role-tag">
+                <span class="sdlc-role-tag__dot" style="background: {{ sdlc_roles[role_id].color }};"></span>
+                {{ sdlc_roles[role_id].name }}
+              </span>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- Error Analysis Failure Mode Taxonomy -->
+<div class="failure-taxonomy">
+  <h3 style="color: var(--color-chrome-text-bright); margin: 0 0 var(--space-sm) 0; font-size: 1.125rem;">
+    Error Analysis: What Tests Catch
+  </h3>
+  <p style="color: var(--color-chrome-text); font-size: 0.875rem; margin: 0 0 var(--space-lg) 0; line-height: 1.6;">
+    The test types above catch specific categories of failure. The taxonomy below gives these failures names
+    so teams can count them, track trends, and make evidence-based decisions. In
+    <a href="{{ url_for('narrative.phase_4') }}" style="color: var(--color-accent);">Phase 4: Iterate &amp; Approve</a>,
+    these failure modes become <strong>axial codes</strong>&mdash;the category labels that enable quantification
+    across traces. Each trace annotation has an <em>open code</em> (a free-text observation specific to one trace)
+    and an <em>axial code</em> (the category label from this taxonomy). This is how subjective quality assessment
+    becomes countable evidence for the TSR.
+  </p>
+
+  <table class="failure-taxonomy__table">
+    <thead>
+      <tr>
+        <th>Failure Mode</th>
+        <th>What It Looks Like</th>
+        <th>Root Cause Category</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Hallucination</strong></td>
+        <td>AI states facts not in the knowledge base (e.g., invents a price)</td>
+        <td>Grounding / retrieval gap</td>
+      </tr>
+      <tr>
+        <td><strong>Scope Violation</strong></td>
+        <td>AI answers questions outside its designated domain</td>
+        <td>Prompt boundary / guardrail gap</td>
+      </tr>
+      <tr>
+        <td><strong>Tone Mismatch</strong></td>
+        <td>Response is too casual, too formal, or inappropriate for context</td>
+        <td>Prompt tuning / style guide gap</td>
+      </tr>
+      <tr>
+        <td><strong>Edge Case Failure</strong></td>
+        <td>System fails on unusual inputs (e.g., multilingual, very long queries)</td>
+        <td>Test coverage gap</td>
+      </tr>
+      <tr>
+        <td><strong>Inconsistency</strong></td>
+        <td>Same question gets contradictory answers on different attempts</td>
+        <td>Non-determinism / retrieval variability</td>
+      </tr>
+      <tr>
+        <td><strong>Bias / Fairness</strong></td>
+        <td>Responses vary inappropriately based on user demographics or phrasing</td>
+        <td>Training data / prompt bias</td>
+      </tr>
+      <tr>
+        <td><strong>Performance Degradation</strong></td>
+        <td>Latency spikes, timeouts, or resource exhaustion under load</td>
+        <td>Infrastructure / scaling gap</td>
+      </tr>
+      <tr>
+        <td><strong>Drift</strong></td>
+        <td>Quality gradually degrades over time without code changes</td>
+        <td>Model updates / data staleness</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="color: var(--color-chrome-text); font-size: 0.8125rem; margin: var(--space-md) 0 0; line-height: 1.5;">
+    <strong style="color: var(--color-chrome-text-bright);">Note:</strong> This 8-type taxonomy covers the full landscape
+    of AI failure modes. The trace annotations in Phase 4 demonstrate a working subset applied to Acme's chatbot traces.
+    Your team's taxonomy may differ based on your specific domain and risk profile.
+  </p>
+</div>
+
+<script>
+function toggleSdlcCard(card) {
+  card.classList.toggle('sdlc-card--expanded');
+}
+
+function filterCards(category, btn) {
+  document.querySelectorAll('.sdlc-filter__btn').forEach(b => b.classList.remove('sdlc-filter__btn--active'));
+  btn.classList.add('sdlc-filter__btn--active');
+  document.querySelectorAll('.sdlc-card').forEach(card => {
+    if (category === 'all' || card.dataset.category === category) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+</script>
+{% endblock %}
