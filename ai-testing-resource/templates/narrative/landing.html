@@ -270,7 +270,7 @@
   </h2>
   <div class="document-grid">
     {% for doc in documents %}
-    <div class="document-card" onclick="openDocumentModal({{ doc.title|tojson }}, {{ doc.description|tojson }}, {{ doc.path|tojson }})">
+    <div class="document-card" onclick="openDocumentModal({{ doc.title|tojson|forceescape }}, {{ doc.description|tojson|forceescape }}, {{ doc.path|tojson|forceescape }})">
       <div class="document-card__thumbnail">
         <img src="{{ url_for('static', filename='images/documents/' + doc.filename.replace('.pdf', '.png')) }}"
              alt="{{ doc.title }} preview"
