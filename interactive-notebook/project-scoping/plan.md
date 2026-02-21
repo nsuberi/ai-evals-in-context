@@ -2,7 +2,7 @@
 
 ## Context
 
-Nathan is preparing a 5-meeting series on AI testing for ~30 practitioners and executives at a mortgage banking organization. This notebook is a standalone supplementary resource they can work through independently after the sessions. It teaches AI evaluation concepts using deepeval, a local Chroma RAG pipeline, and Claude as both the generator and LLM judge. The organization currently has no trace capture capability, so the notebook uses synthetic data throughout.
+This notebook is a standalone supplementary resource that teaches AI evaluation concepts using deepeval, a local Chroma RAG pipeline, and Claude as both the generator and LLM judge. The organization currently has no trace capture capability, so the notebook uses synthetic data throughout.
 
 **Key narrative thread:** Governance is an accelerator, not a gate. Confidence in automated evaluation comes from systematically comparing machine judgment against human judgment.
 

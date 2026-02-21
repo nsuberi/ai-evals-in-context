@@ -19,12 +19,18 @@ source .venv/bin/activate
 # 2. Install dependencies
 pip install -r requirements.txt
 
-# 3. Create your .env file (if it doesn't already exist)
-echo "ANTHROPIC_API_KEY=sk-ant-your-key-here" > .env
+# 3. Register the venv as a Jupyter kernel
+python3 -m ipykernel install --user --name=ai-eval-workshop --display-name "AI Eval Workshop"
 
-# 4. Launch the notebook
+# 4. Create your .env file (copy from sample and fill in your keys)
+cp .env.sample .env
+# Edit .env and add your ANTHROPIC_API_KEY (required) and LANGSMITH_API_KEY (optional)
+
+# 5. Launch the notebook
 jupyter notebook ai_eval_workshop.ipynb
 ```
+
+When the notebook opens, select the **AI Eval Workshop** kernel from the **Kernel > Change Kernel** menu. This ensures the notebook runs against the `.venv` you just created with all dependencies installed.
 
 ## What You'll Learn
 
@@ -52,7 +58,12 @@ export DEEPEVAL_TELEMETRY_OPT_IN=NO
 
 **Missing API key:** If you see authentication errors, verify your `.env` file is in the same directory as the notebook and contains a valid `ANTHROPIC_API_KEY`.
 
-**Kernel not found:** Make sure you installed `ipykernel` and are selecting the correct virtual environment kernel. You can register it explicitly:
+**Kernel not found:** Make sure you installed `ipykernel` and registered the venv as a kernel (step 3 in Setup above). You can verify which kernels are available with:
 ```bash
-python3 -m ipykernel install --user --name=ai-eval-workshop
+jupyter kernelspec list
+```
+If `ai-eval-workshop` is missing, re-register it:
+```bash
+source .venv/bin/activate
+python3 -m ipykernel install --user --name=ai-eval-workshop --display-name "AI Eval Workshop"
 ```
