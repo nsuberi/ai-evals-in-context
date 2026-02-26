@@ -24,3 +24,5 @@ terraform/*.tfvars
 terraform/.terraform.lock.hcl
 terraform/crash.log
 
+# DeepEval
+.deepeval/
